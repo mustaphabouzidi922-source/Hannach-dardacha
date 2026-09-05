@@ -6,428 +6,327 @@
     <title>HANNACHA Chat</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Cairo', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            background: linear-gradient(135deg, #2e1065, #4c1d95, #6d28d9);
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .phone-frame {
-            width: 100%;
-            max-width: 410px;
-            height: 100vh;
-            max-height: 850px;
-            background: #1e1b4b;
-            border-radius: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-            border: 4px solid #7c3aed;
-        }
-
-        /* رأس الواجهة */
-        .header {
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        .header h1 {
-            font-size: 32px;
-            font-weight: 800;
-            color: #c084fc;
-            letter-spacing: 2px;
-            text-shadow: 0 2px 15px rgba(192, 132, 252, 0.5);
-        }
-
-        .header h2 {
-            font-size: 13px;
-            color: #c4b5fd;
-            font-weight: 600;
-            opacity: 0.9;
-        }
-
-        /* وسط التطبيق */
-        .content-body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 10px;
-            flex-grow: 1;
-            position: relative;
-            overflow-y: auto;
-            padding: 10px 0;
-        }
-
-        .welcome-box {
-            text-align: center;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .welcome-text {
-            font-size: 12px;
-            color: #ddd6fe;
-        }
-
-        .google-btn {
-            background: #ffffff;
-            color: #1e1b4b;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            width: 85%;
-            justify-content: center;
-        }
-
-        .social-btn {
-            border: none;
-            padding: 8px 15px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            width: 85%;
-            justify-content: center;
-            color: #fff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .whatsapp-btn { background: #25d366; }
-        .messenger-btn { background: #0084ff; }
-
-        /* صندوق النشر (مثل فيسبوك) */
-        .feed-container {
-            width: 100%;
-            display: none;
-            flex-direction: column;
-            gap: 12px;
-            padding: 5px;
-        }
-
-        .post-box {
-            background: rgba(255, 255, 255, 0.07);
-            padding: 12px;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .post-box textarea, .post-box input {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid #7c3aed;
-            border-radius: 8px;
-            padding: 8px;
-            color: #fff;
-            font-size: 12px;
-            resize: none;
-        }
-
-        .post-btn {
-            background: #7c3aed;
-            color: white;
-            border: none;
-            padding: 6px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .posts-feed {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 300px;
-            overflow-y: auto;
-            width: 100%;
-        }
-
-        .user-post {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 12px;
-            border-right: 3px solid #c084fc;
-        }
-
-        .user-post p { margin-bottom: 5px; word-break: break-all; }
+        * { box-sizing: border-box; font-family: 'Cairo', sans-serif; margin: 0; padding: 0; }
+        body { background: linear-gradient(135deg, #2e1065, #4c1d95, #6d28d9); color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         
-        .comment-section {
-            display: flex;
-            gap: 5px;
-            margin-top: 5px;
+        .phone-frame {
+            width: 100%; max-width: 410px; height: 100vh; max-height: 850px;
+            background: #1e1b4b; border-radius: 40px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            display: flex; flex-direction: column; justify-content: space-between; padding: 15px; position: relative; overflow: hidden; border: 4px solid #7c3aed;
         }
 
-        .comment-section input {
-            flex-grow: 1;
-            padding: 4px 8px;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 5px;
-            color: #fff;
-            font-size: 11px;
-        }
+        /* رأس التطبيق */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 5px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .header h1 { font-size: 24px; font-weight: 800; color: #c084fc; letter-spacing: 1px; }
+        .user-mini-profile { display: none; align-items: center; gap: 8px; }
+        .mini-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #c084fc; object-fit: cover; }
 
-        .comment-btn {
-            background: #4c1d95;
-            color: white;
-            border: none;
-            padding: 4px 8px;
-            border-radius: 5px;
-            font-size: 11px;
-            cursor: pointer;
-        }
+        /* الأقسام الداخلية */
+        .screen-section { display: none; flex-direction: column; flex-grow: 1; overflow-y: auto; padding: 10px 0; gap: 10px; }
+        .screen-section.active { display: flex; }
 
-        .comments-list {
-            font-size: 11px;
-            color: #cbd5e1;
-            margin-top: 4px;
-            padding-right: 10px;
-            border-right: 1px dashed #7c3aed;
-        }
+        /* شاشة تسجيل الدخول */
+        #loginScreen { align-items: center; justify-content: center; text-align: center; gap: 15px; }
+        .google-btn { background: #fff; color: #1e1b4b; border: none; padding: 12px 20px; border-radius: 30px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); width: 85%; justify-content: center; }
 
-        /* شاشة الكاميرا والفيديو */
-        #videoContainer {
-            display: none;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            background: #000;
-            border-radius: 20px;
-            overflow: hidden;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-        }
+        /* الصفحة الرئيسية العامة (Feed) */
+        .post-input-box { background: rgba(255,255,255,0.07); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 8px; }
+        .post-input-box textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid #7c3aed; border-radius: 8px; padding: 8px; color: #fff; font-size: 12px; resize: none; }
+        .pub-btn { background: #7c3aed; color: #fff; border: none; padding: 6px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; }
 
+        .feed-post { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; gap: 8px; }
+        .post-header { display: flex; align-items: center; gap: 8px; }
+        .post-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+        .post-author { font-size: 12px; font-weight: bold; color: #c084fc; }
+        .post-text { font-size: 12px; word-break: break-all; }
+        
+        /* صندوق المنشور المعاد توجيهه */
+        .shared-box { background: rgba(0,0,0,0.2); border-right: 3px solid #7c3aed; padding: 8px; border-radius: 8px; margin-top: 5px; font-size: 11px; color: #e2e8f0; }
+
+        .post-actions { display: flex; justify-content: space-around; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 5px 0; font-size: 11px; color: #cbd5e1; }
+        .action-btn { background: none; border: none; color: #cbd5e1; cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 11px; }
+
+        .comments-box { display: flex; flex-direction: column; gap: 5px; font-size: 11px; }
+        .comment-input-row { display: flex; gap: 5px; }
+        .comment-input-row input { flex-grow: 1; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); border-radius: 5px; padding: 4px 8px; color: #fff; font-size: 11px; }
+        .comment-sub-btn { background: #4c1d95; color: #fff; border: none; padding: 4px 8px; border-radius: 5px; cursor: pointer; }
+
+        /* قسم الأصدقاء والاتصال */
+        .add-friend-box { background: rgba(255,255,255,0.07); padding: 10px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px; }
+        .add-friend-box input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid #7c3aed; border-radius: 8px; padding: 8px; color: #fff; font-size: 12px; }
+        .friend-card { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .friend-info { display: flex; align-items: center; gap: 8px; }
+        .call-options-popup { display: none; gap: 5px; }
+        .call-btn { background: #7c3aed; border: none; color: #fff; padding: 5px 8px; border-radius: 6px; font-size: 10px; cursor: pointer; }
+
+        /* نافذة الكاميرا */
+        #videoContainer { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 50; flex-direction: column; justify-content: center; align-items: center; border-radius: 35px; }
         video { width: 100%; height: 100%; object-fit: cover; }
+        .close-cam { position: absolute; bottom: 30px; background: #ef4444; color: #fff; border: none; padding: 8px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
 
-        .close-cam-btn {
-            position: absolute;
-            bottom: 20px;
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* الأيقونات الأربع في الأسفل */
-        .footer-nav {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 4px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 10px 6px;
-            border-radius: 22px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .nav-item {
-            background: transparent;
-            border: none;
-            color: #cbd5e1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            cursor: pointer;
-            padding: 4px 0;
-            border-radius: 12px;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            color: #fff;
-            background: rgba(124, 58, 237, 0.5);
-        }
-
+        /* القائمة السفلى */
+        .footer-nav { display: grid; grid-template-columns: repeat(4, 1fr); background: rgba(255,255,255,0.05); padding: 10px 4px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .nav-item { background: none; border: none; color: #cbd5e1; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 0; border-radius: 12px; font-size: 10px; }
+        .nav-item.active { color: #fff; background: rgba(124, 58, 237, 0.5); }
         .nav-icon { font-size: 18px; }
-        .nav-label { font-size: 10px; font-weight: 600; }
     </style>
 </head>
 <body>
 
     <div class="phone-frame">
         
-        <!-- رأس الواجهة -->
+        <!-- رأس التطبيق -->
         <div class="header">
             <h1>HANNACHA</h1>
-            <h2>دردش اتصال مسنجر و فيديو</h2>
-        </div>
-
-        <!-- وسط التطبيق -->
-        <div class="content-body" id="mainBody">
-            <!-- الواجهة الرئيسية -->
-            <div class="welcome-box" id="defaultContent">
-                <p class="welcome-text">أهلاً بك! تواصل عبر الكاميرا والمنشورات.</p>
-                <button class="google-btn" onclick="loginWithGoogle()">
-                    <svg style="width:16px;height:16px;" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.18v3.15C3.17 21.36 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.18C.43 8.08 0 9.99 0 12s.43 3.92 1.18 5.42l4.1-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.64 1.18 6.58l4.1 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
-                    تسجيل الدخول بقوقل
-                </button>
-                <button class="social-btn whatsapp-btn" onclick="shareWhatsApp()">💬 مراسلة عبر واتساب</button>
-                <button class="social-btn messenger-btn" onclick="shareMessenger()">🔵 مشاركة عبر مسنجر</button>
-            </div>
-
-            <!-- قسم النشر والتعليقات (يظهر عند الضغط على رسائل) -->
-            <div class="feed-container" id="feedContainer">
-                <div class="post-box">
-                    <textarea id="postText" placeholder="ما الذي تفكر فيه؟ اكتب منشورك أو ارفق رابط فيديو هنا..."></textarea>
-                    <button class="post-btn" onclick="createPost()">نشر</button>
-                </div>
-                <div class="posts-feed" id="postsFeed">
-                    <!-- المنشورات ستظهر هنا -->
-                </div>
-            </div>
-
-            <!-- عنصر عرض الكاميرا -->
-            <div id="videoContainer">
-                <video id="webcam" autoplay playsinline></video>
-                <button class="close-cam-btn" onclick="stopCamera()">إغلاق الكاميرا</button>
+            <div class="user-mini-profile" id="miniProfileHeader">
+                <span id="userNameMini" style="font-size: 12px; font-weight: bold;"></span>
+                <img id="userImgMini" class="mini-avatar" src="" alt="بروفيل">
             </div>
         </div>
 
-        <!-- الأيقونات الأربع في الأسفل -->
+        <!-- 1. شاشة تسجيل الدخول -->
+        <div class="screen-section active" id="loginScreen">
+            <h2 style="color: #c084fc; font-size: 20px;">تسجيل الدخول إلى حناشة</h2>
+            <p style="font-size: 12px; color: #ddd6fe;">استمتع بالتواصل والمنشورات العامة والاتصال</p>
+            <img id="profileBigImg" src="https://via.placeholder.com/90" style="width: 90px; height: 90px; border-radius: 50%; border: 3px solid #c084fc; object-fit: cover; margin: 10px 0;" alt="صورة البروفيل">
+            <button class="google-btn" onclick="loginWithGoogle()">
+                <svg style="width:18px;height:18px;" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.18v3.15C3.17 21.36 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.18C.43 8.08 0 9.99 0 12s.43 3.92 1.18 5.42l4.1-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.64 1.18 6.58l4.1 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+                تسجيل الدخول بقوقل
+            </button>
+        </div>
+
+        <!-- 2. الصفحة الرئيسية العامة (Feed) -->
+        <div class="screen-section" id="feedScreen">
+            <div class="post-input-box">
+                <textarea id="mainPostText" placeholder="اكتب شيئاً أو ارفق رابط فيديو ليراه الجميع..."></textarea>
+                <button class="pub-btn" onclick="addNewPost()">نشر عام</button>
+            </div>
+            <div id="postsList" style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- المنشورات الافتراضية العامة -->
+                <div class="feed-post">
+                    <div class="post-header">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="post-avatar">
+                        <span class="post-author">سارة أحمد</span>
+                    </div>
+                    <div class="post-text">مرحباً بالجميع في تطبيق حناشة الجديد! شاركوني فيديوهاتكم هنا 🎬✨</div>
+                    <div class="post-actions">
+                        <button class="action-btn" onclick="react(this, '👍 جام')">👍 جام (0)</button>
+                        <button class="action-btn" onclick="react(this, '❤️ قلب')">❤️ قلب (0)</button>
+                        <button class="action-btn" onclick="sharePost(this)">🔁 إعادة نشر</button>
+                    </div>
+                    <div class="comments-box">
+                        <div class="comment-input-row">
+                            <input type="text" placeholder="اكتب تعليقاً (كومنتار)...">
+                            <button class="comment-sub-btn" onclick="addComment(this)">إرسال</button>
+                        </div>
+                        <div class="comm-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. شاشة الأصدقاء والاتصال -->
+        <div class="screen-section" id="friendsScreen">
+            <div class="add-friend-box">
+                <p style="font-size: 12px; font-weight: bold; color: #c084fc;">إضافة صديق برقم الهاتف:</p>
+                <input type="tel" id="friendPhoneInput" placeholder="أدخل رقم الهاتف (مثال: 06xxxxxxxxx)">
+                <button class="pub-btn" onclick="sendFriendSMS()">إرسال طلب عبر رسالة هاتفية (SMS)</button>
+            </div>
+            <p style="font-size: 12px; color: #ddd6fe; margin-top: 5px;">قائمة أصدقائك (اضغط للاتصال):</p>
+            <div id="friendsListContainer" style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="friend-card">
+                    <div class="friend-info">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="post-avatar">
+                        <div>
+                            <p style="font-size: 12px; font-weight: bold;">محمد أمين</p>
+                            <p style="font-size: 10px; color: #94a3b8;">0612345678</p>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="pub-btn" style="font-size: 10px; padding: 5px 10px;" onclick="toggleCallOptions(this)">اتصال 📞</button>
+                        <div class="call-options-popup" style="margin-top: 5px;">
+                            <button class="call-btn" onclick="startVideoCall()">فيديو 📹</button>
+                            <button class="call-btn" onclick="startVoiceCall()">عادية 📞</button>
+                            <button class="call-btn" onclick="openMessengerChat('محمد أمين')">مسنجر 💬</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. شاشة الرسائل والدردشة الفورية -->
+        <div class="screen-section" id="messagesScreen">
+            <h3 style="font-size: 14px; color: #c084fc;">المحادثات والرسائل الفورية</h3>
+            <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; display: flex; align-items: center; gap: 10px;">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="post-avatar">
+                <div>
+                    <p style="font-size: 12px; font-weight: bold;">محمد أمين</p>
+                    <p style="font-size: 10px; color: #cbd5e1;">أهلاً بك، كيف حال التطبيق؟</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة الكاميرا الحية -->
+        <div id="videoContainer">
+            <video id="webcam" autoplay playsinline></video>
+            <button class="close-cam" onclick="closeCamera()">إغلاق المكالمة / الكاميرا</button>
+        </div>
+
+        <!-- القائمة السفلى الأربع -->
         <div class="footer-nav">
-            <button class="nav-item" onclick="startVideoCall()">
-                <span class="nav-icon">📹</span>
-                <span class="nav-label">مكالمة فيديو</span>
+            <button class="nav-item active" onclick="switchTab(this, 'feedScreen')">
+                <span class="nav-icon">🏠</span>
+                <span>الرئيسية</span>
             </button>
-            <button class="nav-item" onclick="startVoiceCall()">
-                <span class="nav-icon">📞</span>
-                <span class="nav-label">مكالمة عادية</span>
+            <button class="nav-item" onclick="switchTab(this, 'friendsScreen')">
+                <span class="nav-icon">👥</span>
+                <span>الأصدقاء</span>
             </button>
-            <button class="nav-item active" id="msgNavBtn" onclick="openMessages()">
+            <button class="nav-item" onclick="switchTab(this, 'messagesScreen')">
                 <span class="nav-icon">💬</span>
-                <span class="nav-label">رسائل</span>
+                <span>الرسائل</span>
             </button>
-            <button class="nav-item" onclick="openLogin()">
-                <span class="nav-icon">🔐</span>
-                <span class="nav-label">تسجيل الدخول</span>
+            <button class="nav-item" onclick="switchTab(this, 'loginScreen')">
+                <span class="nav-icon">👤</span>
+                <span>حسابي</span>
             </button>
         </div>
 
     </div>
 
     <script>
+        let currentUser = { name: "Mustapha Bouzidi", avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100" };
         let localStream = null;
 
-        function loginWithGoogle() { alert("تم الاتصال بنظام مصادقة قوقل بنجاح!"); }
-        function shareWhatsApp() { window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent("حمل تطبيق HANNACHA: " + window.location.href), "_blank"); }
-        function shareMessenger() { window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(window.location.href), "_blank"); }
-
-        async function startVideoCall() {
-            setActiveTab(event.currentTarget);
-            document.getElementById('defaultContent').style.display = 'none';
-            document.getElementById('feedContainer').style.display = 'none';
-            document.getElementById('videoContainer').style.display = 'flex';
-            try {
-                localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                document.getElementById('webcam').srcObject = localStream;
-            } catch (err) { alert("تعذر الوصول للكاميرا."); }
-        }
-
-        async function startVoiceCall() {
-            setActiveTab(event.currentTarget);
-            try {
-                localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                alert("الميكروفون يعمل للمكالمة الصوتية.");
-            } catch (err) { alert("يرجى السماح بالميكروفون."); }
-        }
-
-        function openMessages() {
-            setActiveTab(event.currentTarget);
-            stopCamera();
-            document.getElementById('defaultContent').style.display = 'none';
-            document.getElementById('feedContainer').style.display = 'flex';
-        }
-
-        function openLogin() {
-            setActiveTab(event.currentTarget);
-            stopCamera();
-            document.getElementById('feedContainer').style.display = 'none';
-            document.getElementById('defaultContent').style.display = 'flex';
-        }
-
-        function stopCamera() {
-            if (localStream) { localStream.getTracks().forEach(t => t.stop()); }
-            document.getElementById('videoContainer').style.display = 'none';
-        }
-
-        function setActiveTab(btn) {
-            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-            if(btn) btn.classList.add('active');
-        }
-
-        // وظيفة النشر وإضافة التعليقات
-        function createPost() {
-            const text = document.getElementById('postText').value.trim();
-            if (!text) return alert("اكتب شيئاً للنشر!");
-
-            const feed = document.getElementById('postsFeed');
-            const postDiv = document.createElement('div');
-            postDiv.className = 'user-post';
+        function loginWithGoogle() {
+            document.getElementById('userNameMini').innerText = currentUser.name;
+            document.getElementById('userImgMini').src = currentUser.avatar;
+            document.getElementById('profileBigImg').src = currentUser.avatar;
+            document.getElementById('miniProfileHeader').style.display = 'flex';
             
-            postDiv.innerHTML = `
-                <p><strong>مستخدم HANNACHA:</strong><br>${text}</p>
-                <div class="comment-section">
-                    <input type="text" placeholder="اكتب تعليقاً..." class="comment-input">
-                    <button class="comment-btn" onclick="addComment(this)">تعليق</button>
-                </div>
-                <div class="comments-list"></div>
-            `;
+            alert("تم تسجيل الدخول بنجاح بواسطة حساب Google!");
+            document.querySelectorAll('.nav-item')[0].click();
+        }
 
-            feed.prepend(postDiv);
-            document.getElementById('postText').value = '';
+        function switchTab(btn, screenId) {
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.screen-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // إضافة منشور جديد
+        function addNewPost() {
+            const text = document.getElementById('mainPostText').value.trim();
+            if(!text) return alert("اكتب شيئاً لنشره!");
+
+            createPostElement(currentUser.name, currentUser.avatar, text, null);
+            document.getElementById('mainPostText').value = '';
+        }
+
+        function createPostElement(authorName, authorAvatar, postText, sharedContentHTML) {
+            const list = document.getElementById('postsList');
+            const postDiv = document.createElement('div');
+            postDiv.className = 'feed-post';
+            
+            let sharedBlock = sharedContentHTML ? `<div class="shared-box">${sharedContentHTML}</div>` : '';
+
+            postDiv.innerHTML = `
+                <div class="post-header">
+                    <img src="${authorAvatar}" class="post-avatar">
+                    <span class="post-author">${authorName}</span>
+                </div>
+                <div class="post-text">${postText}</div>
+                ${sharedBlock}
+                <div class="post-actions">
+                    <button class="action-btn" onclick="react(this, '👍 جام')">👍 جام (0)</button>
+                    <button class="action-btn" onclick="react(this, '❤️ قلب')">❤️ قلب (0)</button>
+                    <button class="action-btn" onclick="sharePost(this)">🔁 إعادة نشر</button>
+                </div>
+                <div class="comments-box">
+                    <div class="comment-input-row">
+                        <input type="text" placeholder="اكتب تعليقاً (كومنتار)...">
+                        <button class="comment-sub-btn" onclick="addComment(this)">إرسال</button>
+                    </div>
+                    <div class="comm-list"></div>
+                </div>
+            `;
+            list.prepend(postDiv);
+        }
+
+        function react(btn, type) {
+            let parts = btn.innerText.split('(');
+            if(parts.length > 1) {
+                let count = parseInt(parts[1]) + 1;
+                btn.innerText = `${type} (${count})`;
+            } else {
+                btn.innerText = `${type} (1)`;
+            }
         }
 
         function addComment(btn) {
             const input = btn.previousElementSibling;
-            const commentText = input.value.trim();
-            if (!commentText) return;
-
-            const commentsList = btn.parentElement.nextElementSibling;
-            const commentP = document.createElement('div');
-            commentP.style.marginTop = "3px";
-            commentP.innerHTML = `💬 ${commentText}`;
-            commentsList.appendChild(commentP);
+            const val = input.value.trim();
+            if(!val) return;
+            const commList = btn.parentElement.nextElementSibling;
+            const p = document.createElement('div');
+            p.style.marginTop = "3px";
+            p.innerHTML = `💬 <strong>${currentUser.name.split(' ')[0]}:</strong> ${val}`;
+            commList.appendChild(p);
             input.value = '';
+        }
+
+        // ميزة إعادة النشر مع التعليق
+        function sharePost(btn) {
+            const postCard = btn.closest('.feed-post');
+            const author = postCard.querySelector('.post-author').innerText;
+            const content = postCard.querySelector('.post-text').innerText;
+            
+            let userComment = prompt("اكتب تعليقك مع إعادة النشر (اختياري):", "منشور رائع أعجبني!");
+            if (userComment === null) return; // إذا قام المستخدم بالإلغاء
+
+            let originalSnippet = `<b>منشور لـ ${author}:</b><br>${content}`;
+            createPostElement(currentUser.name, currentUser.avatar, userComment ? userComment : "قام بإعادة نشر منشور:", originalSnippet);
+            alert("تمت إعادة النشر بنجاح إلى حائطك الرئيسي!");
+        }
+
+        // إرسال طلب صداقة عبر رقم الهاتف (SMS)
+        function sendFriendSMS() {
+            const phone = document.getElementById('friendPhoneInput').value.trim();
+            if(!phone) return;
+            window.open(`sms:${phone}?body=` + encodeURIComponent("أهلاً بك، أود إضافتك كصديق معي على تطبيق حناشة دردشة (HANNACHA Chat)."));
+            document.getElementById('friendPhoneInput').value = '';
+        }
+
+        function toggleCallOptions(btn) {
+            const popup = btn.nextElementSibling;
+            popup.style.display = popup.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        async function startVideoCall() {
+            const container = document.getElementById('videoContainer');
+            container.style.display = 'flex';
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                document.getElementById('webcam').srcObject = localStream;
+            } catch(e) {
+                alert("تعذر تشغيل الكاميرا.");
+                closeCamera();
+            }
+        }
+
+        function startVoiceCall() {
+            alert("جاري الاتصال الصوتي عبر الإنترنت بالصديق...");
+        }
+
+        function openMessengerChat(name) {
+            alert("فتح محادثة مسنجر مع " + name);
+            document.querySelectorAll('.nav-item')[2].click();
+        }
+
+        function closeCamera() {
+            if(localStream) localStream.getTracks().forEach(t => t.stop());
+            document.getElementById('videoContainer').style.display = 'none';
         }
     </script>
 </body>
