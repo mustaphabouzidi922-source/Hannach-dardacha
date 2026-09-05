@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HANNACHA Chat - النسخة النهائية المطورة</title>
+    <title>HANNACHA Chat - الملف الشخصي المطور</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; font-family: 'Cairo', sans-serif; margin: 0; padding: 0; }
@@ -24,7 +24,7 @@
         .notification-bell { position: relative; cursor: pointer; font-size: 18px; background: #f3e8ff; padding: 5px 8px; border-radius: 50%; }
         .notification-badge { position: absolute; top: -2px; right: -2px; background: #ef4444; color: #fff; font-size: 9px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         
-        /* البروفيسور المصغر في رأس التطبيق مع الـ ID الظاهري */
+        /* البروفيسور المصغر في رأس التطبيق */
         .user-mini-profile { display: none; align-items: center; gap: 6px; cursor: pointer; background: #f3e8ff; padding: 3px 8px; border-radius: 20px; border: 1px solid #d8b4fe; }
         .mini-avatar { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #7c3aed; object-fit: cover; }
         .mini-user-info { display: flex; flex-direction: column; text-align: right; }
@@ -47,9 +47,24 @@
         
         .google-btn { background: #1e1b4b; color: #fff; border: none; padding: 10px 20px; border-radius: 30px; font-size: 13px; font-weight: 700; cursor: pointer; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-top: 5px; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-        /* ملف المستخدم الشخصي */
-        #profileScreen { background: #fff; border-radius: 15px; padding: 15px; align-items: center; text-align: center; gap: 10px; }
-        .id-badge { background: #f3e8ff; color: #7c3aed; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid #d8b4fe; }
+        /* ملف المستخدم الشخصي المطور */
+        #profileScreen { background: #fff; border-radius: 15px; padding: 15px; align-items: center; text-align: center; gap: 8px; position: relative; }
+        .profile-header-box { position: relative; width: 85px; height: 85px; margin: 0 auto; }
+        #profileFullImg { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #7c3aed; object-fit: cover; }
+        
+        /* أيقونة القلم لتعديل الصورة مباشرة */
+        .edit-avatar-icon { position: absolute; bottom: 0; left: 0; background: #7c3aed; color: #fff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; border: 2px solid #fff; }
+        .edit-avatar-icon input { display: none; }
+
+        .id-badge { background: #f3e8ff; color: #7c3aed; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; border: 1px solid #d8b4fe; }
+        
+        .bio-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px; width: 100%; text-align: right; font-size: 11px; color: #475569; display: flex; flex-direction: column; gap: 4px; }
+        .bio-card b { color: #4c1d95; }
+
+        /* نموذج التعديل (يظهر عند الضغط على زر التعديل بالقلم) */
+        #editProfileModal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 150; border-radius: 15px; padding: 15px; flex-direction: column; gap: 8px; overflow-y: auto; text-align: right; }
+
+        .pub-btn { background: #7c3aed; color: #fff; border: none; padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; width: 100%; }
 
         /* الصفحة الرئيسية العامة (Feed) */
         #feedScreen { background: #f8fafc; }
@@ -59,8 +74,6 @@
         .media-upload-btns { display: flex; gap: 8px; font-size: 11px; align-items: center; }
         .upload-label { background: #f3e8ff; color: #7c3aed; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; border: 1px solid #d8b4fe; display: inline-flex; align-items: center; gap: 4px; }
         .upload-label input { display: none; }
-
-        .pub-btn { background: #7c3aed; color: #fff; border: none; padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; width: 100%; }
 
         .feed-post { background: #fff; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
         .post-header { display: flex; justify-content: space-between; align-items: center; }
@@ -74,15 +87,10 @@
         
         .post-text { font-size: 12px; word-break: break-all; color: #334155; }
         .post-media { width: 100%; max-height: 230px; border-radius: 8px; object-fit: cover; margin-top: 5px; }
-        .shared-box { background: #f8fafc; border-right: 3px solid #7c3aed; padding: 8px; border-radius: 8px; margin-top: 5px; font-size: 11px; color: #475569; }
 
         .post-actions { display: flex; justify-content: space-around; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; padding: 6px 0; font-size: 11px; color: #64748b; position: relative; }
-        
         .action-btn { background: #f3e8ff; border: 1px solid #d8b4fe; color: #7c3aed; padding: 4px 10px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; }
-        .emoji-picker { display: none; position: absolute; bottom: 35px; background: #fff; border: 1px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 20px; padding: 5px 10px; gap: 6px; z-index: 10; }
-        .emoji-picker span { cursor: pointer; font-size: 16px; transition: transform 0.1s; }
-        .emoji-picker span:hover { transform: scale(1.3); }
-
+        
         .comments-box { display: flex; flex-direction: column; gap: 6px; font-size: 11px; }
         .comment-input-row { display: flex; gap: 5px; align-items: center; }
         .comment-input-row input { flex-grow: 1; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 5px; padding: 5px 8px; color: #1e293b; font-size: 11px; }
@@ -90,13 +98,6 @@
         
         .comm-list { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
         .comm-item { background: #f8fafc; padding: 6px 8px; border-radius: 6px; font-size: 11px; color: #334155; border: 1px solid #e2e8f0; }
-        .comm-media { width: 70px; height: 70px; border-radius: 6px; object-fit: cover; margin-top: 4px; display: block; }
-
-        /* نافذة مشاركة وسائل التواصل */
-        #socialShareModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200; justify-content: center; align-items: center; }
-        .social-box { background: #fff; width: 85%; max-width: 320px; border-radius: 15px; padding: 20px; display: flex; flex-direction: column; gap: 10px; text-align: center; color: #1e293b; }
-        .social-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
-        .social-option { padding: 10px; border-radius: 10px; border: none; color: #fff; font-weight: bold; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
 
         /* نافذة الإشعارات */
         #notificationsModal { display: none; position: absolute; top: 55px; left: 15px; width: 320px; background: #fff; border: 1px solid #cbd5e1; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); z-index: 100; padding: 10px; max-height: 350px; overflow-y: auto; }
@@ -121,7 +122,7 @@
                     🔔
                     <div class="notification-badge" id="notifBadge">0</div>
                 </div>
-                <!-- البروفيسور المصغر يظهر معه الـ ID الدائم للبحث -->
+                <!-- البروفيسور المصغر -->
                 <div class="user-mini-profile" id="miniProfileHeader" onclick="switchTab(null, 'profileScreen')">
                     <img id="userImgMini" class="mini-avatar" src="" alt="بروفيل">
                     <div class="mini-user-info">
@@ -140,25 +141,10 @@
             </div>
         </div>
 
-        <!-- نافذة مشاركة وسائل التواصل -->
-        <div id="socialShareModal">
-            <div class="social-box">
-                <h3 style="color: #7c3aed; font-size: 14px;">مشاركة المنشور عبر وسائل التواصل</h3>
-                <p style="font-size: 11px; color: #64748b;">اختر المنصة لنشر المحتوى مباشرة:</p>
-                <div class="social-grid">
-                    <button class="social-option" style="background: #25d366;" onclick="shareToSocial('WhatsApp')">🟢 واتساب</button>
-                    <button class="social-option" style="background: #1877f2;" onclick="shareToSocial('Facebook')">🔵 فيسبوك</button>
-                    <button class="social-option" style="background: #0088cc;" onclick="shareToSocial('Telegram')">🟦 تيليجرام</button>
-                    <button class="social-option" style="background: #000000;" onclick="shareToSocial('X (Twitter)')">⬛ إكس (تويتر)</button>
-                </div>
-                <button class="pub-btn" style="background: #e2e8f0; color: #1e293b; margin-top: 5px;" onclick="closeSocialModal()">إلغاء</button>
-            </div>
-        </div>
-
         <!-- 1. شاشة تسجيل الدخول -->
         <div class="screen-section active" id="loginScreen">
             <h2 style="color: #7c3aed; font-size: 16px;">تسجيل الدخول إلى حناشة</h2>
-            <p style="font-size: 10px; color: #64748b;">سجل مرة واحدة ليبقى معرفك الثابت ظاهراً دائماً للجميع</p>
+            <p style="font-size: 10px; color: #64748b;">سجل مرة واحدة ليبقى معرفك الثابت ظاهراً دائماً</p>
             
             <label class="profile-pic-picker">
                 <img id="previewAvatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100" alt="صورة البروفيل">
@@ -167,29 +153,94 @@
             <span style="font-size: 9px; color: #7c3aed; font-weight: bold;">اضغط لتغيير صورة بروفيلك الشخصي</span>
 
             <div class="input-group">
+                <label>الاسم الكامل:</label>
+                <input type="text" id="userNameInput" class="form-control-custom" placeholder="اسمك الكريم" value="مصطفى بوزيدي">
+            </div>
+
+            <div class="input-group">
                 <label>البريد الإلكتروني الحقيقي:</label>
                 <input type="email" id="userEmailInput" class="form-control-custom" placeholder="example@gmail.com" value="mustapha.bouzidi@gmail.com">
             </div>
 
             <div class="input-group">
                 <label>كلمة السر الخاصة بك (سرية):</label>
-                <input type="password" id="userPasswordInput" class="form-control-custom" placeholder="أدخل كلمة المرور السرية">
+                <input type="password" id="userPasswordInput" class="form-control-custom" placeholder="أدخل كلمة المرور السرية" value="123456">
             </div>
 
             <button class="google-btn" onclick="completeLogin()">
-                <svg style="width:18px;height:18px;" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.18v3.15C3.17 21.36 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.18C.43 8.08 0 9.99 0 12s.43 3.92 1.18 5.42l4.1-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.64 1.18 6.58l4.1 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
                 تسجيل الدخول الحقيقي بقوقل
             </button>
         </div>
 
-        <!-- 2. ملف المستخدم الشخصي -->
+        <!-- 2. ملف المستخدم الشخصي مع زر التعديل (القلم) -->
         <div class="screen-section" id="profileScreen">
-            <h3 style="color: #7c3aed; font-size: 14px;">ملفي الشخصي</h3>
-            <img id="profileFullImg" src="" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #7c3aed; object-fit: cover;">
-            <h4 id="profileNameDisplay" style="font-size: 13px; color: #1e293b;"></h4>
-            <p id="profileEmailDisplay" style="font-size: 11px; color: #64748b;"></p>
-            <div class="id-badge">معرف الحساب (ID للبحث): <span id="profileIdDisplay"></span></div>
-            <button class="pub-btn" style="margin-top: 15px;" onclick="switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen')">العودة للرئيسية</button>
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <h3 style="color: #7c3aed; font-size: 14px;">ملفي الشخصي</h3>
+                <button onclick="openEditProfile()" style="background: #f3e8ff; border: 1px solid #d8b4fe; color: #7c3aed; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 14px;" title="تعديل الملف بالقلم">✏️</button>
+            </div>
+
+            <div class="profile-header-box">
+                <img id="profileFullImg" src="" alt="صورة البروفيل">
+                <label class="edit-avatar-icon" title="تغيير الصورة">
+                    ✏️
+                    <input type="file" accept="image/*" onchange="updateProfileAvatarDirect(this)">
+                </label>
+            </div>
+
+            <h4 id="profileNameDisplay" style="font-size: 13px; color: #1e293b; font-weight: bold;"></h4>
+            <div class="id-badge">ID للبحث: <span id="profileIdDisplay"></span></div>
+            <p id="profileEmailDisplay" style="font-size: 10px; color: #64748b;"></p>
+
+            <div class="bio-card">
+                <p><b>نبذة تعريفية:</b> <span id="profileBioDisplay">لم يتم كتابة نبذة بعد...</span></p>
+                <p><b>الجنس:</b> <span id="profileGenderDisplay">غير محدد</span></p>
+                <p><b>الحالة الاجتماعية:</b> <span id="profileStatusDisplay">غير محدد</span></p>
+                <p><b>البلد:</b> <span id="profileCountryDisplay">غير محدد</span></p>
+            </div>
+
+            <button class="pub-btn" style="margin-top: 5px;" onclick="switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen')">العودة للرئيسية</button>
+
+            <!-- نافذة التعديل المنبثقة (عند الضغط على القلم) -->
+            <div id="editProfileModal">
+                <h3 style="color: #7c3aed; font-size: 14px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">تعديل الملف الشخصي ✏️</h3>
+                
+                <div class="input-group">
+                    <label>تعديل الاسم:</label>
+                    <input type="text" id="editNameInput" class="form-control-custom">
+                </div>
+
+                <div class="input-group">
+                    <label>نبذة تعريفية قصيرة:</label>
+                    <textarea id="editBioInput" class="form-control-custom" rows="2" placeholder="اكتب شيئاً عن نفسك..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>الجنس:</label>
+                    <select id="editGenderInput" class="form-control-custom">
+                        <option value="ذكر">ذكر</option>
+                        <option value="أنثى">أنثى</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>الحالة الاجتماعية:</label>
+                    <select id="editStatusInput" class="form-control-custom">
+                        <option value="عزباء / أعزب">عزباء / أعزب</option>
+                        <option value="مرتبطة / مرتبط">مرتبطة / مرتبط</option>
+                        <option value="متزوجة / متزوج">متزوجة / متزوج</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>البلد:</label>
+                    <input type="text" id="editCountryInput" class="form-control-custom" placeholder="مثال: الجزائر، المغرب، مصر...">
+                </div>
+
+                <div style="display: flex; gap: 8px; margin-top: 10px;">
+                    <button class="pub-btn" onclick="saveProfileChanges()">حفظ التعديلات</button>
+                    <button class="pub-btn" style="background: #e2e8f0; color: #1e293b;" onclick="closeEditProfile()">إلغاء</button>
+                </div>
+            </div>
         </div>
 
         <!-- 3. الصفحة الرئيسية العامة (Feed) -->
@@ -230,7 +281,7 @@
                 <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="post-avatar">
                 <div>
                     <p style="font-size: 12px; font-weight: bold; color: #1e293b;">محمد أمين</p>
-                    <p style="font-size: 10px; color: #64748b;">أهلاً بك، رقم الـ ID يظهر الآن بوضوح للجميع!</p>
+                    <p style="font-size: 10px; color: #64748b;">أهلاً بك، تم تفعيل زر التعديل الشامل للملف الشخصي!</p>
                 </div>
             </div>
         </div>
@@ -259,10 +310,9 @@
 
     <script>
         let currentUser = null;
-        let activePostToShare = null;
 
         window.onload = function() {
-            let savedUser = localStorage.getItem('hannacha_current_user');
+            let savedUser = localStorage.getItem('hannacha_current_user_v7');
             if (savedUser) {
                 currentUser = JSON.parse(savedUser);
                 applyUserDataToUI();
@@ -277,16 +327,26 @@
                 let reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById('previewAvatar').src = e.target.result;
-                    if(currentUser) {
-                        currentUser.avatar = e.target.result;
-                        localStorage.setItem('hannacha_current_user', JSON.stringify(currentUser));
-                    }
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function updateProfileAvatarDirect(input) {
+            if(input.files && input.files[0]) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    currentUser.avatar = e.target.result;
+                    localStorage.setItem('hannacha_current_user_v7', JSON.stringify(currentUser));
+                    applyUserDataToUI();
+                    addNotification("تم تحديث صورة البروفيسور بنجاح.");
                 }
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
         function completeLogin() {
+            const nameInput = document.getElementById('userNameInput').value.trim() || "مستخدم حناشة";
             const emailInput = document.getElementById('userEmailInput').value.trim();
             const password = document.getElementById('userPasswordInput').value.trim();
 
@@ -297,18 +357,21 @@
                 return alert("الرجاء إدخال كلمة السر الخاصة بك!");
             }
 
-            // توليد معرف ثابت (ID) مرة واحدة فقط إذا لم يكن مخزناً مسبقاً
             let generatedId = Math.floor(10000000 + Math.random() * 90000000);
             let profileImgSrc = document.getElementById('previewAvatar').src;
             
             currentUser = {
-                name: emailInput.split('@')[0].replace('.', ' '),
+                name: nameInput,
                 email: emailInput,
                 avatar: profileImgSrc,
-                id: generatedId
+                id: generatedId,
+                bio: "مرحباً، أنا أستخدم تطبيق HANNACHA الرائع!",
+                gender: "ذكر",
+                status: "عزباء / أعزب",
+                country: "الجزائر"
             };
 
-            localStorage.setItem('hannacha_current_user', JSON.stringify(currentUser));
+            localStorage.setItem('hannacha_current_user_v7', JSON.stringify(currentUser));
 
             applyUserDataToUI();
             addNotification(`تم تسجيل الدخول بنجاح بحسابك: ${currentUser.email}`);
@@ -322,12 +385,47 @@
             document.getElementById('miniUserId').innerText = `ID: ${currentUser.id}`;
             document.getElementById('userImgMini').src = currentUser.avatar;
             document.getElementById('previewAvatar').src = currentUser.avatar;
-            document.getElementById('userEmailInput').value = currentUser.email;
+            
             document.getElementById('profileFullImg').src = currentUser.avatar;
             document.getElementById('profileNameDisplay').innerText = currentUser.name;
             document.getElementById('profileEmailDisplay').innerText = currentUser.email;
             document.getElementById('profileIdDisplay').innerText = currentUser.id;
+            
+            document.getElementById('profileBioDisplay').innerText = currentUser.bio || "لم يتم كتابة نبذة بعد...";
+            document.getElementById('profileGenderDisplay').innerText = currentUser.gender || "غير محدد";
+            document.getElementById('profileStatusDisplay').innerText = currentUser.status || "غير محدد";
+            document.getElementById('profileCountryDisplay').innerText = currentUser.country || "غير محدد";
+            
             document.getElementById('miniProfileHeader').style.display = 'flex';
+        }
+
+        function openEditProfile() {
+            if(!currentUser) return;
+            document.getElementById('editNameInput').value = currentUser.name;
+            document.getElementById('editBioInput').value = currentUser.bio || "";
+            document.getElementById('editGenderInput').value = currentUser.gender || "ذكر";
+            document.getElementById('editStatusInput').value = currentUser.status || "عزباء / أعزب";
+            document.getElementById('editCountryInput').value = currentUser.country || "";
+            
+            document.getElementById('editProfileModal').style.display = 'flex';
+        }
+
+        function closeEditProfile() {
+            document.getElementById('editProfileModal').style.display = 'none';
+        }
+
+        function saveProfileChanges() {
+            currentUser.name = document.getElementById('editNameInput').value.trim() || currentUser.name;
+            currentUser.bio = document.getElementById('editBioInput').value.trim();
+            currentUser.gender = document.getElementById('editGenderInput').value;
+            currentUser.status = document.getElementById('editStatusInput').value;
+            currentUser.country = document.getElementById('editCountryInput').value.trim();
+
+            localStorage.setItem('hannacha_current_user_v7', JSON.stringify(currentUser));
+            applyUserDataToUI();
+            closeEditProfile();
+            addNotification("تم تحديث بيانات ملفك الشخصي بنجاح.");
+            alert("تم حفظ التعديلات بنجاح!");
         }
 
         function switchTab(btn, screenId) {
@@ -341,25 +439,25 @@
         }
 
         function getSavedPosts() {
-            let posts = localStorage.getItem('hannacha_posts_v6');
+            let posts = localStorage.getItem('hannacha_posts_v7');
             return posts ? JSON.parse(posts) : [
-                { id: 1, author: "سارة أحمد", authorId: "84920184", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100", text: "مرحباً بكم في تطبيق حناشة حيث يظهر الـ ID بجانب الاسم!", mediaUrl: null, mediaType: null, reaction: "👍 جام", reactionCount: 5, comments: [], sharedFrom: null }
+                { id: 1, author: "سارة أحمد", authorId: "84920184", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100", text: "مرحباً بكم في تطبيق حناشة المطور!", mediaUrl: null, mediaType: null, reaction: "👍 جام", reactionCount: 5, comments: [] }
             ];
         }
 
         function savePosts(posts) {
-            localStorage.setItem('hannacha_posts_v6', JSON.stringify(posts));
+            localStorage.setItem('hannacha_posts_v7', JSON.stringify(posts));
         }
 
         function getSavedNotifications() {
-            let notifs = localStorage.getItem('hannacha_notifs_v6');
+            let notifs = localStorage.getItem('hannacha_notifs_v7');
             return notifs ? JSON.parse(notifs) : [];
         }
 
         function addNotification(text) {
             let notifs = getSavedNotifications();
             notifs.unshift({ text: text, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
-            localStorage.setItem('hannacha_notifs_v6', JSON.stringify(notifs));
+            localStorage.setItem('hannacha_notifs_v7', JSON.stringify(notifs));
             loadNotifications();
         }
 
@@ -392,14 +490,7 @@
                 if(post.mediaType === 'image') mediaHTML = `<img src="${post.mediaUrl}" class="post-media">`;
                 if(post.mediaType === 'video') mediaHTML = `<video src="${post.mediaUrl}" controls class="post-media"></video>`;
 
-                let sharedBlock = post.sharedFrom ? `<div class="shared-box">${post.sharedFrom}</div>` : '';
-                
-                let commentsHTML = post.comments.map(c => {
-                    let cMedia = "";
-                    if(c.mediaType === 'image') cMedia = `<img src="${c.mediaUrl}" class="comm-media">`;
-                    if(c.mediaType === 'video') cMedia = `<video src="${c.mediaUrl}" controls class="comm-media"></video>`;
-                    return `<div class="comm-item">💬 <b>${c.author}:</b> ${c.text} ${cMedia}</div>`;
-                }).join('');
+                let commentsHTML = post.comments.map(c => `<div class="comm-item">💬 <b>${c.author}:</b> ${c.text}</div>`).join('');
 
                 postDiv.innerHTML = `
                     <div class="post-header">
@@ -410,29 +501,16 @@
                                 <span class="post-author-id">ID: ${post.authorId || 'غير متوفر'}</span>
                             </div>
                         </div>
-                        <button class="add-friend-post-btn" onclick="sendFriendRequest('${post.author}', '${post.authorId}')">➕ إضافة صديق</button>
+                        <button class="add-friend-post-btn" onclick="alert('تم إرسال طلب صُداقة')">➕ إضافة صديق</button>
                     </div>
                     <div class="post-text">${post.text}</div>
                     ${mediaHTML}
-                    ${sharedBlock}
                     <div class="post-actions">
-                        <button class="action-btn" onclick="toggleEmojiPicker(event, ${post.id})" oncontextmenu="toggleEmojiPicker(event, ${post.id}); return false;">
-                            ${post.reaction} (${post.reactionCount})
-                        </button>
-                        <div class="emoji-picker" id="picker-${post.id}">
-                            <span onclick="setReaction(${post.id}, '👍 جام')">👍</span>
-                            <span onclick="setReaction(${post.id}, '❤️ قلب')">❤️</span>
-                            <span onclick="setReaction(${post.id}, '😂 ضحك')">😂</span>
-                            <span onclick="setReaction(${post.id}, '😮 إطراء')">😮</span>
-                            <span onclick="setReaction(${post.id}, '😢 حزن')">😢</span>
-                            <span onclick="setReaction(${post.id}, '👏 تحية')">👏</span>
-                        </div>
-                        <button class="action-btn" style="background:#fff; color:#64748b; border:1px solid #e2e8f0;" onclick="openSocialShareModal(${post.id})">🔗 مشاركة</button>
+                        <button class="action-btn">👍 جام (${post.reactionCount})</button>
                     </div>
                     <div class="comments-box">
                         <div class="comment-input-row">
                             <input type="text" placeholder="اكتب تعليقاً..." id="comm-input-${post.id}">
-                            <label class="upload-label" style="padding:4px 6px; font-size:10px;">📷<input type="file" id="comm-img-${post.id}" accept="image/*,video/*" style="display:none"></label>
                             <button class="comment-sub-btn" onclick="addCommentItem(${post.id})">إرسال</button>
                         </div>
                         <div class="comm-list">${commentsHTML}</div>
@@ -467,10 +545,8 @@
                 text: text,
                 mediaUrl: mediaUrl,
                 mediaType: mediaType,
-                reaction: "👍 جام",
                 reactionCount: 0,
-                comments: [],
-                sharedFrom: null
+                comments: []
             });
 
             savePosts(posts);
@@ -481,87 +557,19 @@
             loadPosts();
         }
 
-        function toggleEmojiPicker(e, id) {
-            e.stopPropagation();
-            let picker = document.getElementById(`picker-${id}`);
-            document.querySelectorAll('.emoji-picker').forEach(p => { if(p !== picker) p.style.display = 'none'; });
-            picker.style.display = picker.style.display === 'flex' ? 'none' : 'flex';
-        }
-
-        window.onclick = function() {
-            document.querySelectorAll('.emoji-picker').forEach(p => p.style.display = 'none');
-        };
-
-        function setReaction(id, emojiType) {
-            let posts = getSavedPosts();
-            let p = posts.find(item => item.id === id);
-            if(p) {
-                p.reaction = emojiType;
-                p.reactionCount++;
-                savePosts(posts);
-                loadPosts();
-            }
-        }
-
         function addCommentItem(id) {
             if(!currentUser) return alert("الرجاء تسجيل الدخول أولاً!");
             const input = document.getElementById(`comm-input-${id}`);
-            const fileInput = document.getElementById(`comm-img-${id}`);
             const val = input.value.trim();
-            
-            let cMediaUrl = null;
-            let cMediaType = null;
-            if(fileInput.files[0]) {
-                cMediaUrl = URL.createObjectURL(fileInput.files[0]);
-                cMediaType = fileInput.files[0].type.startsWith('video') ? 'video' : 'image';
-            }
-
-            if(!val && !cMediaUrl) return;
+            if(!val) return;
 
             let posts = getSavedPosts();
             let p = posts.find(item => item.id === id);
             if(p) {
-                p.comments.push({ author: currentUser.name.split(' ')[0], text: val, mediaUrl: cMediaUrl, mediaType: cMediaType });
+                p.comments.push({ author: currentUser.name.split(' ')[0], text: val });
                 savePosts(posts);
-                addNotification(`تمت إضافة تعليق جديد على منشور ${p.author}`);
                 loadPosts();
             }
-        }
-
-        function openSocialShareModal(id) {
-            activePostToShare = id;
-            document.getElementById('socialShareModal').style.display = 'flex';
-        }
-
-        function closeSocialModal() {
-            document.getElementById('socialShareModal').style.display = 'none';
-            activePostToShare = null;
-        }
-
-        function shareToSocial(platformName) {
-            if(!activePostToShare) return;
-            let posts = getSavedPosts();
-            let target = posts.find(item => item.id === activePostToShare);
-            
-            if(target) {
-                let shareText = encodeURIComponent(`شاهد هذا المنشور من ${target.author} (ID: ${target.authorId}) على تطبيق HANNACHA:\n"${target.text}"`);
-                if(platformName === 'WhatsApp') {
-                    window.open(`https://api.whatsapp.com/send?text=${shareText}`);
-                } else if(platformName === 'Facebook') {
-                    window.open(`https://www.facebook.com/sharer/sharer.php?u=&quote=${shareText}`);
-                } else if(platformName === 'Telegram') {
-                    window.open(`https://t.me/share/url?url=&text=${shareText}`);
-                } else {
-                    alert(`تم نسخ رابط المنشور للمشاركة عبر ${platformName}!`);
-                }
-                addNotification(`قمت بمشاركة منشور عبر ${platformName}`);
-            }
-            closeSocialModal();
-        }
-
-        function sendFriendRequest(name, id) {
-            alert(`تم إرسال طلب الصداقة بنجاح إلى المستخدم ${name} (ID: ${id})`);
-            addNotification(`أرسلت طلب صداقة إلى ${name}`);
         }
     </script>
 </body>
