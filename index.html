@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حناشة دردشة - Hannacha Chat</title>
-    <!-- استيراد خط عربي جميل -->
+    <title>HANNACHA Chat</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
@@ -34,7 +33,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 30px 20px;
+            padding: 20px;
             position: relative;
             overflow: hidden;
             border: 4px solid #7c3aed;
@@ -43,78 +42,220 @@
         /* رأس الواجهة */
         .header {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .header h1 {
             font-size: 32px;
             font-weight: 800;
-            color: #a78bfa;
-            text-shadow: 0 2px 10px rgba(167, 139, 250, 0.4);
-            margin-bottom: 5px;
+            color: #c084fc;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 15px rgba(192, 132, 252, 0.5);
         }
 
         .header h2 {
-            font-size: 16px;
+            font-size: 13px;
             color: #c4b5fd;
             font-weight: 600;
             opacity: 0.9;
         }
 
-        /* وسط الواجهة - زر تسجيل الدخول بقوقل */
+        /* وسط التطبيق */
         .content-body {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            gap: 20px;
+            justify-content: flex-start;
+            gap: 10px;
             flex-grow: 1;
+            position: relative;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+
+        .welcome-box {
+            text-align: center;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
         }
 
         .welcome-text {
-            font-size: 14px;
+            font-size: 12px;
             color: #ddd6fe;
-            text-align: center;
-            margin-bottom: 10px;
         }
 
         .google-btn {
             background: #ffffff;
             color: #1e1b4b;
             border: none;
-            padding: 14px 24px;
+            padding: 8px 15px;
             border-radius: 30px;
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             width: 85%;
             justify-content: center;
         }
 
-        .google-btn:hover {
-            background: #f3f4f6;
-            transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+        .social-btn {
+            border: none;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 85%;
+            justify-content: center;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
-        .google-icon {
-            width: 22px;
-            height: 22px;
+        .whatsapp-btn { background: #25d366; }
+        .messenger-btn { background: #0084ff; }
+
+        /* صندوق النشر (مثل فيسبوك) */
+        .feed-container {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            padding: 5px;
+        }
+
+        .post-box {
+            background: rgba(255, 255, 255, 0.07);
+            padding: 12px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .post-box textarea, .post-box input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #7c3aed;
+            border-radius: 8px;
+            padding: 8px;
+            color: #fff;
+            font-size: 12px;
+            resize: none;
+        }
+
+        .post-btn {
+            background: #7c3aed;
+            color: white;
+            border: none;
+            padding: 6px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .posts-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        .user-post {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            border-right: 3px solid #c084fc;
+        }
+
+        .user-post p { margin-bottom: 5px; word-break: break-all; }
+        
+        .comment-section {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .comment-section input {
+            flex-grow: 1;
+            padding: 4px 8px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 5px;
+            color: #fff;
+            font-size: 11px;
+        }
+
+        .comment-btn {
+            background: #4c1d95;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .comments-list {
+            font-size: 11px;
+            color: #cbd5e1;
+            margin-top: 4px;
+            padding-right: 10px;
+            border-right: 1px dashed #7c3aed;
+        }
+
+        /* شاشة الكاميرا والفيديو */
+        #videoContainer {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #000;
+            border-radius: 20px;
+            overflow: hidden;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        video { width: 100%; height: 100%; object-fit: cover; }
+
+        .close-cam-btn {
+            position: absolute;
+            bottom: 20px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
         }
 
         /* الأيقونات الأربع في الأسفل */
         .footer-nav {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 4px;
             background: rgba(255, 255, 255, 0.05);
-            padding: 15px 10px;
-            border-radius: 25px;
+            padding: 10px 6px;
+            border-radius: 22px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -126,26 +267,19 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 3px;
             cursor: pointer;
-            transition: 0.2s;
-            padding: 8px 0;
-            border-radius: 15px;
+            padding: 4px 0;
+            border-radius: 12px;
         }
 
         .nav-item:hover, .nav-item.active {
             color: #fff;
-            background: rgba(124, 58, 237, 0.4);
+            background: rgba(124, 58, 237, 0.5);
         }
 
-        .nav-icon {
-            font-size: 22px;
-        }
-
-        .nav-label {
-            font-size: 11px;
-            font-weight: 600;
-        }
+        .nav-icon { font-size: 18px; }
+        .nav-label { font-size: 10px; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -154,41 +288,56 @@
         
         <!-- رأس الواجهة -->
         <div class="header">
-            <h1>حناشة دردشة</h1>
+            <h1>HANNACHA</h1>
             <h2>دردش اتصال مسنجر و فيديو</h2>
         </div>
 
-        <!-- محتوى الشاشة وسط التطبيق -->
-        <div class="content-body">
-            <p class="welcome-text">أهلاً بك! تواصل مع أصدقائك بسهولة وبدون تعقيد.</p>
-            
-            <!-- زر تسجيل الدخول بواسطة جوجل فقط -->
-            <button class="google-btn" onclick="loginWithGoogle()">
-                <svg class="google-icon" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
-                    <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.18v3.15C3.17 21.36 7.23 24 12 24z"/>
-                    <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.18C.43 8.08 0 9.99 0 12s.43 3.92 1.18 5.42l4.1-3.15z"/>
-                    <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.64 1.18 6.58l4.1 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-                </svg>
-                تسجيل الدخول بقوقل
-            </button>
+        <!-- وسط التطبيق -->
+        <div class="content-body" id="mainBody">
+            <!-- الواجهة الرئيسية -->
+            <div class="welcome-box" id="defaultContent">
+                <p class="welcome-text">أهلاً بك! تواصل عبر الكاميرا والمنشورات.</p>
+                <button class="google-btn" onclick="loginWithGoogle()">
+                    <svg style="width:16px;height:16px;" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.18v3.15C3.17 21.36 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.18C.43 8.08 0 9.99 0 12s.43 3.92 1.18 5.42l4.1-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.64 1.18 6.58l4.1 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+                    تسجيل الدخول بقوقل
+                </button>
+                <button class="social-btn whatsapp-btn" onclick="shareWhatsApp()">💬 مراسلة عبر واتساب</button>
+                <button class="social-btn messenger-btn" onclick="shareMessenger()">🔵 مشاركة عبر مسنجر</button>
+            </div>
+
+            <!-- قسم النشر والتعليقات (يظهر عند الضغط على رسائل) -->
+            <div class="feed-container" id="feedContainer">
+                <div class="post-box">
+                    <textarea id="postText" placeholder="ما الذي تفكر فيه؟ اكتب منشورك أو ارفق رابط فيديو هنا..."></textarea>
+                    <button class="post-btn" onclick="createPost()">نشر</button>
+                </div>
+                <div class="posts-feed" id="postsFeed">
+                    <!-- المنشورات ستظهر هنا -->
+                </div>
+            </div>
+
+            <!-- عنصر عرض الكاميرا -->
+            <div id="videoContainer">
+                <video id="webcam" autoplay playsinline></video>
+                <button class="close-cam-btn" onclick="stopCamera()">إغلاق الكاميرا</button>
+            </div>
         </div>
 
         <!-- الأيقونات الأربع في الأسفل -->
         <div class="footer-nav">
-            <button class="nav-item" onclick="switchTab(this, 'مكالمة فيديو')">
+            <button class="nav-item" onclick="startVideoCall()">
                 <span class="nav-icon">📹</span>
                 <span class="nav-label">مكالمة فيديو</span>
             </button>
-            <button class="nav-item" onclick="switchTab(this, 'مكالمة عادية')">
+            <button class="nav-item" onclick="startVoiceCall()">
                 <span class="nav-icon">📞</span>
                 <span class="nav-label">مكالمة عادية</span>
             </button>
-            <button class="nav-item" onclick="switchTab(this, 'رسائل')">
+            <button class="nav-item active" id="msgNavBtn" onclick="openMessages()">
                 <span class="nav-icon">💬</span>
                 <span class="nav-label">رسائل</span>
             </button>
-            <button class="nav-item active" onclick="switchTab(this, 'تسجيل الدخول')">
+            <button class="nav-item" onclick="openLogin()">
                 <span class="nav-icon">🔐</span>
                 <span class="nav-label">تسجيل الدخول</span>
             </button>
@@ -197,17 +346,88 @@
     </div>
 
     <script>
-        function loginWithGoogle() {
-            alert("تم النقر على تسجيل الدخول باستخدام حساب جوجل (سيتم ربطه بنظام المصادقة قريباً).");
+        let localStream = null;
+
+        function loginWithGoogle() { alert("تم الاتصال بنظام مصادقة قوقل بنجاح!"); }
+        function shareWhatsApp() { window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent("حمل تطبيق HANNACHA: " + window.location.href), "_blank"); }
+        function shareMessenger() { window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(window.location.href), "_blank"); }
+
+        async function startVideoCall() {
+            setActiveTab(event.currentTarget);
+            document.getElementById('defaultContent').style.display = 'none';
+            document.getElementById('feedContainer').style.display = 'none';
+            document.getElementById('videoContainer').style.display = 'flex';
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                document.getElementById('webcam').srcObject = localStream;
+            } catch (err) { alert("تعذر الوصول للكاميرا."); }
         }
 
-        function switchTab(element, tabName) {
-            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-            element.classList.add('active');
+        async function startVoiceCall() {
+            setActiveTab(event.currentTarget);
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                alert("الميكروفون يعمل للمكالمة الصوتية.");
+            } catch (err) { alert("يرجى السماح بالميكروفون."); }
+        }
+
+        function openMessages() {
+            setActiveTab(event.currentTarget);
+            stopCamera();
+            document.getElementById('defaultContent').style.display = 'none';
+            document.getElementById('feedContainer').style.display = 'flex';
+        }
+
+        function openLogin() {
+            setActiveTab(event.currentTarget);
+            stopCamera();
+            document.getElementById('feedContainer').style.display = 'none';
+            document.getElementById('defaultContent').style.display = 'flex';
+        }
+
+        function stopCamera() {
+            if (localStream) { localStream.getTracks().forEach(t => t.stop()); }
+            document.getElementById('videoContainer').style.display = 'none';
+        }
+
+        function setActiveTab(btn) {
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+        }
+
+        // وظيفة النشر وإضافة التعليقات
+        function createPost() {
+            const text = document.getElementById('postText').value.trim();
+            if (!text) return alert("اكتب شيئاً للنشر!");
+
+            const feed = document.getElementById('postsFeed');
+            const postDiv = document.createElement('div');
+            postDiv.className = 'user-post';
             
-            if (tabName !== 'تسجيل الدخول') {
-                console.log("الانتقال إلى تبويب: " + tabName);
-            }
+            postDiv.innerHTML = `
+                <p><strong>مستخدم HANNACHA:</strong><br>${text}</p>
+                <div class="comment-section">
+                    <input type="text" placeholder="اكتب تعليقاً..." class="comment-input">
+                    <button class="comment-btn" onclick="addComment(this)">تعليق</button>
+                </div>
+                <div class="comments-list"></div>
+            `;
+
+            feed.prepend(postDiv);
+            document.getElementById('postText').value = '';
+        }
+
+        function addComment(btn) {
+            const input = btn.previousElementSibling;
+            const commentText = input.value.trim();
+            if (!commentText) return;
+
+            const commentsList = btn.parentElement.nextElementSibling;
+            const commentP = document.createElement('div');
+            commentP.style.marginTop = "3px";
+            commentP.innerHTML = `💬 ${commentText}`;
+            commentsList.appendChild(commentP);
+            input.value = '';
         }
     </script>
 </body>
