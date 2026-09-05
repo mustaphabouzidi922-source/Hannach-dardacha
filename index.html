@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HANNACHA Chat - النسخة النهائية المتقدمة</title>
+    <title>HANNACHA Chat - النسخة النهائية المطورة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; font-family: 'Cairo', sans-serif; margin: 0; padding: 0; }
@@ -18,21 +18,24 @@
 
         /* رأس التطبيق */
         .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 5px; border-bottom: 1px solid #e2e8f0; background: #fff; border-radius: 20px 20px 0 0; }
-        .header h1 { font-size: 20px; font-weight: 800; color: #7c3aed; letter-spacing: 1px; }
-        .header-icons { display: flex; align-items: center; gap: 10px; }
+        .header h1 { font-size: 18px; font-weight: 800; color: #7c3aed; letter-spacing: 1px; }
+        .header-icons { display: flex; align-items: center; gap: 8px; }
         
-        /* جرس التنبيهات */
-        .notification-bell { position: relative; cursor: pointer; font-size: 20px; background: #f3e8ff; padding: 5px 8px; border-radius: 50%; }
+        .notification-bell { position: relative; cursor: pointer; font-size: 18px; background: #f3e8ff; padding: 5px 8px; border-radius: 50%; }
         .notification-badge { position: absolute; top: -2px; right: -2px; background: #ef4444; color: #fff; font-size: 9px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         
-        .user-mini-profile { display: none; align-items: center; gap: 8px; cursor: pointer; }
-        .mini-avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #7c3aed; object-fit: cover; }
+        /* البروفيسور المصغر في رأس التطبيق مع الـ ID الظاهري */
+        .user-mini-profile { display: none; align-items: center; gap: 6px; cursor: pointer; background: #f3e8ff; padding: 3px 8px; border-radius: 20px; border: 1px solid #d8b4fe; }
+        .mini-avatar { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #7c3aed; object-fit: cover; }
+        .mini-user-info { display: flex; flex-direction: column; text-align: right; }
+        .mini-name { font-size: 10px; font-weight: bold; color: #4c1d95; }
+        .mini-id { font-size: 9px; color: #7c3aed; font-weight: 700; }
 
         /* الأقسام الداخلية */
         .screen-section { display: none; flex-direction: column; flex-grow: 1; overflow-y: auto; padding: 10px 0; gap: 10px; }
         .screen-section.active { display: flex; }
 
-        /* شاشة تسجيل الدخول المحدثة (كلمة السر + رقم التحقق 8 أرقام) */
+        /* شاشة تسجيل الدخول */
         #loginScreen { align-items: center; justify-content: center; text-align: center; gap: 10px; background: #fff; border-radius: 20px; padding: 15px; }
         .profile-pic-picker { position: relative; width: 80px; height: 80px; margin: 0 auto; cursor: pointer; }
         .profile-pic-picker img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #7c3aed; object-fit: cover; }
@@ -42,13 +45,13 @@
         .input-group label { font-size: 11px; font-weight: bold; color: #475569; }
         .form-control-custom { width: 100%; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px; font-size: 12px; color: #1e293b; }
         
-        .google-btn { background: #1e1b4b; color: #fff; border: none; padding: 10px 20px; border-radius: 30px; font-size: 13px; font-weight: 700; cursor: pointer; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-top: 5px; }
+        .google-btn { background: #1e1b4b; color: #fff; border: none; padding: 10px 20px; border-radius: 30px; font-size: 13px; font-weight: 700; cursor: pointer; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-top: 5px; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
         /* ملف المستخدم الشخصي */
         #profileScreen { background: #fff; border-radius: 15px; padding: 15px; align-items: center; text-align: center; gap: 10px; }
-        .id-badge { background: #f3e8ff; color: #7c3aed; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; border: 1px solid #d8b4fe; }
+        .id-badge { background: #f3e8ff; color: #7c3aed; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid #d8b4fe; }
 
-        /* الصفحة الرئيسية العامة (Feed) - واجهة بيضاء */
+        /* الصفحة الرئيسية العامة (Feed) */
         #feedScreen { background: #f8fafc; }
         .post-input-box { background: #fff; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
         .post-input-box textarea { width: 100%; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px; color: #1e293b; font-size: 12px; resize: none; }
@@ -62,8 +65,10 @@
         .feed-post { background: #fff; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
         .post-header { display: flex; justify-content: space-between; align-items: center; }
         .post-author-info { display: flex; align-items: center; gap: 8px; }
-        .post-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
-        .post-author { font-size: 12px; font-weight: bold; color: #4c1d95; }
+        .post-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1px solid #7c3aed; }
+        .post-author-details { display: flex; flex-direction: column; }
+        .post-author { font-size: 11px; font-weight: bold; color: #4c1d95; }
+        .post-author-id { font-size: 9px; color: #64748b; font-weight: 600; }
         
         .add-friend-post-btn { background: #f3e8ff; color: #7c3aed; border: 1px solid #d8b4fe; padding: 3px 8px; border-radius: 15px; font-size: 10px; font-weight: bold; cursor: pointer; }
         
@@ -73,7 +78,6 @@
 
         .post-actions { display: flex; justify-content: space-around; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; padding: 6px 0; font-size: 11px; color: #64748b; position: relative; }
         
-        /* زر الجام البنفسجي والمطول */
         .action-btn { background: #f3e8ff; border: 1px solid #d8b4fe; color: #7c3aed; padding: 4px 10px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; }
         .emoji-picker { display: none; position: absolute; bottom: 35px; background: #fff; border: 1px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 20px; padding: 5px 10px; gap: 6px; z-index: 10; }
         .emoji-picker span { cursor: pointer; font-size: 16px; transition: transform 0.1s; }
@@ -88,20 +92,15 @@
         .comm-item { background: #f8fafc; padding: 6px 8px; border-radius: 6px; font-size: 11px; color: #334155; border: 1px solid #e2e8f0; }
         .comm-media { width: 70px; height: 70px; border-radius: 6px; object-fit: cover; margin-top: 4px; display: block; }
 
-        /* نافذة مشاركة وسائل التواصل الاجتماعي المنبثقة */
+        /* نافذة مشاركة وسائل التواصل */
         #socialShareModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200; justify-content: center; align-items: center; }
         .social-box { background: #fff; width: 85%; max-width: 320px; border-radius: 15px; padding: 20px; display: flex; flex-direction: column; gap: 10px; text-align: center; color: #1e293b; }
         .social-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
         .social-option { padding: 10px; border-radius: 10px; border: none; color: #fff; font-weight: bold; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
 
-        /* نافذة إشعارات التنبيهات */
+        /* نافذة الإشعارات */
         #notificationsModal { display: none; position: absolute; top: 55px; left: 15px; width: 320px; background: #fff; border: 1px solid #cbd5e1; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); z-index: 100; padding: 10px; max-height: 350px; overflow-y: auto; }
         .notif-item { font-size: 11px; padding: 8px; border-bottom: 1px solid #f1f5f9; color: #334155; display: flex; justify-content: space-between; align-items: center; }
-
-        /* نافذة الكاميرا الفعلية */
-        #videoContainer { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 250; flex-direction: column; justify-content: center; align-items: center; border-radius: 35px; }
-        video { width: 100%; height: 100%; object-fit: cover; }
-        .close-cam { position: absolute; bottom: 30px; background: #ef4444; color: #fff; border: none; padding: 10px 25px; border-radius: 20px; font-weight: bold; cursor: pointer; z-index: 260; }
 
         /* القائمة السفلى */
         .footer-nav { display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; padding: 10px 4px; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: -4px 10px rgba(0,0,0,0.03); }
@@ -122,13 +121,18 @@
                     🔔
                     <div class="notification-badge" id="notifBadge">0</div>
                 </div>
+                <!-- البروفيسور المصغر يظهر معه الـ ID الدائم للبحث -->
                 <div class="user-mini-profile" id="miniProfileHeader" onclick="switchTab(null, 'profileScreen')">
                     <img id="userImgMini" class="mini-avatar" src="" alt="بروفيل">
+                    <div class="mini-user-info">
+                        <span id="miniUserName" class="mini-name"></span>
+                        <span id="miniUserId" class="mini-id">ID: ---</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- قائمة الإشعارات المنسدلة -->
+        <!-- قائمة الإشعارات -->
         <div id="notificationsModal">
             <h4 style="font-size: 12px; color: #7c3aed; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; margin-bottom: 5px;">سجل التنبيهات والإشعارات</h4>
             <div id="notificationsList" style="display: flex; flex-direction: column; gap: 4px;">
@@ -136,7 +140,7 @@
             </div>
         </div>
 
-        <!-- نافذة مشاركة وسائل التواصل الاجتماعي -->
+        <!-- نافذة مشاركة وسائل التواصل -->
         <div id="socialShareModal">
             <div class="social-box">
                 <h3 style="color: #7c3aed; font-size: 14px;">مشاركة المنشور عبر وسائل التواصل</h3>
@@ -151,36 +155,31 @@
             </div>
         </div>
 
-        <!-- 1. شاشة تسجيل الدخول (صورة البروفيل + البريد + كلمة السر + رقم التحقق 8 أرقام) -->
+        <!-- 1. شاشة تسجيل الدخول -->
         <div class="screen-section active" id="loginScreen">
             <h2 style="color: #7c3aed; font-size: 16px;">تسجيل الدخول إلى حناشة</h2>
+            <p style="font-size: 10px; color: #64748b;">سجل مرة واحدة ليبقى معرفك الثابت ظاهراً دائماً للجميع</p>
             
             <label class="profile-pic-picker">
-                <img id="previewAvatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100" alt="اختر صورة">
+                <img id="previewAvatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100" alt="صورة البروفيل">
                 <input type="file" id="loginAvatarInput" accept="image/*" onchange="previewProfileImage(this)">
             </label>
-            <span style="font-size: 9px; color: #7c3aed; font-weight: bold;">اختر صورة البروفيل الشخصية</span>
+            <span style="font-size: 9px; color: #7c3aed; font-weight: bold;">اضغط لتغيير صورة بروفيلك الشخصي</span>
 
             <div class="input-group">
-                <label>اختر البريد الإلكتروني:</label>
-                <select id="userEmailSelect" class="form-control-custom">
-                    <option value="mustapha.bouzidi@gmail.com">mustapha.bouzidi@gmail.com</option>
-                    <option value="hannacha.user@gmail.com">hannacha.user@gmail.com</option>
-                    <option value="social.contact@gmail.com">social.contact@gmail.com</option>
-                </select>
+                <label>البريد الإلكتروني الحقيقي:</label>
+                <input type="email" id="userEmailInput" class="form-control-custom" placeholder="example@gmail.com" value="mustapha.bouzidi@gmail.com">
             </div>
 
             <div class="input-group">
-                <label>كلمة السر:</label>
+                <label>كلمة السر الخاصة بك (سرية):</label>
                 <input type="password" id="userPasswordInput" class="form-control-custom" placeholder="أدخل كلمة المرور السرية">
             </div>
 
-            <div class="input-group">
-                <label>رقم التحقق (تلقائي 8 أرقام):</label>
-                <input type="text" id="verificationCodeDisplay" class="form-control-custom" readonly style="background:#e2e8f0; text-align:center; font-weight:bold; letter-spacing:2px;">
-            </div>
-
-            <button class="google-btn" onclick="completeLogin()">تسجيل الدخول الحقيقي</button>
+            <button class="google-btn" onclick="completeLogin()">
+                <svg style="width:18px;height:18px;" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.18v3.15C3.17 21.36 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.18C.43 8.08 0 9.99 0 12s.43 3.92 1.18 5.42l4.1-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.64 1.18 6.58l4.1 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+                تسجيل الدخول الحقيقي بقوقل
+            </button>
         </div>
 
         <!-- 2. ملف المستخدم الشخصي -->
@@ -189,8 +188,7 @@
             <img id="profileFullImg" src="" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #7c3aed; object-fit: cover;">
             <h4 id="profileNameDisplay" style="font-size: 13px; color: #1e293b;"></h4>
             <p id="profileEmailDisplay" style="font-size: 11px; color: #64748b;"></p>
-            <div class="id-badge">معرف الحساب (ID): <span id="profileIdDisplay"></span></div>
-            <div class="id-badge" style="background:#e0f2fe; color:#0369a1;">رمز التحقق: <span id="profilePinDisplay"></span></div>
+            <div class="id-badge">معرف الحساب (ID للبحث): <span id="profileIdDisplay"></span></div>
             <button class="pub-btn" style="margin-top: 15px;" onclick="switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen')">العودة للرئيسية</button>
         </div>
 
@@ -215,8 +213,12 @@
 
         <!-- 4. شاشة الأصدقاء -->
         <div class="screen-section" id="friendsScreen">
-            <h3 style="font-size: 13px; color: #7c3aed; margin-bottom: 5px;">طلبات الصداقة الواردة</h3>
-            <div id="friendRequestsContainer" style="display: flex; flex-direction: column; gap: 6px;">
+            <h3 style="font-size: 13px; color: #7c3aed; margin-bottom: 5px;">طلبات الصداقة والبحث بالـ ID</h3>
+            <div style="background: #fff; padding: 10px; border-radius: 10px; display: flex; gap: 5px; border: 1px solid #e2e8f0;">
+                <input type="text" placeholder="ابحث برقم المعرف (ID)..." class="form-control-custom" style="font-size:11px;">
+                <button class="pub-btn" style="width: 80px;">بحث</button>
+            </div>
+            <div id="friendRequestsContainer" style="display: flex; flex-direction: column; gap: 6px; margin-top: 10px;">
                 <p style="font-size: 11px; color: #64748b; text-align: center;">لا توجد طلبات صداقة معلقة حالياً</p>
             </div>
         </div>
@@ -228,15 +230,9 @@
                 <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="post-avatar">
                 <div>
                     <p style="font-size: 12px; font-weight: bold; color: #1e293b;">محمد أمين</p>
-                    <p style="font-size: 10px; color: #64748b;">أهلاً بك، تم ربط وسائل التواصل بنجاح!</p>
+                    <p style="font-size: 10px; color: #64748b;">أهلاً بك، رقم الـ ID يظهر الآن بوضوح للجميع!</p>
                 </div>
             </div>
-        </div>
-
-        <!-- نافذة الكاميرا -->
-        <div id="videoContainer">
-            <video id="webcam" autoplay playsinline></video>
-            <button class="close-cam" onclick="closeCamera()">إغلاق المكالمة</button>
         </div>
 
         <!-- القائمة السفلى -->
@@ -262,20 +258,16 @@
     </div>
 
     <script>
-        let currentUser = {
-            name: "Bouzidi Mustapha",
-            email: "mustapha.bouzidi@gmail.com",
-            avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100",
-            id: Math.floor(10000000 + Math.random() * 90000000), // ID من 8 أرقام
-            pinCode: Math.floor(10000000 + Math.random() * 90000000) // رقم تحقيق من 8 أرقام
-        };
-
-        let localStream = null;
+        let currentUser = null;
         let activePostToShare = null;
 
         window.onload = function() {
-            // تعيين رقم التحقق العشوائي المكون من 8 أرقام عند التحميل
-            document.getElementById('verificationCodeDisplay').value = currentUser.pinCode;
+            let savedUser = localStorage.getItem('hannacha_current_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                applyUserDataToUI();
+                switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen');
+            }
             loadPosts();
             loadNotifications();
         };
@@ -285,32 +277,57 @@
                 let reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById('previewAvatar').src = e.target.result;
-                    currentUser.avatar = e.target.result;
+                    if(currentUser) {
+                        currentUser.avatar = e.target.result;
+                        localStorage.setItem('hannacha_current_user', JSON.stringify(currentUser));
+                    }
                 }
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
         function completeLogin() {
+            const emailInput = document.getElementById('userEmailInput').value.trim();
             const password = document.getElementById('userPasswordInput').value.trim();
-            if(!password) return alert("الرجاء إدخال كلمة السر للمتابعة!");
 
-            const selectedEmail = document.getElementById('userEmailSelect').value;
-            currentUser.email = selectedEmail;
-            currentUser.name = selectedEmail.split('@')[0].replace('.', ' ');
+            if(!emailInput || !emailInput.includes('@')) {
+                return alert("الرجاء إدخال بريد إلكتروني حقيقي وصحيح!");
+            }
+            if(!password) {
+                return alert("الرجاء إدخال كلمة السر الخاصة بك!");
+            }
 
-            document.getElementById('userNameMini').innerText = currentUser.name;
+            // توليد معرف ثابت (ID) مرة واحدة فقط إذا لم يكن مخزناً مسبقاً
+            let generatedId = Math.floor(10000000 + Math.random() * 90000000);
+            let profileImgSrc = document.getElementById('previewAvatar').src;
+            
+            currentUser = {
+                name: emailInput.split('@')[0].replace('.', ' '),
+                email: emailInput,
+                avatar: profileImgSrc,
+                id: generatedId
+            };
+
+            localStorage.setItem('hannacha_current_user', JSON.stringify(currentUser));
+
+            applyUserDataToUI();
+            addNotification(`تم تسجيل الدخول بنجاح بحسابك: ${currentUser.email}`);
+            alert(`تم تسجيل الدخول بنجاح! رقم المعرف (ID) الخاص بك للبحث هو: ${currentUser.id}`);
+            switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen');
+        }
+
+        function applyUserDataToUI() {
+            if(!currentUser) return;
+            document.getElementById('miniUserName').innerText = currentUser.name;
+            document.getElementById('miniUserId').innerText = `ID: ${currentUser.id}`;
             document.getElementById('userImgMini').src = currentUser.avatar;
+            document.getElementById('previewAvatar').src = currentUser.avatar;
+            document.getElementById('userEmailInput').value = currentUser.email;
             document.getElementById('profileFullImg').src = currentUser.avatar;
             document.getElementById('profileNameDisplay').innerText = currentUser.name;
             document.getElementById('profileEmailDisplay').innerText = currentUser.email;
             document.getElementById('profileIdDisplay').innerText = currentUser.id;
-            document.getElementById('profilePinDisplay').innerText = currentUser.pinCode;
             document.getElementById('miniProfileHeader').style.display = 'flex';
-            
-            addNotification("تم تسجيل الدخول والتحقق الأمني بنجاح.");
-            alert("تم تسجيل الدخول بنجاح وتوليد معرف الحساب ورقم التحقق بنجاح!");
-            switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen');
         }
 
         function switchTab(btn, screenId) {
@@ -324,25 +341,25 @@
         }
 
         function getSavedPosts() {
-            let posts = localStorage.getItem('hannacha_posts_v4');
+            let posts = localStorage.getItem('hannacha_posts_v6');
             return posts ? JSON.parse(posts) : [
-                { id: 1, author: "سارة أحمد", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100", text: "مرحباً بكم في تطبيق حناشة مع خيارات المشاركة الجديدة!", mediaUrl: null, mediaType: null, reaction: "👍 جام", reactionCount: 3, comments: [], sharedFrom: null }
+                { id: 1, author: "سارة أحمد", authorId: "84920184", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100", text: "مرحباً بكم في تطبيق حناشة حيث يظهر الـ ID بجانب الاسم!", mediaUrl: null, mediaType: null, reaction: "👍 جام", reactionCount: 5, comments: [], sharedFrom: null }
             ];
         }
 
         function savePosts(posts) {
-            localStorage.setItem('hannacha_posts_v4', JSON.stringify(posts));
+            localStorage.setItem('hannacha_posts_v6', JSON.stringify(posts));
         }
 
         function getSavedNotifications() {
-            let notifs = localStorage.getItem('hannacha_notifs_v4');
+            let notifs = localStorage.getItem('hannacha_notifs_v6');
             return notifs ? JSON.parse(notifs) : [];
         }
 
         function addNotification(text) {
             let notifs = getSavedNotifications();
             notifs.unshift({ text: text, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
-            localStorage.setItem('hannacha_notifs_v4', JSON.stringify(notifs));
+            localStorage.setItem('hannacha_notifs_v6', JSON.stringify(notifs));
             loadNotifications();
         }
 
@@ -388,9 +405,12 @@
                     <div class="post-header">
                         <div class="post-author-info">
                             <img src="${post.avatar}" class="post-avatar">
-                            <span class="post-author">${post.author}</span>
+                            <div class="post-author-details">
+                                <span class="post-author">${post.author}</span>
+                                <span class="post-author-id">ID: ${post.authorId || 'غير متوفر'}</span>
+                            </div>
                         </div>
-                        <button class="add-friend-post-btn" onclick="sendFriendRequest('${post.author}', '${post.avatar}')">➕ إضافة صديق</button>
+                        <button class="add-friend-post-btn" onclick="sendFriendRequest('${post.author}', '${post.authorId}')">➕ إضافة صديق</button>
                     </div>
                     <div class="post-text">${post.text}</div>
                     ${mediaHTML}
@@ -423,6 +443,7 @@
         }
 
         function addNewPost() {
+            if(!currentUser) return alert("الرجاء تسجيل الدخول أولاً!");
             const text = document.getElementById('mainPostText').value.trim();
             const imgInput = document.getElementById('postImageInput');
             const vidInput = document.getElementById('postVideoInput');
@@ -441,6 +462,7 @@
             posts.unshift({
                 id: Date.now(),
                 author: currentUser.name,
+                authorId: currentUser.id,
                 avatar: currentUser.avatar,
                 text: text,
                 mediaUrl: mediaUrl,
@@ -452,7 +474,7 @@
             });
 
             savePosts(posts);
-            addNotification("تم نشر منشور جديد في الخلاصة بنجاح.");
+            addNotification("تم نشر منشور جديد بنجاح.");
             document.getElementById('mainPostText').value = '';
             imgInput.value = '';
             vidInput.value = '';
@@ -467,7 +489,7 @@
         }
 
         window.onclick = function() {
-            document.querySelectorAll('.emoji-picker').forEach(p => p.style.display = 'none';);
+            document.querySelectorAll('.emoji-picker').forEach(p => p.style.display = 'none');
         };
 
         function setReaction(id, emojiType) {
@@ -482,6 +504,7 @@
         }
 
         function addCommentItem(id) {
+            if(!currentUser) return alert("الرجاء تسجيل الدخول أولاً!");
             const input = document.getElementById(`comm-input-${id}`);
             const fileInput = document.getElementById(`comm-img-${id}`);
             const val = input.value.trim();
@@ -505,7 +528,6 @@
             }
         }
 
-        // فتح نافذة مشاركة وسائل التواصل
         function openSocialShareModal(id) {
             activePostToShare = id;
             document.getElementById('socialShareModal').style.display = 'flex';
@@ -522,8 +544,7 @@
             let target = posts.find(item => item.id === activePostToShare);
             
             if(target) {
-                let shareText = encodeURIComponent(`شاهد هذا المنشور الرائع من ${target.author} على تطبيق HANNACHA:\n"${target.text}"`);
-                
+                let shareText = encodeURIComponent(`شاهد هذا المنشور من ${target.author} (ID: ${target.authorId}) على تطبيق HANNACHA:\n"${target.text}"`);
                 if(platformName === 'WhatsApp') {
                     window.open(`https://api.whatsapp.com/send?text=${shareText}`);
                 } else if(platformName === 'Facebook') {
@@ -531,16 +552,15 @@
                 } else if(platformName === 'Telegram') {
                     window.open(`https://t.me/share/url?url=&text=${shareText}`);
                 } else {
-                    alert(`تم نسخ رابط ونص المنشور للمشاركة على ${platformName} بنجاح!`);
+                    alert(`تم نسخ رابط المنشور للمشاركة عبر ${platformName}!`);
                 }
-                
                 addNotification(`قمت بمشاركة منشور عبر ${platformName}`);
             }
             closeSocialModal();
         }
 
-        function sendFriendRequest(name, avatar) {
-            alert(`تم إرسال طلب الصداقة بنجاح إلى ${name}`);
+        function sendFriendRequest(name, id) {
+            alert(`تم إرسال طلب الصداقة بنجاح إلى المستخدم ${name} (ID: ${id})`);
             addNotification(`أرسلت طلب صداقة إلى ${name}`);
         }
     </script>
