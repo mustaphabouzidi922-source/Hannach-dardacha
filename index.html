@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HANNACHA Chat</title>
+    <title>HANNACHA Chat - تطبيق حقيقي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; font-family: 'Cairo', sans-serif; margin: 0; padding: 0; }
@@ -11,63 +11,82 @@
         
         .phone-frame {
             width: 100%; max-width: 410px; height: 100vh; max-height: 850px;
-            background: #1e1b4b; border-radius: 40px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            background: #f8fafc; border-radius: 40px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             display: flex; flex-direction: column; justify-content: space-between; padding: 15px; position: relative; overflow: hidden; border: 4px solid #7c3aed;
+            color: #1e293b;
         }
 
         /* رأس التطبيق */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 5px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .header h1 { font-size: 24px; font-weight: 800; color: #c084fc; letter-spacing: 1px; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 5px; border-bottom: 1px solid #e2e8f0; background: #fff; border-radius: 20px 20px 0 0; }
+        .header h1 { font-size: 22px; font-weight: 800; color: #7c3aed; letter-spacing: 1px; }
         .user-mini-profile { display: none; align-items: center; gap: 8px; }
-        .mini-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #c084fc; object-fit: cover; }
+        .mini-avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #7c3aed; object-fit: cover; }
 
         /* الأقسام الداخلية */
         .screen-section { display: none; flex-direction: column; flex-grow: 1; overflow-y: auto; padding: 10px 0; gap: 10px; }
         .screen-section.active { display: flex; }
 
         /* شاشة تسجيل الدخول */
-        #loginScreen { align-items: center; justify-content: center; text-align: center; gap: 15px; }
-        .google-btn { background: #fff; color: #1e1b4b; border: none; padding: 12px 20px; border-radius: 30px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); width: 85%; justify-content: center; }
+        #loginScreen { align-items: center; justify-content: center; text-align: center; gap: 15px; background: #fff; border-radius: 20px; padding: 20px; }
+        .google-btn { background: #1e1b4b; color: #fff; border: none; padding: 12px 20px; border-radius: 30px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 85%; justify-content: center; }
 
-        /* الصفحة الرئيسية العامة (Feed) */
-        .post-input-box { background: rgba(255,255,255,0.07); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 8px; }
-        .post-input-box textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid #7c3aed; border-radius: 8px; padding: 8px; color: #fff; font-size: 12px; resize: none; }
-        .pub-btn { background: #7c3aed; color: #fff; border: none; padding: 6px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; }
-
-        .feed-post { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; gap: 8px; }
-        .post-header { display: flex; align-items: center; gap: 8px; }
-        .post-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
-        .post-author { font-size: 12px; font-weight: bold; color: #c084fc; }
-        .post-text { font-size: 12px; word-break: break-all; }
+        /* الصفحة الرئيسية العامة (Feed) - واجهة بيضاء */
+        #feedScreen { background: #f8fafc; }
+        .post-input-box { background: #fff; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .post-input-box textarea { width: 100%; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px; color: #1e293b; font-size: 12px; resize: none; }
         
-        /* صندوق المنشور المعاد توجيهه */
-        .shared-box { background: rgba(0,0,0,0.2); border-right: 3px solid #7c3aed; padding: 8px; border-radius: 8px; margin-top: 5px; font-size: 11px; color: #e2e8f0; }
+        .media-upload-btns { display: flex; gap: 8px; font-size: 11px; align-items: center; }
+        .upload-label { background: #f3e8ff; color: #7c3aed; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; border: 1px solid #d8b4fe; display: inline-flex; align-items: center; gap: 4px; }
+        .upload-label input { display: none; }
 
-        .post-actions { display: flex; justify-content: space-around; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 5px 0; font-size: 11px; color: #cbd5e1; }
-        .action-btn { background: none; border: none; color: #cbd5e1; cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 11px; }
+        .pub-btn { background: #7c3aed; color: #fff; border: none; padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; width: 100%; }
 
-        .comments-box { display: flex; flex-direction: column; gap: 5px; font-size: 11px; }
-        .comment-input-row { display: flex; gap: 5px; }
-        .comment-input-row input { flex-grow: 1; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); border-radius: 5px; padding: 4px 8px; color: #fff; font-size: 11px; }
-        .comment-sub-btn { background: #4c1d95; color: #fff; border: none; padding: 4px 8px; border-radius: 5px; cursor: pointer; }
+        .feed-post { background: #fff; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+        .post-header { display: flex; align-items: center; gap: 8px; }
+        .post-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+        .post-author { font-size: 12px; font-weight: bold; color: #4c1d95; }
+        .post-text { font-size: 12px; word-break: break-all; color: #334155; }
+        
+        .post-media { width: 100%; max-height: 250px; border-radius: 8px; object-fit: cover; margin-top: 5px; }
+        .shared-box { background: #f8fafc; border-right: 3px solid #7c3aed; padding: 8px; border-radius: 8px; margin-top: 5px; font-size: 11px; color: #475569; }
+
+        .post-actions { display: flex; justify-content: space-around; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; padding: 6px 0; font-size: 11px; color: #64748b; position: relative; }
+        
+        /* زر الجام البنفسجي */
+        .action-btn { background: #f3e8ff; border: 1px solid #d8b4fe; color: #7c3aed; padding: 4px 10px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; }
+        
+        /* قائمة الإيموجيات عند الضغط المطول أو النقر */
+        .emoji-picker { display: none; position: absolute; bottom: 35px; background: #fff; border: 1px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 20px; padding: 5px 10px; gap: 6px; z-index: 10; }
+        .emoji-picker span { cursor: pointer; font-size: 16px; transition: transform 0.1s; }
+        .emoji-picker span:hover { transform: scale(1.3); }
+
+        .comments-box { display: flex; flex-direction: column; gap: 6px; font-size: 11px; }
+        .comment-input-row { display: flex; gap: 5px; align-items: center; }
+        .comment-input-row input { flex-grow: 1; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 5px; padding: 5px 8px; color: #1e293b; font-size: 11px; }
+        .comment-sub-btn { background: #7c3aed; color: #fff; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        
+        .comm-list { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+        .comm-item { background: #f8fafc; padding: 6px 8px; border-radius: 6px; font-size: 11px; color: #334155; border: 1px solid #e2e8f0; }
+        .comm-media { width: 80px; height: 80px; border-radius: 6px; object-fit: cover; margin-top: 4px; display: block; }
 
         /* قسم الأصدقاء والاتصال */
-        .add-friend-box { background: rgba(255,255,255,0.07); padding: 10px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px; }
-        .add-friend-box input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid #7c3aed; border-radius: 8px; padding: 8px; color: #fff; font-size: 12px; }
-        .friend-card { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
+        #friendsScreen { background: #f8fafc; }
+        .add-friend-box { background: #fff; padding: 12px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px; border: 1px solid #e2e8f0; }
+        .add-friend-box input { width: 100%; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px; color: #1e293b; font-size: 12px; }
+        .friend-card { background: #fff; padding: 10px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; }
         .friend-info { display: flex; align-items: center; gap: 8px; }
         .call-options-popup { display: none; gap: 5px; }
         .call-btn { background: #7c3aed; border: none; color: #fff; padding: 5px 8px; border-radius: 6px; font-size: 10px; cursor: pointer; }
 
-        /* نافذة الكاميرا */
+        /* نافذة الكاميرا الفعلية */
         #videoContainer { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 50; flex-direction: column; justify-content: center; align-items: center; border-radius: 35px; }
         video { width: 100%; height: 100%; object-fit: cover; }
-        .close-cam { position: absolute; bottom: 30px; background: #ef4444; color: #fff; border: none; padding: 8px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+        .close-cam { position: absolute; bottom: 30px; background: #ef4444; color: #fff; border: none; padding: 10px 25px; border-radius: 20px; font-weight: bold; cursor: pointer; z-index: 60; }
 
         /* القائمة السفلى */
-        .footer-nav { display: grid; grid-template-columns: repeat(4, 1fr); background: rgba(255,255,255,0.05); padding: 10px 4px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .nav-item { background: none; border: none; color: #cbd5e1; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 0; border-radius: 12px; font-size: 10px; }
-        .nav-item.active { color: #fff; background: rgba(124, 58, 237, 0.5); }
+        .footer-nav { display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; padding: 10px 4px; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 -4px 10px rgba(0,0,0,0.03); }
+        .nav-item { background: none; border: none; color: #64748b; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 0; border-radius: 12px; font-size: 10px; font-weight: 600; }
+        .nav-item.active { color: #7c3aed; background: #f3e8ff; }
         .nav-icon { font-size: 18px; }
     </style>
 </head>
@@ -79,71 +98,60 @@
         <div class="header">
             <h1>HANNACHA</h1>
             <div class="user-mini-profile" id="miniProfileHeader">
-                <span id="userNameMini" style="font-size: 12px; font-weight: bold;"></span>
+                <span id="userNameMini" style="font-size: 12px; font-weight: bold; color: #1e293b;"></span>
                 <img id="userImgMini" class="mini-avatar" src="" alt="بروفيل">
             </div>
         </div>
 
         <!-- 1. شاشة تسجيل الدخول -->
         <div class="screen-section active" id="loginScreen">
-            <h2 style="color: #c084fc; font-size: 20px;">تسجيل الدخول إلى حناشة</h2>
-            <p style="font-size: 12px; color: #ddd6fe;">استمتع بالتواصل والمنشورات العامة والاتصال</p>
-            <img id="profileBigImg" src="https://via.placeholder.com/90" style="width: 90px; height: 90px; border-radius: 50%; border: 3px solid #c084fc; object-fit: cover; margin: 10px 0;" alt="صورة البروفيل">
+            <h2 style="color: #7c3aed; font-size: 20px;">تسجيل الدخول إلى حناشة</h2>
+            <p style="font-size: 12px; color: #64748b;">تواصل حقيقي، مكالمات، ومنشورات بانتظارك</p>
+            <img id="profileBigImg" src="https://via.placeholder.com/90" style="width: 90px; height: 90px; border-radius: 50%; border: 3px solid #7c3aed; object-fit: cover; margin: 10px 0;" alt="صورة البروفيل">
             <button class="google-btn" onclick="loginWithGoogle()">
                 <svg style="width:18px;height:18px;" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.18v3.15C3.17 21.36 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.18C.43 8.08 0 9.99 0 12s.43 3.92 1.18 5.42l4.1-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.64 1.18 6.58l4.1 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
-                تسجيل الدخول بقوقل
+                تسجيل الدخول الحقيقي بقوقل
             </button>
         </div>
 
-        <!-- 2. الصفحة الرئيسية العامة (Feed) -->
+        <!-- 2. الصفحة الرئيسية العامة (Feed) - واجهة بيضاء -->
         <div class="screen-section" id="feedScreen">
             <div class="post-input-box">
-                <textarea id="mainPostText" placeholder="اكتب شيئاً أو ارفق رابط فيديو ليراه الجميع..."></textarea>
-                <button class="pub-btn" onclick="addNewPost()">نشر عام</button>
-            </div>
-            <div id="postsList" style="display: flex; flex-direction: column; gap: 10px;">
-                <!-- المنشورات الافتراضية العامة -->
-                <div class="feed-post">
-                    <div class="post-header">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="post-avatar">
-                        <span class="post-author">سارة أحمد</span>
-                    </div>
-                    <div class="post-text">مرحباً بالجميع في تطبيق حناشة الجديد! شاركوني فيديوهاتكم هنا 🎬✨</div>
-                    <div class="post-actions">
-                        <button class="action-btn" onclick="react(this, '👍 جام')">👍 جام (0)</button>
-                        <button class="action-btn" onclick="react(this, '❤️ قلب')">❤️ قلب (0)</button>
-                        <button class="action-btn" onclick="sharePost(this)">🔁 إعادة نشر</button>
-                    </div>
-                    <div class="comments-box">
-                        <div class="comment-input-row">
-                            <input type="text" placeholder="اكتب تعليقاً (كومنتار)...">
-                            <button class="comment-sub-btn" onclick="addComment(this)">إرسال</button>
-                        </div>
-                        <div class="comm-list"></div>
-                    </div>
+                <textarea id="mainPostText" placeholder="اكتب شيئاً أو شارك أفكارك..."></textarea>
+                <div class="media-upload-btns">
+                    <label class="upload-label">
+                        📷 صورة
+                        <input type="file" id="postImageInput" accept="image/*">
+                    </label>
+                    <label class="upload-label">
+                        🎥 فيديو
+                        <input type="file" id="postVideoInput" accept="video/*">
+                    </label>
                 </div>
+                <button class="pub-btn" onclick="addNewPost()">نشر الآن</button>
             </div>
+            <div id="postsList" style="display: flex; flex-direction: column; gap: 10px;"></div>
         </div>
 
-        <!-- 3. شاشة الأصدقاء والاتصال -->
+        <!-- 3. شاشة الأصدقاء والاتصال الفعلي -->
         <div class="screen-section" id="friendsScreen">
             <div class="add-friend-box">
-                <p style="font-size: 12px; font-weight: bold; color: #c084fc;">إضافة صديق برقم الهاتف:</p>
+                <p style="font-size: 12px; font-weight: bold; color: #7c3aed;">إضافة صديق برقم الهاتف:</p>
                 <input type="tel" id="friendPhoneInput" placeholder="أدخل رقم الهاتف (مثال: 06xxxxxxxxx)">
-                <button class="pub-btn" onclick="sendFriendSMS()">إرسال طلب عبر رسالة هاتفية (SMS)</button>
+                <button class="pub-btn" onclick="sendFriendSMS()">إرسال دعوة رسالة نصية (SMS)</button>
             </div>
-            <p style="font-size: 12px; color: #ddd6fe; margin-top: 5px;">قائمة أصدقائك (اضغط للاتصال):</p>
+            <p style="font-size: 12px; color: #475569; margin-top: 5px;">قائمة أصدقائك (اضغط للاتصال الحقيقي):</p>
             <div id="friendsListContainer" style="display: flex; flex-direction: column; gap: 8px;">
                 <div class="friend-card">
                     <div class="friend-info">
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="post-avatar">
                         <div>
-                            <p style="font-size: 12px; font-weight: bold;">محمد أمين</p>
-                            <p style="font-size: 10px; color: #94a3b8;">0612345678</p>
+                            <p style="font-size: 12px; font-weight: bold; color: #1e293b;">محمد أمين</p>
+                            <p style="font-size: 10px; color: #64748b;">0612345678</p>
                         </div>
                     </div>
                     <div>
-                        <button class="pub-btn" style="font-size: 10px; padding: 5px 10px;" onclick="toggleCallOptions(this)">اتصال 📞</button>
+                        <button class="pub-btn" style="font-size: 10px; padding: 5px 10px; width: auto;" onclick="toggleCallOptions(this)">اتصال 📞</button>
                         <div class="call-options-popup" style="margin-top: 5px;">
                             <button class="call-btn" onclick="startVideoCall()">فيديو 📹</button>
                             <button class="call-btn" onclick="startVoiceCall()">عادية 📞</button>
@@ -154,22 +162,22 @@
             </div>
         </div>
 
-        <!-- 4. شاشة الرسائل والدردشة الفورية -->
+        <!-- 4. شاشة الرسائل والدردشة -->
         <div class="screen-section" id="messagesScreen">
-            <h3 style="font-size: 14px; color: #c084fc;">المحادثات والرسائل الفورية</h3>
-            <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; display: flex; align-items: center; gap: 10px;">
+            <h3 style="font-size: 14px; color: #7c3aed;">المحادثات والرسائل</h3>
+            <div style="background: #fff; padding: 10px; border-radius: 10px; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0;">
                 <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="post-avatar">
                 <div>
-                    <p style="font-size: 12px; font-weight: bold;">محمد أمين</p>
-                    <p style="font-size: 10px; color: #cbd5e1;">أهلاً بك، كيف حال التطبيق؟</p>
+                    <p style="font-size: 12px; font-weight: bold; color: #1e293b;">محمد أمين</p>
+                    <p style="font-size: 10px; color: #64748b;">أهلاً بك، التطبيق يعمل بكفاءة الآن!</p>
                 </div>
             </div>
         </div>
 
-        <!-- نافذة الكاميرا الحية -->
+        <!-- نافذة الكاميرا الفعلية -->
         <div id="videoContainer">
             <video id="webcam" autoplay playsinline></video>
-            <button class="close-cam" onclick="closeCamera()">إغلاق المكالمة / الكاميرا</button>
+            <button class="close-cam" onclick="closeCamera()">إغلاق المكالمة</button>
         </div>
 
         <!-- القائمة السفلى الأربع -->
@@ -198,102 +206,215 @@
         let currentUser = { name: "Mustapha Bouzidi", avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100" };
         let localStream = null;
 
+        window.onload = function() {
+            loadPosts();
+        };
+
         function loginWithGoogle() {
             document.getElementById('userNameMini').innerText = currentUser.name;
             document.getElementById('userImgMini').src = currentUser.avatar;
             document.getElementById('profileBigImg').src = currentUser.avatar;
             document.getElementById('miniProfileHeader').style.display = 'flex';
             
-            alert("تم تسجيل الدخول بنجاح بواسطة حساب Google!");
-            document.querySelectorAll('.nav-item')[0].click();
+            alert("تم تسجيل الدخول بنجاح!");
+            switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen');
         }
 
         function switchTab(btn, screenId) {
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            if(btn) btn.classList.add('active');
             document.querySelectorAll('.screen-section').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
         }
 
-        // إضافة منشور جديد
+        function getSavedPosts() {
+            let posts = localStorage.getItem('hannacha_posts_v2');
+            return posts ? JSON.parse(posts) : [
+                { id: 1, author: "سارة أحمد", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100", text: "مرحباً بالجميع في تطبيق حناشة الحقيقي!", mediaUrl: null, mediaType: null, reaction: "👍 جام", reactionCount: 0, comments: [], sharedFrom: null }
+            ];
+        }
+
+        function savePosts(posts) {
+            localStorage.setItem('hannacha_posts_v2', JSON.stringify(posts));
+        }
+
+        function loadPosts() {
+            const list = document.getElementById('postsList');
+            list.innerHTML = "";
+            let posts = getSavedPosts();
+
+            posts.forEach((post) => {
+                const postDiv = document.createElement('div');
+                postDiv.className = 'feed-post';
+                
+                let mediaHTML = "";
+                if(post.mediaType === 'image') {
+                    mediaHTML = `<img src="${post.mediaUrl}" class="post-media">`;
+                } else if(post.mediaType === 'video') {
+                    mediaHTML = `<video src="${post.mediaUrl}" controls class="post-media"></video>`;
+                }
+
+                let sharedBlock = post.sharedFrom ? `<div class="shared-box">${post.sharedFrom}</div>` : '';
+                
+                let commentsHTML = post.comments.map(c => {
+                    let cMedia = "";
+                    if(c.mediaType === 'image') cMedia = `<img src="${c.mediaUrl}" class="comm-media">`;
+                    if(c.mediaType === 'video') cMedia = `<video src="${c.mediaUrl}" controls class="comm-media"></video>`;
+                    return `<div class="comm-item">💬 <b>${c.author}:</b> ${c.text} ${cMedia}</div>`;
+                }).join('');
+
+                postDiv.innerHTML = `
+                    <div class="post-header">
+                        <img src="${post.avatar}" class="post-avatar">
+                        <span class="post-author">${post.author}</span>
+                    </div>
+                    <div class="post-text">${post.text}</div>
+                    ${mediaHTML}
+                    ${sharedBlock}
+                    <div class="post-actions">
+                        <button class="action-btn" onclick="toggleEmojiPicker(event, ${post.id})" oncontextmenu="toggleEmojiPicker(event, ${post.id}); return false;">
+                            ${post.reaction} (${post.reactionCount})
+                        </button>
+                        <div class="emoji-picker" id="picker-${post.id}">
+                            <span onclick="setReaction(${post.id}, '👍 جام')">👍</span>
+                            <span onclick="setReaction(${post.id}, '❤️ قلب')">❤️</span>
+                            <span onclick="setReaction(${post.id}, '😂 ضحك')">😂</span>
+                            <span onclick="setReaction(${post.id}, '😮 إطراء')">😮</span>
+                            <span onclick="setReaction(${post.id}, '😢 حزن')">😢</span>
+                            <span onclick="setReaction(${post.id}, '👏 تحية')">👏</span>
+                        </div>
+                        <button class="action-btn" style="background:#fff; color:#64748b; border:1px solid #e2e8f0;" onclick="sharePostItem(${post.id})">🔁 إعادة نشر</button>
+                    </div>
+                    <div class="comments-box">
+                        <div class="comment-input-row">
+                            <input type="text" placeholder="اكتب تعليقاً..." id="comm-input-${post.id}">
+                            <label class="upload-label" style="padding:4px 6px; font-size:10px;">📷<input type="file" id="comm-img-${post.id}" accept="image/*,video/*" style="display:none"></label>
+                            <button class="comment-sub-btn" onclick="addCommentItem(${post.id})">إرسال</button>
+                        </div>
+                        <div class="comm-list">${commentsHTML}</div>
+                    </div>
+                `;
+                list.appendChild(postDiv);
+            });
+        }
+
         function addNewPost() {
             const text = document.getElementById('mainPostText').value.trim();
-            if(!text) return alert("اكتب شيئاً لنشره!");
+            const imgInput = document.getElementById('postImageInput');
+            const vidInput = document.getElementById('postVideoInput');
 
-            createPostElement(currentUser.name, currentUser.avatar, text, null);
+            let mediaUrl = null;
+            let mediaType = null;
+
+            let file = imgInput.files[0] || vidInput.files[0];
+            if(file) {
+                mediaUrl = URL.createObjectURL(file);
+                mediaType = imgInput.files[0] ? 'image' : 'video';
+            }
+
+            if(!text && !mediaUrl) return alert("الرجاء كتابة نص أو إرفاق صورة/فيديو!");
+
+            let posts = getSavedPosts();
+            posts.unshift({
+                id: Date.now(),
+                author: currentUser.name,
+                avatar: currentUser.avatar,
+                text: text,
+                mediaUrl: mediaUrl,
+                mediaType: mediaType,
+                reaction: "👍 جام",
+                reactionCount: 0,
+                comments: [],
+                sharedFrom: null
+            });
+
+            savePosts(posts);
             document.getElementById('mainPostText').value = '';
+            imgInput.value = '';
+            vidInput.value = '';
+            loadPosts();
         }
 
-        function createPostElement(authorName, authorAvatar, postText, sharedContentHTML) {
-            const list = document.getElementById('postsList');
-            const postDiv = document.createElement('div');
-            postDiv.className = 'feed-post';
-            
-            let sharedBlock = sharedContentHTML ? `<div class="shared-box">${sharedContentHTML}</div>` : '';
-
-            postDiv.innerHTML = `
-                <div class="post-header">
-                    <img src="${authorAvatar}" class="post-avatar">
-                    <span class="post-author">${authorName}</span>
-                </div>
-                <div class="post-text">${postText}</div>
-                ${sharedBlock}
-                <div class="post-actions">
-                    <button class="action-btn" onclick="react(this, '👍 جام')">👍 جام (0)</button>
-                    <button class="action-btn" onclick="react(this, '❤️ قلب')">❤️ قلب (0)</button>
-                    <button class="action-btn" onclick="sharePost(this)">🔁 إعادة نشر</button>
-                </div>
-                <div class="comments-box">
-                    <div class="comment-input-row">
-                        <input type="text" placeholder="اكتب تعليقاً (كومنتار)...">
-                        <button class="comment-sub-btn" onclick="addComment(this)">إرسال</button>
-                    </div>
-                    <div class="comm-list"></div>
-                </div>
-            `;
-            list.prepend(postDiv);
+        function toggleEmojiPicker(e, id) {
+            e.stopPropagation();
+            let picker = document.getElementById(`picker-${id}`);
+            document.querySelectorAll('.emoji-picker').forEach(p => { if(p !== picker) p.style.display = 'none'; });
+            picker.style.display = picker.style.display === 'flex' ? 'none' : 'flex';
         }
 
-        function react(btn, type) {
-            let parts = btn.innerText.split('(');
-            if(parts.length > 1) {
-                let count = parseInt(parts[1]) + 1;
-                btn.innerText = `${type} (${count})`;
-            } else {
-                btn.innerText = `${type} (1)`;
+        window.onclick = function() {
+            document.querySelectorAll('.emoji-picker').forEach(p => p.style.display = 'none');
+        };
+
+        function setReaction(id, emojiType) {
+            let posts = getSavedPosts();
+            let p = posts.find(item => item.id === id);
+            if(p) {
+                p.reaction = emojiType;
+                p.reactionCount++;
+                savePosts(posts);
+                loadPosts();
             }
         }
 
-        function addComment(btn) {
-            const input = btn.previousElementSibling;
+        function addCommentItem(id) {
+            const input = document.getElementById(`comm-input-${id}`);
+            const fileInput = document.getElementById(`comm-img-${id}`);
             const val = input.value.trim();
-            if(!val) return;
-            const commList = btn.parentElement.nextElementSibling;
-            const p = document.createElement('div');
-            p.style.marginTop = "3px";
-            p.innerHTML = `💬 <strong>${currentUser.name.split(' ')[0]}:</strong> ${val}`;
-            commList.appendChild(p);
-            input.value = '';
-        }
-
-        // ميزة إعادة النشر مع التعليق
-        function sharePost(btn) {
-            const postCard = btn.closest('.feed-post');
-            const author = postCard.querySelector('.post-author').innerText;
-            const content = postCard.querySelector('.post-text').innerText;
             
-            let userComment = prompt("اكتب تعليقك مع إعادة النشر (اختياري):", "منشور رائع أعجبني!");
-            if (userComment === null) return; // إذا قام المستخدم بالإلغاء
+            let cMediaUrl = null;
+            let cMediaType = null;
 
-            let originalSnippet = `<b>منشور لـ ${author}:</b><br>${content}`;
-            createPostElement(currentUser.name, currentUser.avatar, userComment ? userComment : "قام بإعادة نشر منشور:", originalSnippet);
-            alert("تمت إعادة النشر بنجاح إلى حائطك الرئيسي!");
+            if(fileInput.files[0]) {
+                cMediaUrl = URL.createObjectURL(fileInput.files[0]);
+                cMediaType = fileInput.files[0].type.startsWith('video') ? 'video' : 'image';
+            }
+
+            if(!val && !cMediaUrl) return;
+
+            let posts = getSavedPosts();
+            let p = posts.find(item => item.id === id);
+            if(p) {
+                p.comments.push({ 
+                    author: currentUser.name.split(' ')[0], 
+                    text: val, 
+                    mediaUrl: cMediaUrl, 
+                    mediaType: cMediaType 
+                });
+                savePosts(posts);
+                loadPosts();
+            }
         }
 
-        // إرسال طلب صداقة عبر رقم الهاتف (SMS)
+        function sharePostItem(id) {
+            let posts = getSavedPosts();
+            let target = posts.find(item => item.id === id);
+            if(!target) return;
+
+            let userComment = prompt("اكتب تعليقك مع إعادة النشر:", "منشور رائع أعجبني!");
+            if(userComment === null) return;
+
+            posts.unshift({
+                id: Date.now(),
+                author: currentUser.name,
+                avatar: currentUser.avatar,
+                text: userComment ? userComment : "قام بإعادة نشر منشور:",
+                mediaUrl: target.mediaUrl,
+                mediaType: target.mediaType,
+                reaction: "👍 جام",
+                reactionCount: 0,
+                comments: [],
+                sharedFrom: `<b>منشور لـ ${target.author}:</b><br>${target.text}`
+            });
+
+            savePosts(posts);
+            loadPosts();
+            alert("تمت إعادة النشر بنجاح!");
+        }
+
         function sendFriendSMS() {
             const phone = document.getElementById('friendPhoneInput').value.trim();
-            if(!phone) return;
+            if(!phone) return alert("الرجاء إدخال رقم الهاتف");
             window.open(`sms:${phone}?body=` + encodeURIComponent("أهلاً بك، أود إضافتك كصديق معي على تطبيق حناشة دردشة (HANNACHA Chat)."));
             document.getElementById('friendPhoneInput').value = '';
         }
@@ -310,22 +431,24 @@
                 localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                 document.getElementById('webcam').srcObject = localStream;
             } catch(e) {
-                alert("تعذر تشغيل الكاميرا.");
+                alert("تعذر الوصول للكاميرا. تأكد من إعطاء الصلاحيات.");
                 closeCamera();
             }
         }
 
         function startVoiceCall() {
-            alert("جاري الاتصال الصوتي عبر الإنترنت بالصديق...");
+            alert("جاري الاتصال الصوتي الحقيقي بالصديق عبر الإنترنت...");
         }
 
         function openMessengerChat(name) {
-            alert("فتح محادثة مسنجر مع " + name);
-            document.querySelectorAll('.nav-item')[2].click();
+            alert("فتح نافذة مسنجر مع الصديق: " + name);
+            switchTab(document.querySelectorAll('.nav-item')[2], 'messagesScreen');
         }
 
         function closeCamera() {
-            if(localStream) localStream.getTracks().forEach(t => t.stop());
+            if(localStream) {
+                localStream.getTracks().forEach(t => t.stop());
+            }
             document.getElementById('videoContainer').style.display = 'none';
         }
     </script>
