@@ -70,7 +70,7 @@
             }
         }
 
-        /* شاشة تسجيل الدخول برقم الهاتف والرمز السري */
+        /* شاشة تسجيل الدخول */
         #auth-screen {
             position: absolute;
             top: 0;
@@ -85,6 +85,7 @@
             align-items: center;
             padding: 30px;
             text-align: center;
+            overflow-y: auto;
         }
 
         .auth-card {
@@ -143,7 +144,7 @@
 
         .header-actions {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
         }
 
@@ -160,6 +161,7 @@
             cursor: pointer;
             transition: 0.2s;
             font-size: 13px;
+            position: relative;
         }
 
         .icon-btn:hover {
@@ -167,22 +169,95 @@
             color: var(--primary);
         }
 
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: var(--danger);
+            color: white;
+            font-size: 9px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* نافذة الإشعارات المنسدلة مع زر إغلاق X */
+        .notifications-dropdown {
+            position: absolute;
+            top: 55px;
+            left: 15px;
+            right: 15px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 700;
+            max-height: 350px;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .notif-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .close-x-btn {
+            background: none;
+            border: none;
+            color: var(--danger);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 50%;
+        }
+        .close-x-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .notif-item {
+            padding: 8px;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* تثبيت الصفحة الرئيسية فكسي (لا تتحرك للأعلى أو الأسفل بالكامل بل المحتوى الداخلي يتمرر) */
         .app-content {
             flex: 1;
-            overflow-y: auto;
+            overflow: hidden; /* تم التثبيت لمنع الخروج عن الإطار */
             position: relative;
             background-color: var(--bg-main);
+            display: flex;
+            flex-direction: column;
         }
 
         .view {
             display: none;
+            flex: 1;
             padding: 16px;
+            overflow-y: auto; /* المحتوى الداخلي فقط يتمرر بأمان */
             animation: fadeIn 0.3s ease;
             padding-bottom: 80px;
         }
 
         .view.active {
-            display: block;
+            display: flex;
+            flex-direction: column;
         }
 
         @keyframes fadeIn {
@@ -298,6 +373,17 @@
             max-height: 250px;
             object-fit: cover;
             margin-bottom: 12px;
+            background: #000;
+        }
+
+        /* تشغيل فيديو حقيقي ومدمج */
+        .real-video-container {
+            position: relative;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            background: #000;
         }
 
         .youtube-embed {
@@ -427,7 +513,7 @@
             background: var(--primary-dark);
         }
 
-        /* واجهة الدردشة والاتصالات العلوية */
+        /* واجهة الدردشة */
         #chat-room-view {
             position: absolute;
             top: 0;
@@ -568,21 +654,52 @@
             text-decoration: none;
             font-weight: 700;
         }
+
+        .select-custom {
+            width: 100%;
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body data-theme="dark">
 
 <div class="phone-frame">
-    <!-- شاشة تسجيل الدخول برقم الهاتف و 6 أرقام سرية (تُحفظ لمرة واحدة) -->
+    <!-- شاشة تسجيل الدخول برقم الهاتف و 6 أرقام سرية واختيار البلد والجنس -->
     <div id="auth-screen">
         <div class="auth-card">
             <div class="logo-icon" style="width:64px; height:64px; font-size:28px; margin:0 auto 16px auto;">CH</div>
             <h2 style="margin-bottom:6px;">مرحباً بك في CHROUAA</h2>
-            <p style="color:var(--text-secondary); font-size:13px; margin-bottom:20px;">تسجيل سريع برقم الهاتف والرمز السري (يُحفظ لمرة واحدة)</p>
+            <p style="color:var(--text-secondary); font-size:13px; margin-bottom:20px;">تسجيل سريع يُحفظ لمرة واحدة</p>
             
             <input type="text" id="login-phone-input" class="create-input" placeholder="رقم الهاتف (مثال: 0612345678)..." style="text-align:center;" />
             <input type="password" id="login-pin-input" class="create-input" maxlength="6" placeholder="الرمز السري (6 أرقام)..." style="text-align:center; letter-spacing:4px;" />
             
+            <!-- اختيار البلد -->
+            <select id="login-country" class="select-custom">
+                <option value="الجزائر">الجزائر 🇩🇿</option>
+                <option value="المغرب">المغرب 🇲🇦</option>
+                <option value="تونس">تونس 🇹🇳</option>
+                <option value="مصر">مصر 🇪🇬</option>
+                <option value="السعودية">السعودية 🇸🇦</option>
+                <option value="الإمارات">الإمارات 🇦🇪</option>
+                <option value="فلسطين">فلسطين 🇵🇸</option>
+                <option value="فرنسا">فرنسا 🇫🇷</option>
+                <option value="أخرى">دولة أخرى</option>
+            </select>
+
+            <!-- اختيار الجنس -->
+            <select id="login-gender" class="select-custom">
+                <option value="ذكر">ذكر</option>
+                <option value="أنثى">أنثى</option>
+            </select>
+
             <button class="primary-btn" onclick="handlePhoneLogin()">دخول المنصة</button>
         </div>
     </div>
@@ -597,24 +714,40 @@
         </div>
     </div>
 
-    <!-- رأس التطبيق -->
+    <!-- رأس التطبيق (مع جرس الإشعارات وزر الإغلاق X للإشعارات) -->
     <header class="app-header">
         <div class="logo-area">
             <div class="logo-icon">CH</div>
             <div class="logo-text">CHROUAA</div>
         </div>
         <div class="header-actions">
-            <select id="lang-selector" onchange="changeLanguage(this.value)" style="background:var(--bg-main); border:1px solid var(--border); color:var(--text-main); border-radius:8px; padding:4px; font-size:11px; outline:none;">
-                <option value="ar">العربية</option>
-                <option value="fr">Français</option>
-                <option value="en">English</option>
-            </select>
+            <!-- جرس الإشعارات -->
+            <button class="icon-btn" onclick="toggleNotifications(event)" title="الإشعارات">
+                <i class="fa-solid fa-bell"></i>
+                <span class="notification-badge" id="notif-badge">2</span>
+            </button>
             <button class="icon-btn" onclick="toggleTheme()" title="تغيير المظهر"><i class="fa-solid fa-moon" id="theme-icon"></i></button>
             <button class="icon-btn" onclick="handleLogout()" title="تسجيل الخروج"><i class="fa-solid fa-right-from-bracket" style="color:var(--danger);"></i></button>
         </div>
     </header>
 
-    <!-- محتوى التطبيق -->
+    <!-- نافذة الإشعارات المنسدلة -->
+    <div id="notifications-menu" class="notifications-dropdown">
+        <div class="notif-header">
+            <span>التنبيهات والإشعارات</span>
+            <button class="close-x-btn" onclick="closeNotifications()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="notif-item">
+            <span>قام أحمد بإضافة تعليق جديد على منشورك.</span>
+            <span style="font-size:10px; color:var(--text-secondary);">منذ 5 د</span>
+        </div>
+        <div class="notif-item">
+            <span>أهلاً بك في منصة شروعة! استمتع بالتواصل.</span>
+            <span style="font-size:10px; color:var(--text-secondary);">منذ ساعة</span>
+        </div>
+    </div>
+
+    <!-- محتوى التطبيق (الصفحة الرئيسية مثبتة فكسي ومحتواها الداخلي يتمرر بسلاسة) -->
     <div class="app-content">
 
         <!-- 1. خلاصة المنشورات (الرئيسية مع شريط البحث وإضافة الأصدقاء في الأعلى) -->
@@ -625,9 +758,9 @@
                 <button class="primary-btn" style="width:auto; white-space:nowrap;" onclick="quickAddFriendPrompt()"><i class="fa-solid fa-user-plus"></i> إضافة صديق</button>
             </div>
 
-            <!-- صندوق إنشاء المنشور (مع قراءة روابط الفيديو تلقائياً) -->
+            <!-- صندوق إنشاء المنشور (مع قراءة روابط الفيديو الحقيقي وعرضها تشغيل مباشر) -->
             <div class="create-post-box">
-                <textarea id="post-text-input" class="create-input" rows="3" placeholder="بماذا تفكر؟ (ألصق رابط فيديو أو يوتيوب ليتم قراءته وعرضه)..."></textarea>
+                <textarea id="post-text-input" class="create-input" rows="3" placeholder="بماذا تفكر؟ (ألصق رابط فيديو أو يوتيوب ليتم قراءته وتشغيله بحقيقي)..."></textarea>
                 <div class="create-footer">
                     <div class="media-upload-options">
                         <label class="upload-icon-btn" title="صورة"><i class="fa-solid fa-image"></i><input type="file" id="image-upload" accept="image/*" style="display:none;" onchange="previewMedia(event, 'image')"></label>
@@ -637,12 +770,12 @@
                 </div>
                 <div id="media-preview-container" style="margin-top:10px; display:none; position:relative;">
                     <div id="preview-box-content"></div>
-                    <button onclick="clearMediaPreview()" style="position:absolute; top:0; right:0; background:red; color:white; border:none; border-radius:50%; width:20px; height:20px; font-size:10px; cursor:pointer;">×</button>
+                    <button class="close-x-btn" onclick="clearMediaPreview()" style="position:absolute; top:0; right:0; background:red; color:white;"><i class="fa-solid fa-xmark"></i></button>
                 </div>
             </div>
 
             <div id="posts-feed-container">
-                <!-- منشور افتراضي تجريبي -->
+                <!-- منشور افتراضي تجريبي بفيديو حقيقي متكامل -->
                 <div class="post-card">
                     <div class="post-header">
                         <div class="user-info-flex">
@@ -658,10 +791,10 @@
                         <button class="primary-btn" style="width:auto; padding:4px 10px; font-size:11px;" onclick="addSpecificFriend('سارة')"><i class="fa-solid fa-user-plus"></i> إضافة صديق</button>
                     </div>
                     <div class="post-body">
-                        أهلاً بكم في تطبيق **CHROUAA**. هذا فيديو تجريبي تم قراءته وعرضه تلقائياً في المنشور:
+                        أهلاً بكم في تطبيق **CHROUAA**. هذا فيديو حقيقي يعمل مباشرة داخل التطبيق:
                     </div>
-                    <div class="youtube-embed">
-                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                    <div class="real-video-container">
+                        <video class="post-video" controls src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
                     </div>
                     <div class="post-footer">
                         <button class="action-btn" onclick="toggleLike(this)" oncontextmenu="showReactions(event, this); return false;"><i class="fa-regular fa-heart"></i> <span class="like-text">إعجاب (14)</span></button>
@@ -704,7 +837,6 @@
         <!-- 3. المحادثات (بما في ذلك خدمة العملاء الحقيقية) -->
         <div id="view-chat" class="view">
             <h3 style="margin-bottom: 12px;">المحادثات النشطة</h3>
-            <!-- خدمة العملاء الحقيقية -->
             <div class="chat-list-item" onclick="openChatRoom('خدمة العملاء الحقيقية', 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100')">
                 <div class="online-status-container">
                     <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100" class="avatar" />
@@ -730,20 +862,34 @@
             </div>
         </div>
 
-        <!-- 4. الملف الشخصي (الرابط الخاص ومشاركته عبر SMS) -->
+        <!-- 4. الملف الشخصي (مع إمكانية تعديل المعلومات، الصورة، النبذة، البلد، والجنس) -->
         <div id="view-profile" class="view">
-            <div style="text-align:center; padding: 20px 0;">
-                <div class="online-status-container" style="display:inline-block; margin-bottom:12px;">
-                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" class="avatar" style="width:80px; height:80px;" />
+            <div style="text-align:center; padding: 10px 0;">
+                <div class="online-status-container" style="display:inline-block; margin-bottom:8px;">
+                    <img id="profile-img-preview" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" class="avatar" style="width:80px; height:80px;" />
                     <div class="online-dot" style="width:14px; height:14px; bottom:4px; right:4px;" title="متصل"></div>
                 </div>
                 <h3 id="profile-name-display">مستخدم شروعة</h3>
-                <p id="profile-phone-display" style="color:var(--primary); font-size:13px; font-weight:700; margin-top:4px;">0612345678</p>
+                <p id="profile-phone-display" style="color:var(--primary); font-size:13px; font-weight:700; margin-top:2px;">0612345678</p>
+                <p id="profile-bio-display" style="font-size:12px; color:var(--text-secondary); margin-top:4px;">أهلاً بك في صفحتي الشخصية!</p>
+            </div>
+
+            <div class="post-card">
+                <h4 style="margin-bottom:8px; font-size:14px;">تعديل معلومات الملف الشخصي</h4>
+                <label style="font-size:11px; color:var(--text-secondary);">الاسم أو اللقب:</label>
+                <input type="text" id="edit-name-input" class="create-input" placeholder="اسمك الكامل..." />
+                
+                <label style="font-size:11px; color:var(--text-secondary);">نبذة تعريفية:</label>
+                <textarea id="edit-bio-input" class="create-input" rows="2" placeholder="اكتب نبذة عنك..."></textarea>
+
+                <label style="font-size:11px; color:var(--text-secondary);">رابط صورة الملف الشخصي (URL):</label>
+                <input type="text" id="edit-avatar-input" class="create-input" placeholder="رابط صورة جديدة..." />
+
+                <button class="primary-btn" onclick="saveProfileChanges()">حفظ التعديلات</button>
             </div>
             
             <div class="post-card">
-                <h4 style="margin-bottom:8px;">رابط الدعوة والبحث الخاص بك</h4>
-                <p style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">كل مستخدم لديه رابط خاص به لمشاركته مع الأصدقاء:</p>
+                <h4 style="margin-bottom:8px; font-size:14px;">رابط الدعوة والبحث الخاص بك</h4>
                 <input type="text" id="my-unique-link" class="create-input" readonly style="font-size:11px; background:var(--bg-main);" />
                 <div style="display:flex; gap:8px;">
                     <button class="primary-btn" onclick="copyMyLink()"><i class="fa-solid fa-copy"></i> نسخ الرابط</button>
@@ -754,11 +900,11 @@
 
     </div>
 
-    <!-- نافذة غرفة الدردشة الكاملة (المطلوبة بالخصائص الدقيقة) -->
+    <!-- نافذة غرفة الدردشة الكاملة -->
     <div id="chat-room-view">
         <div class="chat-room-header">
             <div style="display:flex; align-items:center; gap:10px;">
-                <button class="icon-btn" onclick="closeChatRoom()" style="border:none; background:none;"><i class="fa-solid fa-arrow-right" style="font-size:18px;"></i></button>
+                <button class="icon-btn" onclick="closeChatRoom()" style="border:none; background:none;"><i class="fa-solid fa-xmark" style="font-size:18px; color:var(--danger);"></i></button>
                 <div class="online-status-container">
                     <img id="chat-room-avatar" src="" class="avatar" style="width:36px; height:36px;" />
                     <div class="online-dot"></div>
@@ -769,16 +915,11 @@
                 </div>
             </div>
             <div class="chat-room-actions">
-                <!-- مكالمة فيديو مباشرة -->
                 <a id="action-video-call" href="tel:" class="call-action-icon bg-video" title="مكالمة فيديو"><i class="fa-solid fa-video"></i></a>
-                <!-- مكالمة عادية مباشرة -->
                 <a id="action-audio-call" href="tel:" class="call-action-icon bg-audio" title="مكالمة عادية"><i class="fa-solid fa-phone"></i></a>
-                <!-- مكالمة واتساب مباشرة -->
                 <a id="action-wa-call" href="#" target="_blank" class="call-action-icon bg-wa" title="مكالمة واتساب"><i class="fa-brands fa-whatsapp"></i></a>
-                <!-- مكالمة فيسبوك مباشرة -->
                 <a id="action-fb-call" href="#" target="_blank" class="call-action-icon bg-fb" title="مكالمة فيسبوك"><i class="fa-brands fa-facebook-f"></i></a>
                 
-                <!-- زر ثلاث نقاط (إضافة صديق، حظر الدردشة، الإبلاغ) -->
                 <div style="position:relative;">
                     <button class="icon-btn" onclick="toggleChatDropdown(event)" style="border:none;"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                     <div id="chat-dropdown-menu" class="dropdown-menu">
@@ -811,41 +952,6 @@
 </div>
 
 <script>
-    // ترجمات واجهات اللغات الثلاث
-    const translations = {
-        ar: {
-            title: "CHROUAA - منصة التواصل الاجتماعي",
-            navFeed: "الرئيسية",
-            navSearch: "البحث",
-            navChats: "المحادثات",
-            navProfile: "حسابي"
-        },
-        fr: {
-            title: "CHROUAA - Réseau Social",
-            navFeed: "Accueil",
-            navSearch: "Recherche",
-            navChats: "Discussions",
-            navProfile: "Profil"
-        },
-        en: {
-            title: "CHROUAA - Social Platform",
-            navFeed: "Feed",
-            navSearch: "Search",
-            navChats: "Chats",
-            navProfile: "Profile"
-        }
-    };
-
-    function changeLanguage(lang) {
-        const t = translations[lang];
-        document.getElementById('html-root').setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-        document.getElementById('app-title').innerText = t.title;
-        document.getElementById('nav-feed').innerText = t.navFeed;
-        document.getElementById('nav-search').innerText = t.navSearch;
-        document.getElementById('nav-chats').innerText = t.navChats;
-        document.getElementById('nav-profile').innerText = t.navProfile;
-    }
-
     setInterval(() => {
         const now = new Date();
         document.getElementById('clock').innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -857,6 +963,7 @@
         if (savedPhone) {
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('profile-phone-display').innerText = savedPhone;
+            loadProfileData();
             generateUserUniqueLink(savedPhone);
         }
     });
@@ -864,21 +971,53 @@
     function handlePhoneLogin() {
         const phone = document.getElementById('login-phone-input').value.trim();
         const pin = document.getElementById('login-pin-input').value.trim();
+        const country = document.getElementById('login-country').value;
+        const gender = document.getElementById('login-gender').value;
+
         if(!phone || phone.length < 8) return alert('الرجاء إدخال رقم هاتف صحيح!');
         if(!pin || pin.length !== 6) return alert('الرجاء إدخال الرمز السري المكون من 6 أرقام!');
 
         // حفظ البيانات لمرة واحدة
         localStorage.setItem('ch_phone', phone);
         localStorage.setItem('ch_pin', pin);
+        localStorage.setItem('ch_country', country);
+        localStorage.setItem('ch_gender', gender);
+        localStorage.setItem('ch_name', 'مستخدم شروعة (' + gender + ')');
+        localStorage.setItem('ch_bio', 'أعيش في ' + country + ' وأستخدم تطبيق شروعة.');
 
-        document.getElementById('profile-phone-display').innerText = phone;
+        loadProfileData();
         generateUserUniqueLink(phone);
         document.getElementById('auth-screen').style.display = 'none';
     }
 
+    function loadProfileData() {
+        const name = localStorage.getItem('ch_name') || 'مستخدم شروعة';
+        const bio = localStorage.getItem('ch_bio') || 'نبذة تعريفية قصيرة';
+        const avatar = localStorage.getItem('ch_avatar') || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150';
+        
+        document.getElementById('profile-name-display').innerText = name;
+        document.getElementById('profile-bio-display').innerText = bio;
+        document.getElementById('profile-img-preview').src = avatar;
+        document.getElementById('edit-name-input').value = name;
+        document.getElementById('edit-bio-input').value = bio;
+        document.getElementById('edit-avatar-input').value = avatar;
+    }
+
+    function saveProfileChanges() {
+        const name = document.getElementById('edit-name-input').value.trim();
+        const bio = document.getElementById('edit-bio-input').value.trim();
+        const avatar = document.getElementById('edit-avatar-input').value.trim();
+
+        if(name) localStorage.setItem('ch_name', name);
+        if(bio) localStorage.setItem('ch_bio', bio);
+        if(avatar) localStorage.setItem('ch_avatar', avatar);
+
+        loadProfileData();
+        alert('تم حفظ تعديلات الملف الشخصي بنجاح!');
+    }
+
     function handleLogout() {
-        localStorage.removeItem('ch_phone');
-        localStorage.removeItem('ch_pin');
+        localStorage.clear();
         document.getElementById('auth-screen').style.display = 'flex';
     }
 
@@ -918,6 +1057,18 @@
         }
     }
 
+    // إدارات جرس الإشعارات
+    function toggleNotifications(e) {
+        e.stopPropagation();
+        const menu = document.getElementById('notifications-menu');
+        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+        document.getElementById('notif-badge').style.display = 'none';
+    }
+
+    function closeNotifications() {
+        document.getElementById('notifications-menu').style.display = 'none';
+    }
+
     let uploadedMediaData = null;
     let mediaType = null;
     function previewMedia(event, type) {
@@ -944,7 +1095,7 @@
         document.getElementById('media-preview-container').style.display = 'none';
     }
 
-    // قراءة روابط الفيديو ويوتيوب تلقائياً في المنشورات
+    // قراءة روابط الفيديو ويوتيوب وتحويلها لفيديو حقيقي وقابل للتشغيل
     function parseMediaLinks(text) {
         const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/g;
         let match = ytRegex.exec(text);
@@ -952,6 +1103,13 @@
             const videoId = match[1];
             const cleanText = text.replace(ytRegex, '');
             return `${cleanText}<div class="youtube-embed"><iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe></div>`;
+        }
+        
+        // التحقق من روابط الفيديو المباشرة (.mp4 إلخ)
+        if (text.includes('http://') || text.includes('https://')) {
+            if (text.endsWith('.mp4') || text.includes('video')) {
+                return `<div class="real-video-container"><video class="post-video" controls src="${text.trim()}"></video></div>`;
+            }
         }
         return text;
     }
@@ -969,25 +1127,27 @@
             if(mediaType === 'image') {
                 mediaHTML = `<img src="${uploadedMediaData}" class="post-media" />`;
             } else {
-                mediaHTML = `<video src="${uploadedMediaData}" class="post-video" controls></video>`;
+                mediaHTML = `<div class="real-video-container"><video src="${uploadedMediaData}" class="post-video" controls></video></div>`;
             }
         }
 
         const formattedContent = parseMediaLinks(text);
+        const myName = localStorage.getItem('ch_name') || 'أنا (مستخدم شروعة)';
+        const myAvatar = localStorage.getItem('ch_avatar') || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150';
 
         postCard.innerHTML = `
             <div class="post-header">
                 <div class="user-info-flex">
                     <div class="online-status-container">
-                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100" class="avatar" />
+                        <img src="${myAvatar}" class="avatar" />
                         <div class="online-dot" title="متصل"></div>
                     </div>
                     <div class="user-details">
-                        <h4>أنا (مستخدم شروعة)</h4>
+                        <h4>${myName}</h4>
                         <span>متصل الآن</span>
                     </div>
                 </div>
-                <button class="primary-btn" style="width:auto; padding:4px 10px; font-size:11px;" onclick="addSpecificFriend('هذا المستخدم')"><i class="fa-solid fa-user-plus"></i> إضافة صديق</button>
+                <button class="primary-btn" style="width:auto; padding:4px 10px; font-size:11px;" onclick="addSpecificFriend('${myName}')"><i class="fa-solid fa-user-plus"></i> إضافة صديق</button>
             </div>
             <div class="post-body">${formattedContent}</div>
             ${mediaHTML}
@@ -1055,7 +1215,6 @@
     }
 
     function filterFeed(query) {
-        // تصفية المنشورات حسب البحث
         const cards = document.querySelectorAll('.post-card');
         cards.forEach(card => {
             const text = card.innerText;
@@ -1067,16 +1226,14 @@
         });
     }
 
-    // فتح غرفة الدردشة مع روابط التطبيقات الخارجية المباشرة (فيديو، عادي، واتساب، فيسبوك)
     function openChatRoom(name, avatar) {
         document.getElementById('chat-room-name').innerText = name;
         document.getElementById('chat-room-avatar').src = avatar;
         
-        // روابط التطبيقات الخارجية المباشرة
-        document.getElementById('action-video-call').href = "tel:+213600000000"; // تفعيل اتصال الفيديو الهاتفي أو النظام
-        document.getElementById('action-audio-call').href = "tel:+213600000000"; // اتصال هاتفي عادي مباشر
-        document.getElementById('action-wa-call').href = "https://wa.me/213600000000"; // ينتقل مباشرة لتطبيق/موقع واتساب
-        document.getElementById('action-fb-call').href = "https://m.facebook.com"; // ينتقل مباشرة لتطبيق/موقع فيسبوك
+        document.getElementById('action-video-call').href = "tel:+213600000000";
+        document.getElementById('action-audio-call').href = "tel:+213600000000";
+        document.getElementById('action-wa-call').href = "https://wa.me/213600000000";
+        document.getElementById('action-fb-call').href = "https://m.facebook.com";
 
         document.getElementById('chat-room-view').style.display = 'flex';
     }
@@ -1120,7 +1277,6 @@
         input.value = '';
         container.scrollTop = container.scrollHeight;
 
-        // الرد الآلي لخدمة العملاء الحقيقية
         setTimeout(() => {
             const reply = document.createElement('div');
             reply.className = 'message-bubble incoming';
