@@ -1,1374 +1,466 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" id="htmlRoot">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHROUAA - منصة التواصل الاجتماعي الذكية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>منصة الشروعة - ROUAACH</title>
     <style>
-        * { box-sizing: border-box; font-family: 'Cairo', sans-serif; margin: 0; padding: 0; }
-        body { background: linear-gradient(135deg, #0284c7, #0369a1, #075985); color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-size: 14px; }
-        
-        .phone-frame {
-            width: 100%; max-width: 410px; height: 100vh; max-height: 850px;
-            background: #f8fafc; border-radius: 40px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            display: flex; flex-direction: column; justify-content: space-between; padding: 12px; position: relative; overflow: hidden; border: 4px solid #0284c7;
-            color: #1e293b;
+        :root {
+            --primary-color: #6a1b9a; /* اللون البنفسجي الأساسي */
+            --primary-light: #9c4dcc;
+            --bg-color: #f3e5f5;
+            --text-color: #212121;
+            --white: #ffffff;
+            --green: #2e7d32;
         }
 
-        /* رأس التطبيق مع تكبير حرفي CH والشعار */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid #e2e8f0; background: #fff; border-radius: 20px 20px 0 0; }
-        .logo-container { position: relative; display: flex; align-items: center; }
-        
-        /* تنسيق اسم CHROUAA مع تكبير CH ونفس حجم الكلمة الأصلية */
-        .header h1 { font-size: 17px; font-weight: 800; color: #0369a1; letter-spacing: 0.5px; position: relative; z-index: 2; display: flex; align-items: baseline; }
-        .ch-big { font-size: 22px; font-weight: 900; color: #0284c7; }
-        
-        .logo-h-overlay { position: absolute; left: 50%; transform: translateX(-50%); font-size: 30px; font-weight: 900; color: rgba(2, 132, 199, 0.15); z-index: 1; pointer-events: none; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-        .header-icons { display: flex; align-items: center; gap: 6px; }
-        
-        /* زر اختيار اللغة (عربي، إنجليزي، فرنسي) */
-        .lang-select-box { background: #e0f2fe; border: 1px solid #bae6fd; color: #0369a1; border-radius: 12px; padding: 3px 6px; font-size: 10px; font-weight: bold; cursor: pointer; outline: none; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: 18px; /* تكبير الخطوط لتشبه فيسبوك */
+        }
 
-        .notification-bell { position: relative; cursor: pointer; font-size: 16px; background: #e0f2fe; padding: 5px 7px; border-radius: 50%; }
-        .notification-badge { position: absolute; top: -2px; right: -2px; background: #ef4444; color: #fff; font-size: 9px; width: 15px; height: 15px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-        
-        .user-mini-profile { display: none; align-items: center; gap: 4px; cursor: pointer; background: #e0f2fe; padding: 3px 6px; border-radius: 20px; border: 1px solid #bae6fd; }
-        .mini-avatar { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #0284c7; object-fit: cover; }
-        .mini-user-info { display: flex; flex-direction: column; text-align: right; }
-        .mini-name { font-size: 10px; font-weight: bold; color: #0369a1; }
-        .mini-id { font-size: 8.5px; color: #0284c7; font-weight: 700; }
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--white);
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 70px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
 
-        .screen-section { display: none; flex-direction: column; flex-grow: 1; overflow-y: auto; padding: 8px 0; gap: 8px; position: relative; }
-        .screen-section.active { display: flex; }
+        /* شريط التنقل العلوي */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: var(--white);
+            border-bottom: 1px solid #e0e0e0;
+        }
 
-        .close-screen-btn { position: absolute; top: 5px; left: 5px; background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; cursor: pointer; z-index: 10; }
+        .brand-title {
+            font-size: 26px; /* تكبير كلمة الشروعة في الأعلى */
+            font-weight: bold;
+            color: var(--primary-color);
+        }
 
-        /* شاشة تسجيل الدخول */
-        #loginScreen { align-items: center; justify-content: center; text-align: center; gap: 10px; background: #fff; border-radius: 12px; padding: 15px; }
-        .profile-pic-picker { position: relative; width: 75px; height: 75px; margin: 0 auto; cursor: pointer; }
-        .profile-pic-picker img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #0284c7; object-fit: cover; }
-        .profile-pic-picker input { display: none; }
-        
-        .input-group { width: 100%; text-align: right; display: flex; flex-direction: column; gap: 3px; }
-        .input-group label { font-size: 11.5px; font-weight: bold; color: #475569; }
-        .form-control-custom { width: 100%; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 7px; font-size: 12px; color: #1e293b; }
-        .google-btn { background: #0369a1; color: #fff; border: none; padding: 9px; border-radius: 25px; font-size: 12px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 4px; }
+        /* محتوى الصفحة */
+        .content {
+            padding: 20px;
+        }
 
-        /* نافذة التثبيت */
-        #installPromptModal { display: none; position: absolute; bottom: 70px; left: 10px; right: 10px; background: #0c4a6e; color: #fff; padding: 10px; border-radius: 12px; z-index: 200; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); border: 1px solid #0284c7; }
-        .install-guide-text { font-size: 10.5px; line-height: 1.4; margin-bottom: 6px; color: #e0f2fe; }
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
 
-        /* الملف الشخصي */
-        #profileScreen { background: #fff; border-radius: 12px; padding: 12px; align-items: center; text-align: center; gap: 8px; position: relative; }
-        .profile-header-box { position: relative; width: 75px; height: 75px; margin: 0 auto; }
-        #profileFullImg { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #0284c7; object-fit: cover; }
-        .edit-avatar-icon { position: absolute; bottom: 0; left: 0; background: #0284c7; color: #fff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; cursor: pointer; border: 2px solid #fff; }
-        .edit-avatar-icon input { display: none; }
-        
-        .id-badge-box { background: #e0f2fe; color: #0369a1; padding: 5px 10px; border-radius: 20px; font-size: 11.5px; font-weight: bold; border: 1px solid #bae6fd; display: flex; align-items: center; gap: 6px; }
-        .copy-id-btn { background: #0284c7; color: #fff; border: none; padding: 3px 8px; border-radius: 10px; font-size: 10px; cursor: pointer; }
-        .bio-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px; width: 100%; text-align: right; font-size: 11px; color: #475569; display: flex; flex-direction: column; gap: 3px; }
-        .bio-card b { color: #0369a1; }
+        /* صورة الملف الشخصي مع النقطة الخضراء */
+        .profile-container {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 20px auto;
+        }
 
-        #editProfileModal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 150; border-radius: 12px; padding: 12px; flex-direction: column; gap: 8px; overflow-y: auto; text-align: right; }
-        .pub-btn { background: #0284c7; color: #fff; border: none; padding: 7px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 11.5px; width: 100%; }
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+        }
 
-        /* صندوق النشر */
-        .post-input-box { background: #fff; padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 6px; }
-        .post-input-box textarea { width: 100%; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 7px; color: #1e293b; font-size: 11.5px; resize: none; height: 55px; }
-        .post-actions-row { display: flex; justify-content: space-between; align-items: center; }
-        .media-upload-btns { display: flex; gap: 6px; }
-        .media-upload-btn { background: #e0f2fe; border: 1px solid #bae6fd; color: #0369a1; padding: 4px 8px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: bold; }
-        
-        /* المنشورات والفيديوهات */
-        .feed-post { background: #fff; padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 6px; }
-        .post-header { display: flex; justify-content: space-between; align-items: center; }
-        .post-author-info { display: flex; align-items: center; gap: 6px; cursor: pointer; }
-        .post-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1px solid #0284c7; }
-        .post-author { font-size: 11.5px; font-weight: bold; color: #0369a1; }
-        
-        .post-header-actions { display: flex; gap: 4px; align-items: center; }
-        .action-icon-btn { background: #e0f2fe; border: 1px solid #bae6fd; color: #0369a1; border-radius: 5px; padding: 2px 5px; font-size: 9.5px; cursor: pointer; font-weight: bold; }
-        .report-btn { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; border-radius: 5px; padding: 2px 5px; font-size: 9.5px; cursor: pointer; font-weight: bold; }
-        .block-btn { background: #0c4a6e; color: #fff; border: none; border-radius: 5px; padding: 2px 5px; font-size: 9.5px; cursor: pointer; font-weight: bold; }
+        .online-dot {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 18px;
+            height: 18px;
+            background-color: #4caf50;
+            border: 3px solid var(--white);
+            border-radius: 50%;
+        }
 
-        .post-text { font-size: 11.5px; word-break: break-all; color: #334155; line-height: 1.4; }
-        .post-hashtag { color: #0284c7; font-weight: bold; cursor: pointer; }
-        .post-media-content { width: 100%; max-height: 180px; object-fit: cover; border-radius: 8px; margin-top: 3px; }
-        .embedded-video-player { width: 100%; height: 160px; border-radius: 8px; border: none; margin-top: 3px; }
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-        /* التفاعلات والإيموجيز */
-        .post-interactions { display: flex; gap: 15px; border-top: 1px solid #f1f5f9; padding-top: 5px; font-size: 10.5px; color: #64748b; position: relative; }
-        .interaction-btn { background: none; border: none; cursor: pointer; color: #64748b; font-size: 10.5px; display: flex; align-items: center; gap: 3px; font-weight: bold; position: relative; }
-        .interaction-btn.liked { color: #ef4444; }
+        .form-group label {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
 
-        .emoji-popup-picker { display: none; position: absolute; bottom: 25px; left: 0; background: #fff; border: 1px solid #cbd5e1; border-radius: 20px; padding: 3px 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 50; gap: 5px; align-items: center; }
-        .emoji-option { font-size: 15px; cursor: pointer; transition: transform 0.1s; background: none; border: none; }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            font-size: 18px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+        }
 
-        .comments-section { background: #f8fafc; border-radius: 6px; padding: 5px; display: flex; flex-direction: column; gap: 5px; margin-top: 4px; }
-        .comment-item { font-size: 10.5px; background: #fff; padding: 5px; border-radius: 5px; border: 1px solid #e2e8f0; line-height: 1.3; }
-        .comment-input-box { display: flex; gap: 5px; margin-top: 3px; }
-        .comment-input-box input { flex-grow: 1; background: #fff; border: 1px solid #cbd5e1; border-radius: 5px; padding: 4px; font-size: 10.5px; }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--primary-color);
+        }
 
-        /* شاشة الأصدقاء والبحث */
-        .friend-search-box { background: #fff; padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 6px; }
-        .search-result-card { background: #e0f2fe; border: 1px solid #bae6fd; padding: 8px; border-radius: 8px; display: none; justify-content: space-between; align-items: center; }
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            width: 100%;
+            padding: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
 
-        /* المسنجر والدردشة */
-        .chat-item { background: #fff; padding: 8px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; cursor: pointer; }
-        
-        #chatRoomScreen { display: none; flex-direction: column; height: 100%; background: #fff; border-radius: 12px; overflow: hidden; position: relative; }
-        .chat-room-header { background: #0284c7; color: #fff; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; }
-        .chat-messages-area { flex-grow: 1; background: #f8fafc; padding: 8px; overflow-y: auto; display: flex; flex-direction: column; gap: 5px; font-size: 11.5px; }
-        .msg-bubble { max-width: 75%; padding: 7px 10px; border-radius: 8px; word-break: break-all; line-height: 1.3; }
-        .msg-bubble.incoming { background: #fff; color: #1e293b; border: 1px solid #e2e8f0; align-self: flex-start; }
-        .msg-bubble.outgoing { background: #0284c7; color: #fff; align-self: flex-end; }
-        .chat-input-bar { padding: 6px; background: #fff; border-top: 1px solid #e2e8f0; display: flex; gap: 5px; align-items: center; }
-        .chat-input-bar input { flex-grow: 1; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 7px; font-size: 11.5px; }
-        .icon-action-btn { background: #e0f2fe; border: 1px solid #bae6fd; color: #0369a1; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 13px; }
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+        }
 
-        /* شريط الاتصال */
-        .call-external-bar { display: flex; gap: 4px; padding: 5px 8px; background: #e0f2fe; border-bottom: 1px solid #bae6fd; justify-content: space-between; align-items: center; flex-wrap: wrap; }
-        .call-options-group { display: flex; gap: 3px; }
-        .btn-call-opt { padding: 4px 7px; border-radius: 6px; font-size: 9.5px; font-weight: bold; border: none; cursor: pointer; }
-        .btn-video-dual { background: #0284c7; color: #fff; }
-        .btn-audio-normal { background: #0284c7; color: #fff; }
-        .whatsapp-btn { background: #25d366; color: #fff; }
-        .messenger-btn { background: #0084ff; color: #fff; }
+        /* مشغل الفيديو والروابط */
+        .video-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border: 1px dashed var(--primary-color);
+        }
 
-        /* مكالمة الفيديو المزدوجة */
-        #videoCallModal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; z-index: 250; flex-direction: column; justify-content: space-between; padding: 12px; color: #fff; text-align: center; }
-        .dual-video-wrapper { display: flex; flex-direction: column; gap: 8px; height: 65%; width: 100%; }
-        .video-box-main { flex: 1; background: #1e293b; border-radius: 10px; position: relative; overflow: hidden; border: 2px solid #0284c7; display: flex; align-items: center; justify-content: center; }
-        .video-box-secondary { position: absolute; bottom: 12px; right: 12px; width: 90px; height: 120px; background: #334155; border-radius: 8px; border: 2px solid #fff; overflow: hidden; z-index: 5; }
-        .camera-stream-tag { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
-        .call-status-label { font-size: 11px; color: #38bdf8; font-weight: bold; }
-        .call-controls-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 8px; }
-        .call-end-btn { background: #ef4444; color: #fff; border: none; padding: 7px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; }
-        .call-mute-btn { background: #475569; color: #fff; border: none; padding: 7px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; }
+        .video-container {
+            width: 100%;
+            margin-top: 10px;
+        }
 
-        /* صفحة خدمة العملاء الذكية (سارة) */
-        .ai-support-card { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 10px; display: flex; flex-direction: column; gap: 8px; height: 100%; }
-        .sarah-profile-header { display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #e0f2fe; padding-bottom: 6px; }
-        .sarah-avatar-container { position: relative; width: 40px; height: 40px; }
-        .sarah-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #0284c7; }
-        .online-status-dot { position: absolute; bottom: 2px; right: 2px; width: 10px; height: 10px; background: #22c55e; border: 2px solid #fff; border-radius: 50%; }
-        
-        .static-page-box { background: #fff; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 8px; font-size: 11.5px; line-height: 1.5; color: #334155; position: relative; }
-        .static-page-box h3 { color: #0369a1; font-size: 14px; font-weight: 800; border-bottom: 2px solid #e0f2fe; padding-bottom: 4px; }
+        video, iframe {
+            width: 100%;
+            height: 200px;
+            border-radius: 8px;
+            background: #000;
+        }
 
-        /* رابط الإحالة */
-        .referral-footer-box { background: #f1f5f9; border: 1px dashed #0284c7; padding: 6px; border-radius: 8px; text-align: center; font-size: 9.5px; color: #0369a1; margin-top: auto; }
+        /* شريط التنقل السفلي */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--white);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top: 1px solid #e0e0e0;
+            z-index: 1000;
+        }
 
-        /* القائمة السفلى */
-        .footer-nav { display: grid; grid-template-columns: repeat(6, 1fr); background: #fff; padding: 5px 2px; border-radius: 12px; border: 1px solid #e2e8f0; text-align: center; }
-        .nav-item { background: none; border: none; color: #64748b; display: flex; flex-direction: column; align-items: center; gap: 1px; cursor: pointer; font-size: 8.5px; font-weight: 600; }
-        .nav-item.active { color: #0369a1; }
-        .nav-icon { font-size: 15px; }
+        .nav-item {
+            text-align: center;
+            cursor: pointer;
+            color: #666;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .nav-item span {
+            display: block;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        /* شاشات التطبيق */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* محادثة خدمة العملاء الحقيقية */
+        .chat-box {
+            height: 350px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            overflow-y: auto;
+            background: #fafafa;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            max-width: 80%;
+            font-size: 16px;
+        }
+
+        .message.support {
+            background: #e1bee7;
+            color: #4a148c;
+            align-self: flex-start;
+        }
+
+        .message.user {
+            background: var(--primary-color);
+            color: var(--white);
+            margin-right: auto;
+        }
+
+        /* قائمة الأصدقاء مع النقاط الخضراء */
+        .friend-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            background: #fff;
+            margin-bottom: 8px;
+            border-radius: 8px;
+        }
+
+        .friend-avatar-container {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            margin-left: 15px;
+        }
+
+        .friend-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
 
-    <div class="phone-frame">
-        
-        <!-- رأس التطبيق مع حرفي CH المكبرين واسم CHROUAA -->
-        <div class="header">
-            <div class="logo-container">
-                <h1><span class="ch-big">CH</span>ROUAA</h1>
-                <span class="logo-h-overlay">C</span>
-            </div>
-            <div class="header-icons">
-                <!-- اختيار اللغة -->
-                <select id="langSelector" class="lang-select-box" onchange="changeLanguage(this.value)">
-                    <option value="ar">العربية 🇸🇦</option>
-                    <option value="en">English 🇬🇧</option>
-                    <option value="fr">Français 🇫🇷</option>
-                </select>
-
-                <div class="notification-bell" onclick="toggleNotifications()">
-                    🔔
-                    <div class="notification-badge" id="notifBadge">0</div>
-                </div>
-                <div class="user-mini-profile" id="miniProfileHeader" onclick="switchTab(null, 'profileScreen')">
-                    <img id="userImgMini" class="mini-avatar" alt="بروفيل">
-                    <div class="mini-user-info">
-                        <span id="miniUserName" class="mini-name"></span>
-                        <span id="miniUserId" class="mini-id">ID: ---</span>
-                    </div>
-                </div>
-            </div>
+<div class="app-container">
+    <!-- الشريط العلوي -->
+    <div class="header">
+        <div class="brand-title" id="appTitle">منصة الشروعة</div>
+        <div>
+            <select id="langSelect" onchange="changeLanguage()" style="padding: 5px; font-size: 16px; border-radius: 5px;">
+                <option value="ar">العربية (الشروعة)</option>
+                <option value="fr">Français (ROUAACH)</option>
+            </select>
         </div>
-
-        <!-- قائمة الإشعارات مع زر إغلاق (×) -->
-        <div id="notificationsModal" style="display:none; position:absolute; top:50px; left:10px; width:280px; background:#fff; border:1px solid #cbd5e1; border-radius:10px; z-index:100; padding:10px; max-height:240px; overflow-y:auto; box-shadow:0 5px 15px rgba(0,0,0,0.1);">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 3px; margin-bottom: 4px;">
-                <h4 id="txtNotifTitle" style="font-size:11.5px; color:#0369a1;">الإشعارات والتنبيهات</h4>
-                <button onclick="toggleNotifications()" style="background:#fee2e2; color:#dc2626; border:1px solid #fecaca; border-radius:50%; width:20px; height:20px; font-size:11px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center;">×</button>
-            </div>
-            <div id="notificationsList"></div>
-        </div>
-
-        <!-- نافذة التثبيت التلقائي -->
-        <div id="installPromptModal">
-            <p id="txtInstallTitle" style="font-size: 11.5px; font-weight: bold; margin-bottom: 5px; color: #38bdf8;">📲 تثبيت تطبيق CHROUAA على جهازك</p>
-            <p id="txtInstallDesc" class="install-guide-text">لتثبيت التطبيق بسهولة، اضغط على **(النقاط الثلاث ⁝)** في أعلى المتصفح، ثم اختر **"الإضافة إلى الشاشة الرئيسية"**.</p>
-            <div style="display: flex; gap: 6px; justify-content: center;">
-                <button id="txtInstallOk" onclick="triggerInstallApp()" style="background:#0284c7; color:#fff; border:none; padding:5px 12px; border-radius:6px; font-size:10.5px; cursor:pointer; font-weight:bold;">حسناً، فهمت</button>
-                <button id="txtInstallLater" onclick="closeInstallModal()" style="background:#475569; color:#fff; border:none; padding:5px 12px; border-radius:6px; font-size:10.5px; cursor:pointer;">لاحقاً</button>
-            </div>
-        </div>
-
-        <!-- 1. شاشة تسجيل الدخول -->
-        <div class="screen-section active" id="loginScreen">
-            <div style="background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; padding: 12px; border-radius: 10px; text-align: center;">
-                <h2 id="txtWelcomeHeader" style="font-size: 13.5px; font-weight: 800; margin-bottom: 4px;">مرحباً بك في منصة الشروعة للتواصل الاجتماعي ومكالمات فيديو مجانية</h2>
-                <p id="txtWelcomeSub" style="font-size: 10.5px; opacity: 0.9;">مكالمات فيديو ثنائية، مسنجر متطور، وتعريف بالمنصة ودعم سارة الذكي.</p>
-            </div>
-
-            <label class="profile-pic-picker">
-                <img id="previewAvatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100" alt="صورة البروفيل">
-                <input type="file" id="loginAvatarInput" accept="image/*" onchange="previewProfileImage(this)">
-            </label>
-
-            <div class="input-group">
-                <label id="lblFullName">الاسم الكامل:</label>
-                <input type="text" id="userNameInput" class="form-control-custom" placeholder="اسمك الكريم" value="أمير الجزائر">
-            </div>
-
-            <div class="input-group">
-                <label id="lblEmail">البريد الإلكتروني:</label>
-                <input type="email" id="userEmailInput" class="form-control-custom" placeholder="example@gmail.com" value="amir@gmail.com">
-            </div>
-
-            <button class="google-btn" id="btnLoginSubmit" onclick="completeLogin()">
-                تسجيل الدخول وبدء الاستخدام
-            </button>
-        </div>
-
-        <!-- 2. الصفحة الرئيسية -->
-        <div class="screen-section" id="feedScreen">
-            <div class="post-input-box">
-                <textarea id="mainPostText" placeholder="شارك أفكارك أو صورك أو رابط فيديو (سيتم عرضه كفيديو مباشر)..."></textarea>
-                
-                <div id="mediaPreviewContainer" style="display:none; position:relative;">
-                    <img id="imgPreviewTag" style="width:100%; max-height:110px; object-fit:cover; border-radius:6px;" alt="معاينة">
-                    <video id="vidPreviewTag" style="width:100%; max-height:110px; object-fit:cover; border-radius:6px; display:none;" controls></video>
-                    <button onclick="removeAttachedMedia()" style="position:absolute; top:3px; left:3px; background:#ef4444; color:#fff; border:none; border-radius:50%; width:20px; height:20px; font-size:10px; cursor:pointer;">×</button>
-                </div>
-
-                <div class="post-actions-row">
-                    <div class="media-upload-btns">
-                        <label class="media-upload-btn">
-                            📷 <span id="txtImageBtn">صورة</span>
-                            <input type="file" accept="image/*" style="display:none;" onchange="attachMediaToPost(this, 'image')">
-                        </label>
-                        <label class="media-upload-btn">
-                            🎥 <span id="txtVideoBtn">فيديو</span>
-                            <input type="file" accept="video/*" style="display:none;" onchange="attachMediaToPost(this, 'video')">
-                        </label>
-                    </div>
-                    <button class="pub-btn" id="btnPublish" style="width: 80px;" onclick="addNewPost()">نشر</button>
-                </div>
-            </div>
-
-            <div id="postsList" style="display: flex; flex-direction: column; gap: 6px;"></div>
-        </div>
-
-        <!-- 3. شاشة الأصدقاء والبحث -->
-        <div class="screen-section" id="friendsScreen">
-            <div class="close-screen-btn" onclick="switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen')">×</div>
-            <h3 id="txtFriendsTitle" style="font-size: 13.5px; color: #0369a1; margin-bottom: 5px; padding-left: 25px;">إضافة أصدقاء بالمعرف (ID)</h3>
-            
-            <div class="friend-search-box">
-                <p id="txtFriendsDesc" style="font-size: 10.5px; color: #64748b;">أدخل رقم المعرف (ID) للبحث عن أصدقائك والتواصل معهم فوراً:</p>
-                <div style="display: flex; gap: 5px;">
-                    <input type="text" id="searchIdInput" class="form-control-custom" placeholder="مثال: 458920">
-                    <button class="pub-btn" id="btnSearch" style="width: 75px;" onclick="searchUserById()">بحث</button>
-                </div>
-
-                <div class="search-result-card" id="searchResultCard">
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                        <img id="resAvatar" class="post-avatar" alt="صورة البحث">
-                        <div>
-                            <p id="resName" style="font-size: 11px; font-weight: bold; color: #0369a1;"></p>
-                            <p id="resId" style="font-size: 9.5px; color: #0284c7;"></p>
-                        </div>
-                    </div>
-                    <div style="display: flex; gap: 3px;">
-                        <button class="pub-btn" id="btnAddSearched" style="width: 60px; font-size: 9.5px;" onclick="addSearchedFriend()">إضافة ➕</button>
-                        <button class="pub-btn" id="btnChatSearched" style="width: 60px; font-size: 9.5px; background:#0084ff;" onclick="openChatRoomFromSearch()">مراسلة</button>
-                    </div>
-                </div>
-            </div>
-
-            <h4 id="txtActiveFriends" style="font-size: 12.5px; color: #0369a1; margin-top: 6px;">قائمة الأصدقاء النشطين</h4>
-            <div class="chat-item" onclick="openChatRoom('سارة (دعم الشروعة)', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100')">
-                <div style="display: flex; align-items: center; gap: 6px;">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="post-avatar" alt="سارة">
-                    <div>
-                        <p style="font-size: 11.5px; font-weight: bold;">سارة (دعم الشروعة)</p>
-                        <p style="font-size: 9.5px; color: #64748b;">ID: 100200 - متصل الآن</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 4. شاشة المسنجر -->
-        <div class="screen-section" id="messagesScreen">
-            <div class="close-screen-btn" onclick="switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen')">×</div>
-            <h3 id="txtMessengerTitle" style="font-size: 13.5px; color: #0369a1; padding-left: 25px;">مسنجر الشروعة والمكالمات</h3>
-            <div class="chat-item" onclick="openChatRoom('سارة (دعم الشروعة)', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100')">
-                <div style="display: flex; align-items: center; gap: 6px;">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="post-avatar" alt="سارة">
-                    <div>
-                        <p style="font-size: 11.5px; font-weight: bold;">سارة (دعم الشروعة)</p>
-                        <p id="txtMessengerWelcome" style="font-size: 10px; color: #64748b;">أهلاً بك في منصتنا للتواصل الذكي!</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- غرفة الدردشة الفردية -->
-        <div class="screen-section" id="chatRoomScreen">
-            <div class="chat-room-header">
-                <div style="display: flex; align-items: center; gap: 6px;">
-                    <button onclick="closeChatRoom()" style="background:none; border:none; color:#fff; font-size:13px; cursor:pointer;">⬅️</button>
-                    <span id="activeChatName" style="font-size: 12px; font-weight: bold;">المحادثة</span>
-                </div>
-                <div style="display: flex; gap: 5px; align-items: center;">
-                    <button class="block-btn" id="btnBlock" onclick="blockCurrentChatUser()">حظر 🚫</button>
-                    <div style="background:#fee2e2; color:#dc2626; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:bold; cursor:pointer;" onclick="closeChatRoom()">×</div>
-                </div>
-            </div>
-
-            <!-- شريط الاتصال -->
-            <div class="call-external-bar">
-                <div class="call-options-group">
-                    <button class="btn-call-opt btn-video-dual" id="btnDualVideo" onclick="startDualVideoCall()">📹 فيديو (كاميرتان)</button>
-                    <button class="btn-call-opt btn-audio-normal" id="btnAudioCall" onclick="startNormalAudioCall()">📞 مكالمة</button>
-                </div>
-                <div class="call-options-group">
-                    <button class="btn-call-opt whatsapp-btn" onclick="redirectCall('whatsapp')">واتساب</button>
-                    <button class="btn-call-opt messenger-btn" onclick="redirectCall('messenger')">مسنجر</button>
-                </div>
-            </div>
-
-            <div class="chat-messages-area" id="chatMessagesArea">
-                <div id="txtDefaultChatMsg" class="msg-bubble incoming">مرحباً بك! يمكنك الآن تجربة مكالمة الفيديو المزدوجة (كاميرتان) أو المكالمة العادية عبر التطبيق.</div>
-            </div>
-
-            <div class="chat-input-bar">
-                <button class="icon-action-btn" onclick="sendVoiceMessage()" title="صوتي">🎤</button>
-                <input type="text" id="chatInputText" placeholder="اكتب رسالتك...">
-                <button class="icon-action-btn" onclick="sendTextMessage()">📤</button>
-            </div>
-        </div>
-
-        <!-- شاشة مكالمة الفيديو المزدوجة -->
-        <div id="videoCallModal">
-            <div>
-                <h3 id="txtVideoCallTitle" style="font-size: 13.5px; color:#fff;">مكالمة فيديو مزدوجة (كاميرتان)</h3>
-                <p class="call-status-label" id="callStatusText">جاري الاتصال بالكاميرات...</p>
-            </div>
-            
-            <div class="dual-video-wrapper">
-                <div class="video-box-main">
-                    <video id="remoteCameraVideo" class="camera-stream-tag" autoplay playsinline muted></video>
-                    <span id="txtPartnerTag" style="position: absolute; top: 4px; right: 6px; background: rgba(0,0,0,0.5); font-size: 8.5px; padding: 2px 5px; border-radius: 3px;">الشريك</span>
-                </div>
-                <div class="video-box-secondary">
-                    <video id="localCameraVideo" class="camera-stream-tag" autoplay playsinline muted></video>
-                    <span id="txtMyCamTag" style="position: absolute; bottom: 2px; left: 2px; background: rgba(0,0,0,0.6); font-size: 7.5px; padding: 1px 3px; border-radius: 2px;">كاميرتك</span>
-                </div>
-            </div>
-
-            <div class="call-controls-row">
-                <button class="call-mute-btn" id="btnMuteAudio" onclick="toggleMuteAudio()">🔇 كتم الصوت</button>
-                <button class="call-end-btn" id="btnEndCall" onclick="endAppVideoCall()">إنهاء المكالمة ❌</button>
-            </div>
-        </div>
-
-        <!-- 5. صفحة التعريف بالمنصة -->
-        <div class="screen-section" id="aboutScreen">
-            <div class="close-screen-btn" onclick="switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen')">×</div>
-            <div class="static-page-box" style="margin-top: 22px;">
-                <h3 id="txtAboutTitle">عن منصة الشروعة الذكية 🌐</h3>
-                <p id="txtAboutDesc1">تُعد **منصة الشروعة (CHROUAA)** بيئة تفاعلية اجتماعية حديثة ومصممة بعناية فائقة لتوفير تجربة تواصل آمنة، سريعة، ومبتكرة.</p>
-                <p><b id="txtAboutFeaturesHead">أبرز مميزات المنصة:</b></p>
-                <ul id="txtAboutFeaturesList" style="padding-right: 18px; display: flex; flex-direction: column; gap: 5px;">
-                    <li>مكالمات فيديو مزدوجة (كاميرتان) ومكالمات صوتية مباشرة داخل التطبيق.</li>
-                    <li>مسنجر فوري آمن وميزة البحث السريع عن الأصدقاء عبر المعرف (ID).</li>
-                    <li>تشغيل روابط الفيديوهات مباشرة بدون مغادرة التطبيق.</li>
-                    <li>دعم "سارة" الذكي للرد على كافة الاستفسارات لحظياً.</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- 6. خدمة العملاء (سارة) -->
-        <div class="screen-section" id="policyAiScreen">
-            <div class="close-screen-btn" onclick="switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen')">×</div>
-            <div class="ai-support-card" style="margin-top: 22px;">
-                <div class="sarah-profile-header">
-                    <div class="sarah-avatar-container">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="sarah-avatar" alt="سارة">
-                        <div class="online-status-dot" title="متصل الآن"></div>
-                    </div>
-                    <div>
-                        <h3 id="txtSarahTitle" style="font-size: 13px; color: #0369a1; font-weight: 800;">سارة - خدمة العملاء الذكية</h3>
-                        <p id="txtSarahOnline" style="font-size: 9.5px; color: #22c55e; font-weight: bold;">● متصلة الآن وجاهزة لمساعدتك</p>
-                    </div>
-                </div>
-
-                <p id="txtSarahDesc" style="font-size: 10.5px; color: #64748b;">أهلاً بك! أنا **سارة** مساعدة خدمة العملاء. يمكنك سؤالي عن أي استفسار تقني:</p>
-                
-                <div style="background: #f1f5f9; border-radius: 8px; padding: 7px; flex-grow: 1; max-height: 150px; overflow-y:auto; display: flex; flex-direction: column; gap: 5px;" id="aiChatLog">
-                    <div id="txtSarahInitial" style="background: #fff; padding: 5px; border-radius: 5px; font-size: 10.5px;"><b>سارة:</b> مرحباً بك يا صديقي! كيف يمكنني مساعدتك اليوم في منصة الشروعة؟ 😊</div>
-                </div>
-
-                <div style="display: flex; gap: 5px;">
-                    <input type="text" id="aiQuestionInput" class="form-control-custom" placeholder="اكتب سؤالك لسارة...">
-                    <button class="pub-btn" id="btnSarahSend" style="width: 75px;" onclick="askSarahSupport()">إرسال</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 7. الملف الشخصي -->
-        <div class="screen-section" id="profileScreen">
-            <div class="close-screen-btn" onclick="switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen')">×</div>
-            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 22px;">
-                <h3 id="txtMyProfileTitle" style="color: #0369a1; font-size: 13.5px;">ملفي الشخصي</h3>
-                <button onclick="openEditProfile()" style="background: #e0f2fe; border: 1px solid #bae6fd; color: #0369a1; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-size: 11px;">✏️</button>
-            </div>
-
-            <div class="profile-header-box">
-                <img id="profileFullImg" alt="صورة البروفيل">
-                <label class="edit-avatar-icon">
-                    ✏️
-                    <input type="file" accept="image/*" onchange="updateProfileAvatarDirect(this)">
-                </label>
-            </div>
-
-            <h4 id="profileNameDisplay" style="font-size: 12.5px; color: #1e293b; font-weight: bold;"></h4>
-            
-            <div class="id-badge-box">
-                <span id="txtMyIdLabel">معرفك (ID): <b id="profileIdDisplay"></b></span>
-                <button class="copy-id-btn" id="btnCopyId" onclick="copyMyId()">نسخ ومشاركة</button>
-            </div>
-            
-            <div class="bio-card">
-                <p><b id="txtBioLabel">النبذة:</b> <span id="profileBioDisplay">مستخدم في منصة الشروعة</span></p>
-                <p><b id="txtCountryLabel">البلد:</b> <span id="profileCountryDisplay">الجزائر</span></p>
-            </div>
-
-            <button class="pub-btn" id="btnBackToHome" onclick="switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen')">العودة للرئيسية</button>
-
-            <div id="editProfileModal">
-                <h3 id="txtEditProfileTitle" style="color: #0369a1; font-size: 12.5px;">تعديل الملف الشخصي ✏️</h3>
-                <div class="input-group">
-                    <label id="lblEditName">الاسم:</label>
-                    <input type="text" id="editNameInput" class="form-control-custom">
-                </div>
-                <div class="input-group">
-                    <label id="lblEditBio">نبذة تعريفية:</label>
-                    <textarea id="editBioInput" class="form-control-custom" rows="2"></textarea>
-                </div>
-                <div class="input-group">
-                    <label id="lblEditCountry">البلد:</label>
-                    <input type="text" id="editCountryInput" class="form-control-custom">
-                </div>
-                <button class="pub-btn" id="btnSaveEdit" onclick="saveProfileChanges()">حفظ التعديلات</button>
-                <button class="pub-btn" id="btnCancelEdit" style="background:#cbd5e1; color:#1e293b;" onclick="closeEditProfile()">إلغاء</button>
-            </div>
-        </div>
-
-        <!-- رابط الإحالة الرسمي -->
-        <div class="referral-footer-box">
-            <span id="txtRefLinkLabel">🔗 رابط الإحالة للمنصة: <b id="referralTextLink">https://mustaphabouzidi922-source.github.io/Hannach-dardacha/</b></span>
-            <button id="btnCopyRef" onclick="copyReferralLink()" style="background:#0284c7; color:#fff; border:none; padding:2px 7px; border-radius:5px; font-size:9px; cursor:pointer; margin-top:2px; display:block; margin-left:auto; margin-right:auto;">نسخ الرابط</button>
-        </div>
-
-        <!-- القائمة السفلى -->
-        <div class="footer-nav">
-            <button class="nav-item active" onclick="switchTab(this, 'feedScreen')">
-                <span class="nav-icon">🏠</span>
-                <span id="navHome">الرئيسية</span>
-            </button>
-            <button class="nav-item" onclick="switchTab(this, 'friendsScreen')">
-                <span class="nav-icon">👥</span>
-                <span id="navFriends">الأصدقاء</span>
-            </button>
-            <button class="nav-item" onclick="switchTab(this, 'messagesScreen')">
-                <span class="nav-icon">💬</span>
-                <span id="navMessenger">مسنجر</span>
-            </button>
-            <button class="nav-item" onclick="switchTab(this, 'aboutScreen')">
-                <span class="nav-icon">ℹ️</span>
-                <span id="navAbout">عن المنصة</span>
-            </button>
-            <button class="nav-item" onclick="switchTab(this, 'policyAiScreen')">
-                <span class="nav-icon">🤖</span>
-                <span id="navSupport">سارة والدعم</span>
-            </button>
-            <button class="nav-item" onclick="switchTab(this, 'profileScreen')">
-                <span class="nav-icon">👤</span>
-                <span id="navProfile">حسابي</span>
-            </button>
-        </div>
-
     </div>
 
-    <script>
-        let currentUser = null;
-        let attachedMediaData = { type: null, url: null };
-        let deferredPrompt = null;
-        let lastSearchedUser = { name: "مستخدم موثق", id: "---" };
-        let activeCameraStream = null;
-        let currentLang = 'ar';
+    <!-- 1. الشاشة الرئيسية -->
+    <div id="homeScreen" class="screen active content">
+        <div class="welcome-banner" id="welcomeText">
+            مرحباً بك في منصة الشروعة للتواصل الاجتماعي ومكالمات فيديو مجانية
+        </div>
 
-        const translations = {
-            ar: {
-                htmlDir: 'rtl',
-                htmlLang: 'ar',
-                notifTitle: 'الإشعارات والتنبيهات',
-                installTitle: '📲 تثبيت تطبيق CHROUAA على جهازك',
-                installDesc: 'لتثبيت التطبيق بسهولة، اضغط على **(النقاط الثلاث ⁝)** في أعلى المتصفح، ثم اختر **"الإضافة إلى الشاشة الرئيسية"**.',
-                installOk: 'حسناً، فهمت',
-                installLater: 'لاحقاً',
-                welcomeHeader: 'مرحباً بك في منصة الشروعة للتواصل الاجتماعي ومكالمات فيديو مجانية',
-                welcomeSub: 'مكالمات فيديو ثنائية، مسنجر متطور، وتعريف بالمنصة ودعم سارة الذكي.',
-                fullName: 'الاسم الكامل:',
-                email: 'البريد الإلكتروني:',
-                loginBtn: 'تسجيل الدخول وبدء الاستخدام',
-                postPlaceholder: 'شارك أفكارك أو صورك أو رابط فيديو (سيتم عرضه كفيديو مباشر)...',
-                imageBtn: 'صورة',
-                videoBtn: 'فيديو',
-                publishBtn: 'نشر',
-                friendsTitle: 'إضافة أصدقاء بالمعرف (ID)',
-                friendsDesc: 'أدخل رقم المعرف (ID) للبحث عن أصدقائك والتواصل معهم فوراً:',
-                searchPlaceholder: 'مثال: 458920',
-                searchBtn: 'بحث',
-                addSearched: 'إضافة ➕',
-                chatSearched: 'مراسلة',
-                activeFriends: 'قائمة الأصدقاء النشطين',
-                sarahNameChat: 'سارة (دعم الشروعة)',
-                messengerTitle: 'مسنجر الشروعة والمكالمات',
-                messengerWelcome: 'أهلاً بك في منصتنا للتواصل الذكي!',
-                chatBlock: 'حظر 🚫',
-                dualVideoBtn: '📹 فيديو (كاميرتان)',
-                audioCallBtn: '📞 مكالمة',
-                chatInputPlaceholder: 'اكتب رسالتك...',
-                videoCallTitle: 'مكالمة فيديو مزدوجة (كاميرتان)',
-                callStatus: 'جاري الاتصال بالكاميرات...',
-                partnerTag: 'الشريك',
-                myCamTag: 'كاميرتك',
-                muteAudioBtn: '🔇 كتم الصوت',
-                endCallBtn: 'إنهاء المكالمة ❌',
-                aboutTitle: 'عن منصة الشروعة الذكية 🌐',
-                aboutDesc1: 'تُعد **منصة الشروعة (CHROUAA)** بيئة تفاعلية اجتماعية حديثة ومصممة بعناية فائقة لتوفير تجربة تواصل آمنة، سريعة، ومبتكرة.',
-                aboutFeaturesHead: 'أبرز مميزات المنصة:',
-                aboutList: [
-                    'مكالمات فيديو مزدوجة (كاميرتان) ومكالمات صوتية مباشرة داخل التطبيق.',
-                    'مسنجر فوري آمن وميزة البحث السريع عن الأصدقاء عبر المعرف (ID).',
-                    'تشغيل روابط الفيديوهات مباشرة بدون مغادرة التطبيق.',
-                    'دعم "سارة" الذكي للرد على كافة الاستفسارات لحظياً.'
-                ],
-                sarahTitle: 'سارة - خدمة العملاء الذكية',
-                sarahOnline: '● متصلة الآن وجاهزة لمساعدتك',
-                sarahDesc: 'أهلاً بك! أنا **سارة** مساعدة خدمة العملاء. يمكنك سؤالي عن أي استفسار تقني:',
-                sarahInitial: 'مرحباً بك يا صديقي! كيف يمكنني مساعدتك اليوم في منصة الشروعة؟ 😊',
-                sarahInputPlaceholder: 'اكتب سؤالك لسارة...',
-                sarahSend: 'إرسال',
-                myProfileTitle: 'ملفي الشخصي',
-                myIdLabel: 'معرفك (ID):',
-                copyIdBtn: 'نسخ ومشاركة',
-                bioLabel: 'النبذة:',
-                countryLabel: 'البلد:',
-                backToHome: 'العودة للرئيسية',
-                editProfileTitle: 'تعديل الملف الشخصي ✏️',
-                editNameLbl: 'الاسم:',
-                editBioLbl: 'نبذة تعريفية:',
-                editCountryLbl: 'البلد:',
-                saveEditBtn: 'حفظ التعديلات',
-                cancelEditBtn: 'إلغاء',
-                refLinkLabel: '🔗 رابط الإحالة للمنصة:',
-                copyRefBtn: 'نسخ الرابط',
-                navHome: 'الرئيسية',
-                navFriends: 'الأصدقاء',
-                navMessenger: 'مسنجر',
-                navAbout: 'عن المنصة',
-                navSupport: 'سارة والدعم',
-                navProfile: 'حسابي'
-            },
-            en: {
-                htmlDir: 'ltr',
-                htmlLang: 'en',
-                notifTitle: 'Notifications & Alerts',
-                installTitle: '📲 Install CHROUAA App',
-                installDesc: 'To install easily, tap the **(three dots ⁝)** in your browser and select **"Add to Home Screen"**.',
-                installOk: 'Got it',
-                installLater: 'Later',
-                welcomeHeader: 'Welcome to CHROUAA Social Platform & Free Video Calls',
-                welcomeSub: 'Dual video calls, advanced messenger, platform info, and Sarah AI support.',
-                fullName: 'Full Name:',
-                email: 'Email Address:',
-                loginBtn: 'Sign In & Get Started',
-                postPlaceholder: 'Share your thoughts, photos, or video link (embedded as direct player)...',
-                imageBtn: 'Photo',
-                videoBtn: 'Video',
-                publishBtn: 'Post',
-                friendsTitle: 'Add Friends by ID',
-                friendsDesc: 'Enter friend ID to search and connect instantly:',
-                searchPlaceholder: 'Ex: 458920',
-                searchBtn: 'Search',
-                addSearched: 'Add ➕',
-                chatSearched: 'Chat',
-                activeFriends: 'Active Friends',
-                sarahNameChat: 'Sarah (CHROUAA Support)',
-                messengerTitle: 'CHROUAA Messenger & Calls',
-                messengerWelcome: 'Welcome to our smart communication platform!',
-                chatBlock: 'Block 🚫',
-                dualVideoBtn: '📹 Video (Dual Cam)',
-                audioCallBtn: '📞 Call',
-                chatInputPlaceholder: 'Type your message...',
-                videoCallTitle: 'Dual Video Call (2 Cameras)',
-                callStatus: 'Connecting cameras...',
-                partnerTag: 'Partner',
-                myCamTag: 'Your Cam',
-                muteAudioBtn: '🔇 Mute',
-                endCallBtn: 'End Call ❌',
-                aboutTitle: 'About CHROUAA Smart Platform 🌐',
-                aboutDesc1: '**CHROUAA Platform** is a modern social interactive environment carefully designed to provide a secure, fast, and innovative communication experience.',
-                aboutFeaturesHead: 'Key Features:',
-                aboutList: [
-                    'Dual video calls (two cameras) & direct audio calls inside the app.',
-                    'Secure instant messenger & fast friend search via ID.',
-                    'Play video links directly without leaving the app.',
-                    'Sarah AI support to answer all inquiries instantly.'
-                ],
-                sarahTitle: 'Sarah - Smart Customer Service',
-                sarahOnline: '● Online & Ready to Help',
-                sarahDesc: 'Welcome! I am **Sarah**, customer support assistant. Ask me any technical question:',
-                sarahInitial: 'Welcome my friend! How can I help you today in CHROUAA platform? 😊',
-                sarahInputPlaceholder: 'Type your question to Sarah...',
-                sarahSend: 'Send',
-                myProfileTitle: 'My Profile',
-                myIdLabel: 'Your ID:',
-                copyIdBtn: 'Copy & Share',
-                bioLabel: 'Bio:',
-                countryLabel: 'Country:',
-                backToHome: 'Back to Home',
-                editProfileTitle: 'Edit Profile ✏️',
-                editNameLbl: 'Name:',
-                editBioLbl: 'Bio:',
-                editCountryLbl: 'Country:',
-                saveEditBtn: 'Save Changes',
-                cancelEditBtn: 'Cancel',
-                refLinkLabel: '🔗 Platform Referral Link:',
-                copyRefBtn: 'Copy Link',
-                navHome: 'Home',
-                navFriends: 'Friends',
-                navMessenger: 'Messenger',
-                navAbout: 'About',
-                navSupport: 'Support',
-                navProfile: 'Profile'
-            },
-            fr: {
-                htmlDir: 'ltr',
-                htmlLang: 'fr',
-                notifTitle: 'Notifications et Alertes',
-                installTitle: '📲 Installer l\'application CHROUAA',
-                installDesc: 'Pour l\'installer facilement, appuyez sur **(les trois points ⁝)** de votre navigateur et choisissez **"Ajouter à l\'écran d\'accueil"**.',
-                installOk: 'Compris',
-                installLater: 'Plus tard',
-                welcomeHeader: 'Bienvenue sur la plateforme CHROUAA et appels vidéo gratuits',
-                welcomeSub: 'Appels vidéo duels, messagerie avancée, et support intelligent Sarah.',
-                fullName: 'Nom complet :',
-                email: 'Adresse e-mail :',
-                loginBtn: 'Se connecter et commencer',
-                postPlaceholder: 'Partagez vos idées, photos ou lien vidéo (affiché en lecteur direct)...',
-                imageBtn: 'Photo',
-                videoBtn: 'Vidéo',
-                publishBtn: 'Publier',
-                friendsTitle: 'Ajouter des amis par ID',
-                friendsDesc: 'Entrez l\'ID pour rechercher et vous connecter instantanément :',
-                searchPlaceholder: 'Ex : 458920',
-                searchBtn: 'Rechercher',
-                addSearched: 'Ajouter ➕',
-                chatSearched: 'Discuter',
-                activeFriends: 'Amis actifs',
-                sarahNameChat: 'Sarah (Support CHROUAA)',
-                messengerTitle: 'Messagerie CHROUAA',
-                messengerWelcome: 'Bienvenue sur notre plateforme de communication intelligente !',
-                chatBlock: 'Bloquer 🚫',
-                dualVideoBtn: '📹 Vidéo (2 Caméras)',
-                audioCallBtn: '📞 Appel',
-                chatInputPlaceholder: 'Écrivez votre message...',
-                videoCallTitle: 'Appel vidéo duel (2 caméras)',
-                callStatus: 'Connexion des caméras...',
-                partnerTag: 'Partenaire',
-                myCamTag: 'Votre cam',
-                muteAudioBtn: '🔇 Muet',
-                endCallBtn: 'Fin d\'appel ❌',
-                aboutTitle: 'À propos de la plateforme CHROUAA 🌐',
-                aboutDesc1: 'La **plateforme CHROUAA** est un environnement social interactif moderne conçu pour offrir une expérience de communication sûre et innovante.',
-                aboutFeaturesHead: 'Caractéristiques principales :',
-                aboutList: [
-                    'Appels vidéo duels (deux caméras) et appels audio directs.',
-                    'Messagerie instantanée sécurisée et recherche rapide par ID.',
-                    'Lecture directe des liens vidéo sans quitter l\'application.',
-                    'Support IA Sarah pour répondre instantanément à vos questions.'
-                ],
-                sarahTitle: 'Sarah - Service client intelligent',
-                sarahOnline: '● En ligne et prête à aider',
-                sarahDesc: 'Bienvenue ! Je suis **Sarah**, assistante support. Posez-moi vos questions :',
-                sarahInitial: 'Bienvenue mon ami ! Comment puis-je vous aider aujourd\'hui sur CHROUAA ? 😊',
-                sarahInputPlaceholder: 'Écrivez votre question à Sarah...',
-                sarahSend: 'Envoyer',
-                myProfileTitle: 'Mon Profil',
-                myIdLabel: 'Votre ID :',
-                copyIdBtn: 'Copier et partager',
-                bioLabel: 'Bio :',
-                countryLabel: 'Pays :',
-                backToHome: 'Retour à l\'accueil',
-                editProfileTitle: 'Modifier le profil ✏️',
-                editNameLbl: 'Nom :',
-                editBioLbl: 'Bio :',
-                editCountryLbl: 'Pays :',
-                saveEditBtn: 'Enregistrer',
-                cancelEditBtn: 'Annuler',
-                refLinkLabel: '🔗 Lien de parrainage :',
-                copyRefBtn: 'Copier le lien',
-                navHome: 'Accueil',
-                navFriends: 'Amis',
-                navMessenger: 'Messagerie',
-                navAbout: 'À propos',
-                navSupport: 'Support',
-                navProfile: 'Profil'
-            }
-        };
+        <div class="profile-container">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" alt="صورة المستخدم" class="profile-img">
+            <div class="online-dot" title="متصل الآن"></div>
+        </div>
 
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
-            document.getElementById('htmlRoot').setAttribute('dir', t.htmlDir);
-            document.getElementById('htmlRoot').setAttribute('lang', t.htmlLang);
+        <div class="form-group">
+            <label id="lblName">الاسم الكامل:</label>
+            <input type="text" id="fullNameInput" placeholder="أدخل اسمك الكامل..." value="أمير الجزائر">
+        </div>
 
-            document.getElementById('txtNotifTitle').innerText = t.notifTitle;
-            document.getElementById('txtInstallTitle').innerText = t.installTitle;
-            document.getElementById('txtInstallDesc').innerHTML = t.installDesc;
-            document.getElementById('txtInstallOk').innerText = t.installOk;
-            document.getElementById('txtInstallLater').innerText = t.installLater;
+        <div class="form-group">
+            <label id="lblEmail">البريد الإلكتروني:</label>
+            <input type="email" id="emailInput" placeholder="أدخل بريدك الإلكتروني..." value="amir@gmail.com">
+        </div>
 
-            document.getElementById('txtWelcomeHeader').innerText = t.welcomeHeader;
-            document.getElementById('txtWelcomeSub').innerText = t.welcomeSub;
-            document.getElementById('lblFullName').innerText = t.fullName;
-            document.getElementById('lblEmail').innerText = t.email;
-            document.getElementById('btnLoginSubmit').innerText = t.loginBtn;
+        <button class="btn-primary" id="btnStart" onclick="startApp()">تسجيل الدخول وبدء الاستخدام</button>
 
-            document.getElementById('mainPostText').placeholder = t.postPlaceholder;
-            document.getElementById('txtImageBtn').innerText = t.imageBtn;
-            document.getElementById('txtVideoBtn').innerText = t.videoBtn;
-            document.getElementById('btnPublish').innerText = t.publishBtn;
+        <!-- قسم تشغيل روابط الفيديو الحقيقية -->
+        <div class="video-section">
+            <label style="font-weight: bold; margin-bottom: 8px; display: block;" id="lblVideoLink">رابط الفيديو (ضع رابط مباشر هنا):</label>
+            <input type="text" id="videoUrlInput" placeholder="أدخل رابط فيديو (mp4 أو يوتيوب)..." style="width:100%; padding:10px; font-size:16px; margin-bottom:10px;">
+            <button class="btn-primary" style="padding: 8px; font-size: 16px;" onclick="loadVideo()">قراءة وتشغيل الفيديو</button>
+            <div class="video-container" id="videoDisplayArea">
+                <video controls id="activeVideoPlayer">
+                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                    متصفحك لا يدعم تشغيل الفيديو.
+                </video>
+            </div>
+        </div>
+    </div>
 
-            document.getElementById('txtFriendsTitle').innerText = t.friendsTitle;
-            document.getElementById('txtFriendsDesc').innerText = t.friendsDesc;
-            document.getElementById('searchIdInput').placeholder = t.searchPlaceholder;
-            document.getElementById('btnSearch').innerText = t.searchBtn;
-            document.getElementById('btnAddSearched').innerText = t.addSearched;
-            document.getElementById('btnChatSearched').innerText = t.chatSearched;
-            document.getElementById('txtActiveFriends').innerText = t.activeFriends;
+    <!-- 2. شاشة الأصدقاء مع النقاط الخضراء -->
+    <div id="friendsScreen" class="screen content">
+        <h2 style="color: var(--primary-color); margin-bottom: 15px;" id="lblFriendsTitle">قائمة الأصدقاء المتصلين</h2>
+        <div id="friendsList">
+            <!-- صديق 1 -->
+            <div class="friend-item">
+                <div class="friend-avatar-container">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150" class="friend-avatar" alt="صديق">
+                    <div class="online-dot"></div>
+                </div>
+                <div>
+                    <h4>سارة أحمد</h4>
+                    <p style="font-size: 14px; color: #666;">متصل الآن</p>
+                </div>
+            </div>
+            <!-- صديق 2 -->
+            <div class="friend-item">
+                <div class="friend-avatar-container">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150" class="friend-avatar" alt="صديق">
+                    <div class="online-dot"></div>
+                </div>
+                <div>
+                    <h4>محمد الأحمدي</h4>
+                    <p style="font-size: 14px; color: #666;">متصل الآن</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            document.getElementById('txtMessengerTitle').innerText = t.messengerTitle;
-            document.getElementById('txtMessengerWelcome').innerText = t.messengerWelcome;
-            document.getElementById('btnBlock').innerText = t.chatBlock;
-            document.getElementById('btnDualVideo').innerText = t.dualVideoBtn;
-            document.getElementById('btnAudioCall').innerText = t.audioCallBtn;
-            document.getElementById('chatInputText').placeholder = t.chatInputPlaceholder;
+    <!-- 3. شاشة خدمة العملاء الحقيقية (سارة والدعم) -->
+    <div id="supportScreen" class="screen content">
+        <h2 style="color: var(--primary-color); margin-bottom: 15px;" id="lblSupportTitle">خدمة العملاء - سارة والدعم</h2>
+        <div class="chat-box" id="chatBox">
+            <div class="message support">مرحباً بك! أنا سارة مسؤولة الدعم الفني في منصة الشروعة. كيف يمكنني مساعدتك اليوم؟</div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <input type="text" id="chatInput" placeholder="اكتب رسالتك لدعم العملاء..." style="flex: 1; padding: 12px; font-size: 16px; border: 2px solid #ccc; border-radius: 8px;">
+            <button class="btn-primary" style="width: 80px; padding: 10px;" onclick="sendSupportMessage()">إرسال</button>
+        </div>
+    </div>
 
-            document.getElementById('txtVideoCallTitle').innerText = t.videoCallTitle;
-            document.getElementById('callStatusText').innerText = t.callStatus;
-            document.getElementById('txtPartnerTag').innerText = t.partnerTag;
-            document.getElementById('txtMyCamTag').innerText = t.myCamTag;
-            document.getElementById('btnMuteAudio').innerText = t.muteAudioBtn;
-            document.getElementById('btnEndCall').innerText = t.endCallBtn;
+    <!-- شريط التنقل السفلي -->
+    <div class="nav-bar">
+        <div class="nav-item active" onclick="switchScreen('homeScreen', this)">
+            🏠
+            <span id="navHome">الرئيسية</span>
+        </div>
+        <div class="nav-item" onclick="switchScreen('friendsScreen', this)">
+            👥
+            <span id="navFriends">الأصدقاء</span>
+        </div>
+        <div class="nav-item" onclick="switchScreen('supportScreen', this)">
+            🤖
+            <span id="navSupport">سارة والدعم</span>
+        </div>
+    </div>
+</div>
 
-            document.getElementById('txtAboutTitle').innerText = t.aboutTitle;
-            document.getElementById('txtAboutDesc1').innerHTML = t.aboutDesc1;
-            document.getElementById('txtAboutFeaturesHead').innerText = t.aboutFeaturesHead;
-            let listUl = document.getElementById('txtAboutFeaturesList');
-            listUl.innerHTML = t.aboutList.map(item => `<li>${item}</li>`).join('');
+<script>
+    // التنقل بين الشاشات
+    function switchScreen(screenId, element) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        
+        document.getElementById(screenId).classList.add('active');
+        element.classList.add('active');
+    }
 
-            document.getElementById('txtSarahTitle').innerText = t.sarahTitle;
-            document.getElementById('txtSarahOnline').innerText = t.sarahOnline;
-            document.getElementById('txtSarahDesc').innerHTML = t.sarahDesc;
-            document.getElementById('txtSarahInitial').innerHTML = `<b>Sarah:</b> ${t.sarahInitial}`;
-            document.getElementById('aiQuestionInput').placeholder = t.sarahInputPlaceholder;
-            document.getElementById('btnSarahSend').innerText = t.sarahSend;
-
-            document.getElementById('txtMyProfileTitle').innerText = t.myProfileTitle;
-            document.getElementById('txtMyIdLabel').innerHTML = `${t.myIdLabel} <b id="profileIdDisplay">${currentUser ? currentUser.id : '---'}</b>`;
-            document.getElementById('btnCopyId').innerText = t.copyIdBtn;
-            document.getElementById('txtBioLabel').innerText = t.bioLabel;
-            document.getElementById('txtCountryLabel').innerText = t.countryLabel;
-            document.getElementById('btnBackToHome').innerText = t.backToHome;
-
-            document.getElementById('txtEditProfileTitle').innerText = t.editProfileTitle;
-            document.getElementById('lblEditName').innerText = t.editNameLbl;
-            document.getElementById('lblEditBio').innerText = t.editBioLbl;
-            document.getElementById('lblEditCountry').innerText = t.editCountryLbl;
-            document.getElementById('btnSaveEdit').innerText = t.saveEditBtn;
-            document.getElementById('btnCancelEdit').innerText = t.cancelEditBtn;
-
-            document.getElementById('txtRefLinkLabel').innerHTML = `${t.refLinkLabel} <b id="referralTextLink">https://mustaphabouzidi922-source.github.io/Hannach-dardacha/</b>`;
-            document.getElementById('btnCopyRef').innerText = t.copyRefBtn;
-
-            document.getElementById('navHome').innerText = t.navHome;
-            document.getElementById('navFriends').innerText = t.navFriends;
-            document.getElementById('navMessenger').innerText = t.navMessenger;
-            document.getElementById('navAbout').innerText = t.navAbout;
-            document.getElementById('navSupport').innerText = t.navSupport;
-            document.getElementById('navProfile').innerText = t.navProfile;
+    // حفظ البيانات وبدء العمل الحقيقي
+    function startApp() {
+        const name = document.getElementById('fullNameInput').value;
+        const email = document.getElementById('emailInput').value;
+        if(!name || !email) {
+            alert('يرجى إدخال الاسم والبريد الإلكتروني أولاً');
+            return;
         }
+        localStorage.setItem('rouaach_user', JSON.stringify({name, email}));
+        alert('تم تسجيل الدخول بنجاح في منصة الشروعة وأصبح التطبيق يعمل حقيقياً!');
+    }
 
-        window.onload = function() {
-            let savedUser = localStorage.getItem('chrouaa_user_v17');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-                applyUserDataToUI();
-                switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen');
-            }
-            loadPosts();
-            loadNotifications();
-        };
+    // قراءة وتشغيل روابط الفيديو بفعالية
+    function loadVideo() {
+        const url = document.getElementById('videoUrlInput').value.trim();
+        const playerArea = document.getElementById('videoDisplayArea');
+        if(!url) {
+            alert('الرجاء إدخال رابط فيديو صالح');
+            return;
+        }
+        // تحديث مشغل الفيديو بالرابط الجديد
+        playerArea.innerHTML = `<video controls autoplay style="width:100%; height:200px; border-radius:8px;"><source src="${url}" type="video/mp4">متصفحك لا يدعم تشغيل هذا الفيديو.</video>`;
+    }
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('installPromptModal').style.display = 'block';
-        });
+    // نظام خدمة العملاء الحقيقي (ردود تفاعلية فورية من سارة)
+    function sendSupportMessage() {
+        const input = document.getElementById('chatInput');
+        const chatBox = document.getElementById('chatBox');
+        const text = input.value.trim();
+        
+        if(!text) return;
 
+        // إضافة رسالة المستخدم
+        chatBox.innerHTML += `<div class="message user">${text}</div>`;
+        input.value = '';
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // رد آلي ذكي وحقيقي من خدمة العملاء (سارة والدعم)
         setTimeout(() => {
-            if(!localStorage.getItem('chrouaa_installed')) {
-                document.getElementById('installPromptModal').style.display = 'block';
+            let reply = "شكراً لتواصلك مع منصة الشروعة. فريق الدعم الفني يعالج طلبك الآن وسيتم الرد عليك قريباً.";
+            if(text.includes('مشكلة') || text.includes('لا يعمل') || text.includes('فيديو')) {
+                reply = "نعتذر عن المشكلة. تم تسجيل ملاحظتك حول روابط الفيديو والألوان، فريق التطوير يعمل على تحديثها فوراً.";
+            } else if(text.includes('السلام') || text.includes('مرحبا')) {
+                reply = "وعليكم السلام ورحمة الله وبركاته! أهلاً بك في منصة الشروعة، كيف بخدمتك؟";
             }
-        }, 1500);
+            chatBox.innerHTML += `<div class="message support">${reply}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }, 1000);
+    }
 
-        function triggerInstallApp() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        localStorage.setItem('chrouaa_installed', 'true');
-                    }
-                    deferredPrompt = null;
-                });
-            } else {
-                alert("لتثبيت التطبيق:\n1. اضغط على النقاط الثلاث ⁝ أعلى المتصفح.\n2. اختر 'إضافة إلى الشاشة الرئيسية'.");
-            }
-            closeInstallModal();
+    // تغيير اللغة وتبديل اسم المنصة (الشروعة / ROUAACH)
+    function changeLanguage() {
+        const lang = document.getElementById('langSelect').value;
+        const titleEl = document.getElementById('appTitle');
+        const welcomeEl = document.getElementById('welcomeText');
+        
+        if(lang === 'ar') {
+            titleEl.innerText = "منصة الشروعة";
+            welcomeEl.innerText = "مرحباً بك في منصة الشروعة للتواصل الاجتماعي ومكالمات فيديو مجانية";
+            document.getElementById('lblName').innerText = "الاسم الكامل:";
+            document.getElementById('lblEmail').innerText = "البريد الإلكتروني:";
+            document.getElementById('btnStart').innerText = "تسجيل الدخول وبدء الاستخدام";
+            document.getElementById('lblVideoLink').innerText = "رابط الفيديو (ضع رابط مباشر هنا):";
+            document.getElementById('lblFriendsTitle').innerText = "قائمة الأصدقاء المتصلين";
+            document.getElementById('lblSupportTitle').innerText = "خدمة العملاء - سارة والدعم";
+            document.getElementById('navHome').innerText = "الرئيسية";
+            document.getElementById('navFriends').innerText = "الأصدقاء";
+            document.getElementById('navSupport').innerText = "سارة والدعم";
+        } else {
+            titleEl.innerText = "ROUAACH";
+            welcomeEl.innerText = "Welcome to ROUAACH social platform and free video calls";
+            document.getElementById('lblName').innerText = "Full Name:";
+            document.getElementById('lblEmail').innerText = "Email Address:";
+            document.getElementById('btnStart').innerText = "Sign In & Get Started";
+            document.getElementById('lblVideoLink').innerText = "Video Link (Enter direct URL):";
+            document.getElementById('lblFriendsTitle').innerText = "Connected Friends List";
+            document.getElementById('lblSupportTitle').innerText = "Customer Support - Sarah & Support";
+            document.getElementById('navHome').innerText = "Home";
+            document.getElementById('navFriends').innerText = "Friends";
+            document.getElementById('navSupport').innerText = "Support";
         }
+    }
+</script>
 
-        function closeInstallModal() { document.getElementById('installPromptModal').style.display = 'none'; }
-
-        function previewProfileImage(input) {
-            if(input.files && input.files[0]) {
-                let reader = new FileReader();
-                reader.onload = function(e) { document.getElementById('previewAvatar').src = e.target.result; }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function updateProfileAvatarDirect(input) {
-            if(input.files && input.files[0]) {
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    currentUser.avatar = e.target.result;
-                    localStorage.setItem('chrouaa_user_v17', JSON.stringify(currentUser));
-                    applyUserDataToUI();
-                    addNotification("تم تحديث صورتك الشخصية بنجاح.");
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function completeLogin() {
-            const name = document.getElementById('userNameInput').value.trim();
-            const email = document.getElementById('userEmailInput').value.trim();
-            if(!name || !email) return alert("الرجاء ملء الحقول الأساسية!");
-
-            currentUser = {
-                name: name,
-                email: email,
-                avatar: document.getElementById('previewAvatar').src,
-                id: Math.floor(100000 + Math.random() * 900000),
-                bio: "مستخدم في منصة الشروعة",
-                country: "الجزائر"
-            };
-
-            localStorage.setItem('chrouaa_user_v17', JSON.stringify(currentUser));
-            applyUserDataToUI();
-            addNotification("مرحباً بك في منصة الشروعة الاجتماعية!");
-            switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen');
-        }
-
-        function applyUserDataToUI() {
-            if(!currentUser) return;
-            document.getElementById('miniUserName').innerText = currentUser.name;
-            document.getElementById('miniUserId').innerText = `ID: ${currentUser.id}`;
-            document.getElementById('userImgMini').src = currentUser.avatar;
-            document.getElementById('previewAvatar').src = currentUser.avatar;
-            
-            document.getElementById('profileFullImg').src = currentUser.avatar;
-            document.getElementById('profileNameDisplay').innerText = currentUser.name;
-            document.getElementById('profileIdDisplay').innerText = currentUser.id;
-            document.getElementById('profileBioDisplay').innerText = currentUser.bio;
-            document.getElementById('profileCountryDisplay').innerText = currentUser.country;
-            document.getElementById('miniProfileHeader').style.display = 'flex';
-        }
-
-        function copyMyId() {
-            navigator.clipboard.writeText(currentUser.id);
-            alert(`تم نسخ المعرف الخاص بك (${currentUser.id}) بنجاح!`);
-        }
-
-        function copyReferralLink() {
-            const link = document.getElementById('referralTextLink').innerText;
-            navigator.clipboard.writeText(link);
-            alert("تم نسخ رابط الإحالة للمنصة بنجاح: " + link);
-        }
-
-        function openEditProfile() {
-            document.getElementById('editNameInput').value = currentUser.name;
-            document.getElementById('editBioInput').value = currentUser.bio;
-            document.getElementById('editCountryInput').value = currentUser.country;
-            document.getElementById('editProfileModal').style.display = 'flex';
-        }
-
-        function closeEditProfile() { document.getElementById('editProfileModal').style.display = 'none'; }
-
-        function saveProfileChanges() {
-            currentUser.name = document.getElementById('editNameInput').value.trim() || currentUser.name;
-            currentUser.bio = document.getElementById('editBioInput').value.trim();
-            currentUser.country = document.getElementById('editCountryInput').value.trim();
-            localStorage.setItem('chrouaa_user_v17', JSON.stringify(currentUser));
-            applyUserDataToUI();
-            closeEditProfile();
-            alert("تم حفظ التعديلات بنجاح!");
-        }
-
-        function switchTab(btn, screenId) {
-            if(btn) {
-                document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            }
-            document.querySelectorAll('.screen-section').forEach(s => s.classList.remove('active'));
-            const targetScreen = document.getElementById(screenId);
-            if(targetScreen) {
-                targetScreen.classList.add('active');
-            }
-            document.getElementById('notificationsModal').style.display = 'none';
-        }
-
-        function attachMediaToPost(input, type) {
-            if(input.files && input.files[0]) {
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    attachedMediaData = { type: type, url: e.target.result };
-                    let container = document.getElementById('mediaPreviewContainer');
-                    container.style.display = 'block';
-                    if(type === 'image') {
-                        document.getElementById('imgPreviewTag').style.display = 'block';
-                        document.getElementById('imgPreviewTag').src = e.target.result;
-                        document.getElementById('vidPreviewTag').style.display = 'none';
-                    } else {
-                        document.getElementById('vidPreviewTag').style.display = 'block';
-                        document.getElementById('vidPreviewTag').src = e.target.result;
-                        document.getElementById('imgPreviewTag').style.display = 'none';
-                    }
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function removeAttachedMedia() {
-            attachedMediaData = { type: null, url: null };
-            document.getElementById('mediaPreviewContainer').style.display = 'none';
-        }
-
-        function parseVideoEmbeds(text) {
-            const ytRegex = /(https?:\/\/(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11}))/g;
-            if(ytRegex.test(text)) {
-                return text.replace(ytRegex, (match, p1, videoId) => {
-                    return `<iframe class="embedded-video-player" src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>`;
-                });
-            }
-            return text;
-        }
-
-        function getSavedPosts() {
-            let posts = localStorage.getItem('chrouaa_posts_v17');
-            return posts ? JSON.parse(posts) : [
-                { 
-                    id: 1, 
-                    author: "سارة دعم الشروعة", 
-                    authorId: "100200",
-                    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100", 
-                    text: "أهلاً بالجميع في منصة الشروعة الذكية! جربوا إرسال فيديوهاتكم المباشرة وروابط اليوتيوب التي تشتغل تلقائياً داخل التطبيق #الشروعة", 
-                    mediaType: null, 
-                    mediaUrl: null,
-                    likes: 5,
-                    likedByMe: false,
-                    comments: [{ author: "أمير", text: "منصة رائعة جداً وسارة مساعدة مذهلة!" }]
-                }
-            ];
-        }
-
-        function addNewPost() {
-            const text = document.getElementById('mainPostText').value.trim();
-            if(!text && !attachedMediaData.url) return alert("اكتب نصاً أو أرفق صورة/فيديو للنشر!");
-            
-            let posts = getSavedPosts();
-            posts.unshift({ 
-                id: Date.now(), 
-                author: currentUser.name, 
-                authorId: currentUser.id,
-                avatar: currentUser.avatar, 
-                text: text,
-                mediaType: attachedMediaData.type,
-                mediaUrl: attachedMediaData.url,
-                likes: 0,
-                likedByMe: false,
-                comments: []
-            });
-
-            localStorage.setItem('chrouaa_posts_v17', JSON.stringify(posts));
-            document.getElementById('mainPostText').value = '';
-            removeAttachedMedia();
-            loadPosts();
-            addNotification("تم نشر موضوعك بنجاح.");
-        }
-
-        function formatPostText(text) {
-            let parsed = parseVideoEmbeds(text);
-            return parsed.replace(/(#[^\s#]+)/g, '<span class="post-hashtag" onclick="filterByHashtag(\'$1\')">$1</span>');
-        }
-
-        function filterByHashtag(tag) {
-            alert("تم النقر على الوسم: " + tag);
-        }
-
-        function loadPosts() {
-            const list = document.getElementById('postsList');
-            if(!list) return;
-            list.innerHTML = "";
-            getSavedPosts().forEach(p => {
-                let mediaHtml = '';
-                if(p.mediaType === 'image') {
-                    mediaHtml = `<img src="${p.mediaUrl}" class="post-media-content" alt="محتوى المنشور">`;
-                } else if(p.mediaType === 'video') {
-                    mediaHtml = `<video src="${p.mediaUrl}" class="post-media-content" controls></video>`;
-                }
-
-                let commentsHtml = p.comments.map(c => `<div class="comment-item"><b>${c.author}:</b> ${c.text}</div>`).join('');
-                let formattedText = formatPostText(p.text);
-                let isMe = currentUser && p.authorId == currentUser.id;
-
-                let actionButtonsHtml = isMe ? '' : `
-                    <div class="post-header-actions">
-                        <button class="action-icon-btn" onclick="addFriendFromPost('${p.author}', '${p.authorId}')">إضافة ➕</button>
-                        <button class="report-btn" onclick="reportPost(${p.id})">إبلاغ 🚩</button>
-                        <button class="block-btn" onclick="blockUserFromPost('${p.author}')">حظر 🚫</button>
-                    </div>
-                `;
-
-                list.innerHTML += `
-                    <div class="feed-post">
-                        <div class="post-header">
-                            <div class="post-author-info" onclick="openChatRoom('${p.author}', '${p.avatar}')">
-                                <img src="${p.avatar}" class="post-avatar" alt="صورة الناشر">
-                                <span class="post-author">${p.author} (ID: ${p.authorId || '---'})</span>
-                            </div>
-                            ${actionButtonsHtml}
-                        </div>
-                        <div class="post-text">${formattedText}</div>
-                        ${mediaHtml}
-                        
-                        <div class="post-interactions">
-                            <button class="interaction-btn ${p.likedByMe ? 'liked' : ''}" 
-                                    onmousedown="startLongPressTimer(event, ${p.id})" 
-                                    onmouseup="cancelLongPressTimer()" 
-                                    ontouchstart="startLongPressTimer(event, ${p.id})" 
-                                    ontouchend="cancelLongPressTimer()" 
-                                    onclick="toggleLike(${p.id})">
-                                ❤️ <span id="likeCount_${p.id}">${p.likes}</span> تفاعل
-                            </button>
-
-                            <div class="emoji-popup-picker" id="emojiPicker_${p.id}">
-                                <button class="emoji-option" onclick="selectEmoji(${p.id}, '❤️')">❤️</button>
-                                <button class="emoji-option" onclick="selectEmoji(${p.id}, '🔥')">🔥</button>
-                                <button class="emoji-option" onclick="selectEmoji(${p.id}, '😍')">😍</button>
-                                <button class="emoji-option" onclick="selectEmoji(${p.id}, '👏')">👏</button>
-                                <button class="emoji-option" onclick="repostWithFlash(${p.id})" title="إعادة نشر">🔄</button>
-                            </div>
-
-                            <span style="font-size: 10px; align-self: center;">💬 ${p.comments.length} تعليقات</span>
-                        </div>
-
-                        <div class="comments-section">
-                            <div style="display: flex; flex-direction: column; gap: 4px;">${commentsHtml}</div>
-                            <div class="comment-input-box">
-                                <input type="text" id="commentInput_${p.id}" placeholder="اكتب تعليقاً...">
-                                <button class="pub-btn" style="width: 50px; font-size: 9.5px; padding: 3px;" onclick="addComment(${p.id})">تعليق</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        let longPressTimer = null;
-        function startLongPressTimer(e, postId) {
-            e.preventDefault();
-            longPressTimer = setTimeout(() => {
-                let picker = document.getElementById(`emojiPicker_${postId}`);
-                if(picker) picker.style.display = 'flex';
-            }, 600);
-        }
-
-        function cancelLongPressTimer() {
-            if(longPressTimer) clearTimeout(longPressTimer);
-        }
-
-        function selectEmoji(postId, emoji) {
-            document.querySelectorAll('.emoji-popup-picker').forEach(el => el.style.display = 'none');
-            toggleLike(postId);
-            addNotification(`تفاعل المستخدم بـ ${emoji} على المنشور.`);
-        }
-
-        function repostWithFlash(postId) {
-            document.querySelectorAll('.emoji-popup-picker').forEach(el => el.style.display = 'none');
-            let posts = getSavedPosts();
-            let post = posts.find(p => p.id === postId);
-            if(post) {
-                posts.unshift({
-                    id: Date.now(),
-                    author: currentUser.name + " (إعادة نشر 🔄)",
-                    authorId: currentUser.id,
-                    avatar: currentUser.avatar,
-                    text: "🔄 تمت إعادة نشر: " + post.text,
-                    mediaType: post.mediaType,
-                    mediaUrl: post.mediaUrl,
-                    likes: 0,
-                    likedByMe: false,
-                    comments: []
-                });
-                localStorage.setItem('chrouaa_posts_v17', JSON.stringify(posts));
-                loadPosts();
-                alert("⚡ تمت إعادة نشر المنشور بنجاح في خلاصتك!");
-            }
-        }
-
-        function toggleLike(postId) {
-            let posts = getSavedPosts();
-            let post = posts.find(p => p.id === postId);
-            if(post) {
-                if(post.likedByMe) {
-                    post.likes--;
-                    post.likedByMe = false;
-                } else {
-                    post.likes++;
-                    post.likedByMe = true;
-                }
-                localStorage.setItem('chrouaa_posts_v17', JSON.stringify(posts));
-                loadPosts();
-            }
-        }
-
-        function addComment(postId) {
-            const input = document.getElementById(`commentInput_${postId}`);
-            const text = input.value.trim();
-            if(!text) return;
-
-            let posts = getSavedPosts();
-            let post = posts.find(p => p.id === postId);
-            if(post) {
-                post.comments.push({ author: currentUser.name, text: text });
-                localStorage.setItem('chrouaa_posts_v17', JSON.stringify(posts));
-                loadPosts();
-            }
-        }
-
-        function addFriendFromPost(name, id) {
-            alert(`تمت إضافة الصديق ${name} (ID: ${id}) بنجاح إلى قائمة أصدقائك!`);
-            addNotification(`تمت إضافة ${name} إلى أصدقائك.`);
-        }
-
-        function reportPost(postId) {
-            alert("🚨 تم إرسال بلاغ عن هذا المنشور للإدارة بنجاح.");
-        }
-
-        function blockUserFromPost(name) {
-            if(confirm(`هل تريد حظر المستخدم ${name} نهائياً؟`)) {
-                alert(`🚫 تم حظر ${name} بنجاح ولن ترى منشوراته بعد الآن.`);
-            }
-        }
-
-        function searchUserById() {
-            const query = document.getElementById('searchIdInput').value.trim();
-            if(!query) return alert("الرجاء إدخال رقم المعرف أو الاسم للبحث!");
-
-            const card = document.getElementById('searchResultCard');
-            if(currentUser && query === currentUser.id.toString()) {
-                return alert("لا يمكنك البحث عن معرفك الشخصي!");
-            }
-
-            lastSearchedUser = { name: "مستخدم الشروعة (" + query + ")", id: query };
-            document.getElementById('resName').innerText = lastSearchedUser.name;
-            document.getElementById('resId').innerText = "رقم المعرف: " + query;
-            document.getElementById('resAvatar').src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100";
-            card.style.display = 'flex';
-        }
-
-        function addSearchedFriend() {
-            alert("تمت إضافة الصديق بنجاح!");
-            addNotification("تمت إضافة مستخدم جديد لأصدقائك.");
-        }
-
-        function openChatRoomFromSearch() {
-            openChatRoom(lastSearchedUser.name, "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100");
-        }
-
-        function openChatRoom(name, avatar) {
-            document.getElementById('activeChatName').innerText = name;
-            document.querySelectorAll('.screen-section').forEach(s => s.classList.remove('active'));
-            document.getElementById('chatRoomScreen').style.display = 'flex';
-        }
-
-        function closeChatRoom() {
-            document.getElementById('chatRoomScreen').style.display = 'none';
-            document.getElementById('messagesScreen').classList.add('active');
-        }
-
-        function sendTextMessage() {
-            const txt = document.getElementById('chatInputText').value.trim();
-            if(!txt) return;
-            const area = document.getElementById('chatMessagesArea');
-            area.innerHTML += `<div class="msg-bubble outgoing">${parseVideoEmbeds(txt)}</div>`;
-            document.getElementById('chatInputText').value = '';
-            area.scrollTop = area.scrollHeight;
-        }
-
-        function sendVoiceMessage() {
-            const area = document.getElementById('chatMessagesArea');
-            area.innerHTML += `<div class="msg-bubble outgoing">🎙️ [رسالة صوتية 0:04]</div>`;
-            area.scrollTop = area.scrollHeight;
-        }
-
-        function blockCurrentChatUser() {
-            if(confirm("هل تريد حظر هذا المستخدم نهائياً؟")) {
-                alert("🚫 تم الحظر بنجاح.");
-                closeChatRoom();
-            }
-        }
-
-        async function startDualVideoCall() {
-            const modal = document.getElementById('videoCallModal');
-            const localVideo = document.getElementById('localCameraVideo');
-            const remoteVideo = document.getElementById('remoteCameraVideo');
-            const statusText = document.getElementById('callStatusText');
-            
-            modal.style.display = 'flex';
-            statusText.innerText = "جاري تفعيل الكاميراتين وربط الاتصال...";
-
-            try {
-                activeCameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                localVideo.srcObject = activeCameraStream;
-                remoteVideo.srcObject = activeCameraStream;
-                statusText.innerText = "المكالمة المرئية الثنائية جارية الآن بجودة عالية 📹📹";
-            } catch (err) {
-                console.error(err);
-                statusText.innerText = "تعذر تشغيل الكاميرا. يرجى السماح بالأذونات في المتصفح.";
-                alert("الرجاء السماح للتطبيق بالوصول إلى الكاميرا والميكروفون من إعدادات المتصفح.");
-            }
-        }
-
-        function startNormalAudioCall() {
-            alert("📞 جاري بدء مكالمة صوتية عادية مع المستخدم...");
-        }
-
-        function endAppVideoCall() {
-            if (activeCameraStream) {
-                activeCameraStream.getTracks().forEach(track => track.stop());
-                activeCameraStream = null;
-            }
-            document.getElementById('localCameraVideo').srcObject = null;
-            document.getElementById('remoteCameraVideo').srcObject = null;
-            document.getElementById('videoCallModal').style.display = 'none';
-            addNotification("تم إنهاء مكالمة الفيديو الثنائية.");
-        }
-
-        function toggleMuteAudio() {
-            if (activeCameraStream) {
-                let audioTrack = activeCameraStream.getAudioTracks()[0];
-                if(audioTrack) {
-                    audioTrack.enabled = !audioTrack.enabled;
-                    alert(audioTrack.enabled ? "تم إلغاء كتم الصوت" : "تم كتم الصوت");
-                }
-            }
-        }
-
-        function redirectCall(type) {
-            if(type === 'whatsapp') window.open("https://wa.me/", "_blank");
-            else window.open("https://m.me/", "_blank");
-        }
-
-        function askSarahSupport() {
-            const input = document.getElementById('aiQuestionInput');
-            const q = input.value.trim();
-            if(!q) return;
-
-            const log = document.getElementById('aiChatLog');
-            log.innerHTML += `<div style="background: #e0f2fe; padding: 5px; border-radius: 5px; font-size: 10.5px; text-align: right;"><b>أنت:</b> ${q}</div>`;
-            input.value = '';
-
-            setTimeout(() => {
-                let reply = "أهلاً بك يا غالي! بصفتي سارة مساعدة خدمة العملاء في منصة الشروعة، أؤكد لك أن منصتنا توفر أماناً كاملاً وتشغيل مباشر للفيديوهات. هل تحتاج لأي مساعدة أخرى؟ 😊";
-                
-                let lowerQ = q.toLowerCase();
-                if(lowerQ.includes("حساب") || lowerQ.includes("معرف") || lowerQ.includes("id")) {
-                    reply = "رقم المعرف (ID) الخاص بك تجده في قسم 'حسابي' بالأسفل، ويمكنك نسخه ومشاركته بسهولة مع أصدقائك!";
-                } else if(lowerQ.includes("فيديو") || lowerQ.includes("رابط") || lowerQ.includes("يوتيوب")) {
-                    reply = "يمكنك وضع أي رابط يوتيوب أو فيديو في خانة النشر بالرئيسية وسيشتغل مباشرة كمشغل فيديو مدمج داخل التطبيق!";
-                } else if(lowerQ.includes("صديق") || lowerQ.includes("بحث")) {
-                    reply = "لإضافة الأصدقاء، انتقل إلى قسم 'الأصدقاء' في القائمة السفلية، ثم اكتب رقم المعرف الخاص بصديقك وابحث عنه مباشرة.";
-                } else if(lowerQ.includes("مكالم") || lowerQ.includes("فيديو") || lowerQ.includes("كاميرا")) {
-                    reply = "تستطيع إجراء مكالمة فيديو مزدوجة (بكاميرتين) أو مكالمة صوتية بالدخول إلى المسنجر أو المحادثة مع أي صديق!";
-                }
-
-                log.innerHTML += `<div style="background: #fff; padding: 5px; border-radius: 5px; font-size: 10.5px; text-align: right;"><b>سارة:</b> ${reply}</div>`;
-                log.scrollTop = log.scrollHeight;
-            }, 600);
-        }
-
-        function addNotification(text) {
-            let notifs = JSON.parse(localStorage.getItem('chrouaa_notifs_v17') || "[]");
-            notifs.unshift({ text: text, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
-            localStorage.setItem('chrouaa_notifs_v17', JSON.stringify(notifs));
-            loadNotifications();
-        }
-
-        function loadNotifications() {
-            let notifs = JSON.parse(localStorage.getItem('chrouaa_notifs_v17') || "[]");
-            document.getElementById('notifBadge').innerText = notifs.length;
-            document.getElementById('notificationsList').innerHTML = notifs.map(n => `<div style="font-size:10.5px; padding:3px; border-bottom:1px solid #f1f5f9;">📌 ${n.text}</div>`).join('');
-        }
-
-        function toggleNotifications() {
-            let m = document.getElementById('notificationsModal');
-            m.style.display = m.style.display === 'block' ? 'none' : 'block';
-        }
-    </script>
 </body>
 </html>
