@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="app-title">CHROUAA - منصة التواصل الاجتماعي</title>
-    <!-- الأيقونة التي تظهر عند مشاركة الرابط على فيسبوك وتويتر -->
     <meta property="og:title" content="CHROUAA - منصة التواصل الاجتماعي الحديثة">
     <meta property="og:description" content="تواصل، شارك الفيديوهات، وتمتع بمكالمات فيديو آمنة وحصرية.">
     <meta property="og:image" content="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500">
@@ -417,7 +416,6 @@
             width: 100%;
         }
 
-        /* غرفة الدردشة المتكاملة مع أزرار واتساب وفيسبوك والاتصال */
         #chat-room-view {
             position: absolute;
             top: 0;
@@ -547,7 +545,6 @@
             border-top: 1px solid var(--border);
         }
 
-        /* شاشة مكالمة الفيديو مع نظام الحماية ومنع تصوير الشاشة */
         #video-call-screen {
             position: absolute;
             top: 0;
@@ -700,7 +697,7 @@
         </div>
     </div>
 
-    <!-- شاشة مكالمة الفيديو مع الحماية ومنع تصوير الشاشة -->
+    <!-- شاشة مكالمة الفيديو مع الحماية -->
     <div id="video-call-screen">
         <div id="privacy-protection-overlay">
             <i class="fa-solid fa-shield-halved" style="font-size:36px; margin-bottom:10px;"></i><br/>
@@ -761,11 +758,6 @@
 
         <!-- 1. الرئيسية -->
         <div id="view-feed" class="view active">
-            <div style="display:flex; gap:8px; margin-bottom:14px;">
-                <input type="text" id="top-search-input" class="create-input" style="margin:0;" placeholder="بحث عن منشورات..." />
-                <button class="primary-btn" style="width:auto;" onclick="alert('إضافة صديق سريع')"><i class="fa-solid fa-user-plus"></i></button>
-            </div>
-
             <div class="create-post-box">
                 <textarea id="post-text-input" class="create-input" rows="2" placeholder="بماذا تفكر؟ شارك نصاً، صورة، أو رابط يوتيوب ومواقع أخرى..."></textarea>
                 <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -777,7 +769,6 @@
                 </div>
             </div>
 
-            <!-- حاوية المنشورات -->
             <div id="posts-feed-container">
                 <div class="post-card">
                     <div class="post-header-padding">
@@ -793,7 +784,7 @@
                         </div>
                     </div>
                     <div class="post-body-padding">
-                        مرحباً بكم! جربوا لصق أي رابط يوتيوب أو موقع إلكتروني في خانة النشر بالأعلى، وسيتم قراءته وعرضه فوراً هنا.
+                        مرحباً بكم في منصة CHROUAA! الآن يتم تخزين جميع المستخدمين الذين يسجلون دخولهم لتتمكن من البحث عنهم ومراسلتهم برقم الهاتف.
                     </div>
                     <div class="fb-video-wrapper">
                         <iframe class="embedded-iframe" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
@@ -814,20 +805,15 @@
             </div>
         </div>
 
-        <!-- 2. البحث -->
+        <!-- 2. البحث برقم الهاتف -->
         <div id="view-search" class="view">
-            <h3 style="margin-bottom: 12px; font-size:15px;" id="lbl-search-title">البحث عن الأصدقاء</h3>
-            <input type="text" id="friend-id-input" class="create-input" placeholder="أدخل رقم الهاتف أو المعرف..." />
-            <button class="primary-btn" onclick="alert('جاري البحث...')" style="margin-bottom:12px;">بحث</button>
-            
-            <div style="background:var(--surface); padding:10px; border-radius:12px; border:1px solid var(--border); display:flex; align-items:center; gap:10px;">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="avatar" />
-                <div style="flex:1;">
-                    <h4 style="font-size:13px;">أحمد المنصور</h4>
-                    <span style="font-size:10px; color:var(--success);">متصل الآن</span>
-                </div>
-                <button class="primary-btn" style="width:auto; padding:4px 10px;" onclick="alert('تم إرسال طلب الصداقة')">إضافة</button>
+            <h3 style="margin-bottom: 12px; font-size:15px;" id="lbl-search-title">البحث عن مستخدم برقم الهاتف</h3>
+            <div style="display:flex; gap:8px; margin-bottom:12px;">
+                <input type="text" id="friend-id-input" class="create-input" style="margin:0;" placeholder="أدخل رقم الهاتف للبحث..." />
+                <button class="primary-btn" style="width:auto;" onclick="searchUserByPhone()">بحث</button>
             </div>
+            
+            <div id="search-results-container"></div>
         </div>
 
         <!-- 3. المحادثات -->
@@ -868,7 +854,7 @@
 
     </div>
 
-    <!-- نافذة غرفة الدردشة (متضمنة أزرار الاتصال بالفيديو، الصوت، واتساب، وفيسبوك) -->
+    <!-- نافذة غرفة الدردشة -->
     <div id="chat-room-view">
         <div class="chat-room-header">
             <div style="display:flex; align-items:center; gap:8px;">
@@ -882,7 +868,6 @@
                     <span style="font-size:9px; color:var(--success);">متصل الآن</span>
                 </div>
             </div>
-            <!-- جميع أزرار الاتصال والتواصل المباشر (فيديو، صوت، واتساب، فيسبوك) بدون نقصان -->
             <div class="chat-room-actions">
                 <button onclick="startAdvancedVideoCall()" class="call-action-icon bg-video" title="مكالمة فيديو محمية"><i class="fa-solid fa-video"></i></button>
                 <button onclick="alert('جاري الاتصال الصوتي الآمن...')" class="call-action-icon bg-audio" title="مكالمة صوتية"><i class="fa-solid fa-phone"></i></button>
@@ -926,9 +911,9 @@
 
 <script>
     const translations = {
-        ar: { welcome: "مرحباً بك في CHROUAA", loginSub: "منصة التواصل المتطورة", loginBtn: "دخول المنصة", navFeed: "الرئيسية", navSearch: "البحث", navChats: "المحادثات", navProfile: "حسابي", searchTitle: "البحث عن الأصدقاء", chatsTitle: "المحادثات النشطة" },
-        fr: { welcome: "Bienvenue sur CHROUAA", loginSub: "Plateforme sociale avancée", loginBtn: "Entrer", navFeed: "Accueil", navSearch: "Recherche", navChats: "Discussions", navProfile: "Profil", searchTitle: "Rechercher des amis", chatsTitle: "Discussions actives" },
-        en: { welcome: "Welcome to CHROUAA", loginSub: "Advanced Social Platform", loginBtn: "Enter Platform", navFeed: "Feed", navSearch: "Search", navChats: "Chats", navProfile: "Profile", searchTitle: "Search Friends", chatsTitle: "Active Chats" }
+        ar: { welcome: "مرحباً بك في CHROUAA", loginSub: "منصة التواصل المتطورة", loginBtn: "دخول المنصة", navFeed: "الرئيسية", navSearch: "البحث", navChats: "المحادثات", navProfile: "حسابي", searchTitle: "البحث عن مستخدم برقم الهاتف", chatsTitle: "المحادثات النشطة" },
+        fr: { welcome: "Bienvenue sur CHROUAA", loginSub: "Plateforme sociale avancée", loginBtn: "Entrer", navFeed: "Accueil", navSearch: "Recherche", navChats: "Discussions", navProfile: "Profil", searchTitle: "Rechercher par téléphone", chatsTitle: "Discussions actives" },
+        en: { welcome: "Welcome to CHROUAA", loginSub: "Advanced Social Platform", loginBtn: "Enter Platform", navFeed: "Feed", navSearch: "Search", navChats: "Chats", navProfile: "Profile", searchTitle: "Search by Phone", chatsTitle: "Active Chats" }
     };
 
     function changeLanguage(lang) {
@@ -958,7 +943,7 @@
     }, 1000);
 
     window.addEventListener('DOMContentLoaded', () => {
-        const savedPhone = localStorage.getItem('ch_phone');
+        const savedPhone = localStorage.getItem('ch_current_phone');
         if (savedPhone) {
             document.getElementById('auth-screen').style.display = 'none';
             loadProfileData();
@@ -980,21 +965,76 @@
         }
     }
 
+    // دالة تسجيل الدخول مع حفظ المستخدم في قاعدة بيانات المتصفح العامة
     function handlePhoneLogin() {
         const phone = document.getElementById('login-phone-input').value.trim();
         const pin = document.getElementById('login-pin-input').value.trim();
+        const country = document.getElementById('login-country').value;
+        const gender = document.getElementById('login-gender').value;
+
         if(!phone || phone.length < 8) return alert('الرجاء إدخال رقم هاتف صحيح!');
         if(!pin || pin.length !== 6) return alert('الرمز السري يجب أن يكون 6 أرقام!');
 
-        localStorage.setItem('ch_phone', phone);
-        localStorage.setItem('ch_name', 'مستخدم شروعة');
+        const userData = {
+            phone: phone,
+            name: "مستخدم " + phone.slice(-4),
+            country: country,
+            gender: gender,
+            avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150"
+        };
+
+        let usersList = JSON.parse(localStorage.getItem('ch_all_users') || '[]');
+        let existingUserIndex = usersList.findIndex(u => u.phone === phone);
+        if(existingUserIndex === -1) {
+            usersList.push(userData);
+        } else {
+            usersList[existingUserIndex] = userData;
+        }
+
+        localStorage.setItem('ch_all_users', JSON.stringify(usersList));
+        localStorage.setItem('ch_current_phone', phone);
+        localStorage.setItem('ch_name', userData.name);
+        localStorage.setItem('ch_avatar', userData.avatar);
+
         document.getElementById('auth-screen').style.display = 'none';
         loadProfileData();
+        alert('تم تسجيل الدخول بنجاح! تم حفظ حسابك في المنصة ويمكن للأصدقاء البحث عنك.');
+    }
+
+    // دالة البحث عن مستخدم برقم الهاتف في قاعدة بيانات المنصة
+    function searchUserByPhone() {
+        const query = document.getElementById('friend-id-input').value.trim();
+        const container = document.getElementById('search-results-container');
+        container.innerHTML = '';
+
+        if (!query) {
+            alert('الرجاء إدخال رقم الهاتف للبحث.');
+            return;
+        }
+
+        const usersList = JSON.parse(localStorage.getItem('ch_all_users') || '[]');
+        const foundUser = usersList.find(u => u.phone.includes(query));
+
+        if (foundUser) {
+            container.innerHTML = `
+                <div style="background:var(--surface); padding:12px; border-radius:12px; border:1px solid var(--border); display:flex; align-items:center; gap:10px; margin-top:10px;">
+                    <img src="${foundUser.avatar}" class="avatar" />
+                    <div style="flex:1;">
+                        <h4 style="font-size:13px;">${foundUser.name} (${foundUser.country})</h4>
+                        <span style="font-size:11px; color:var(--primary);">${foundUser.phone}</span><br>
+                        <span style="font-size:10px; color:var(--success);">● متصل في المنصة</span>
+                    </div>
+                    <button class="primary-btn" style="width:auto; padding:6px 12px;" onclick="openChatRoom('${foundUser.name}', '${foundUser.avatar}')">مراسلة</button>
+                </div>
+            `;
+        } else {
+            container.innerHTML = `<p style="font-size:12px; color:var(--text-secondary); text-align:center; padding:10px;">لم يتم العثور على أي مستخدم بهذا الرقم في المنصة.</p>`;
+        }
     }
 
     function loadProfileData() {
         const name = localStorage.getItem('ch_name') || 'مستخدم شروعة';
-        const phone = localStorage.getItem('ch_phone') || '0612345678';
+        const phone = localStorage.getItem('ch_current_phone') || '0612345678';
         const avatar = localStorage.getItem('ch_avatar') || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150';
         document.getElementById('profile-name-display').innerText = name;
         document.getElementById('profile-phone-display').innerText = phone;
@@ -1022,7 +1062,7 @@
     }
 
     function handleLogout() {
-        localStorage.clear();
+        localStorage.removeItem('ch_current_phone');
         document.getElementById('auth-screen').style.display = 'flex';
     }
 
@@ -1045,7 +1085,6 @@
         }
     }
 
-    // دالة إنشاء منشور ذكية تقرأ وتحلل روابط يوتيوب والإنترنت الحقيقية
     let uploadedMediaHTML = "";
     function previewMedia(event, type) {
         const file = event.target.files[0];
@@ -1068,8 +1107,6 @@
         if(!text && !uploadedMediaHTML) return alert('الرجاء كتابة شيء أو إرفاق وسائط أو رابط!');
 
         let mediaContent = uploadedMediaHTML;
-
-        // التحقق الذكي من وجود رابط يوتيوب أو رابط عام في النص وتحويله لتطبيق حقيقي
         const ytMatch = text.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
         const urlMatch = text.match(/(https?:\/\/[^\s]+)/);
 
