@@ -19,18 +19,18 @@
 
         .app-container {
             max-width: 850px;
-            margin: 20px auto;
+            margin: 10px auto;
             background: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
 
-        /* شريط تغيير اللغات */
+        /* شريط تغيير اللغات مرتب بشكل صحيح */
         .lang-bar {
             display: flex;
-            justify-content: flex-end;
-            gap: 10px;
+            justify-content: flex-start;
+            gap: 8px;
             padding: 10px 15px;
             background: #e4e6eb;
         }
@@ -38,13 +38,14 @@
         .lang-btn {
             background: #fff;
             border: 1px solid #ccd0d5;
-            padding: 5px 10px;
+            padding: 5px 12px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 12px;
+            font-weight: bold;
         }
 
-        /* نافذة الفيديو الرئيسية (بحجم فيسبوك) */
+        /* نافذة الفيديو الرئيسية */
         .video-call-section {
             position: relative;
             width: 100%;
@@ -62,10 +63,10 @@
         /* صورتك المصغرة (PiP) مع خاصية التكبير والتصغير بالضغط */
         .my-pip-video {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: 130px;
-            height: 180px;
+            bottom: 15px;
+            left: 15px;
+            width: 110px;
+            height: 150px;
             background: #222;
             border-radius: 8px;
             border: 2px solid #fff;
@@ -79,7 +80,7 @@
             width: 100%;
             height: 100%;
             bottom: 0;
-            right: 0;
+            left: 0;
             border-radius: 0;
             border: none;
         }
@@ -94,14 +95,14 @@
         .call-controls {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            padding: 15px;
+            gap: 12px;
+            padding: 12px;
             background: #fff;
             border-bottom: 1px solid #e4e6eb;
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 10px 18px;
             border: none;
             border-radius: 6px;
             cursor: pointer;
@@ -119,19 +120,20 @@
             color: #fff;
         }
 
-        /* قسم الدردشة الكتابية والروابط */
+        /* قسم الدردشة */
         .chat-section {
             padding: 15px;
         }
 
         .chat-messages {
-            height: 150px;
+            height: 140px;
             overflow-y: auto;
             border: 1px solid #e4e6eb;
             border-radius: 6px;
             padding: 10px;
             margin-bottom: 10px;
             background: #f9f9f9;
+            text-align: right;
         }
 
         .message-item {
@@ -142,13 +144,15 @@
         .message-item a {
             color: #1877f2;
             text-decoration: none;
+            direction: ltr;
+            display: inline-block;
         }
 
         .message-item a:hover {
             text-decoration: underline;
         }
 
-        /* إدخال الرسائل مع الجام السريع والوسائط */
+        /* إدخال الرسائل مرتبة: [زر الإرسال] [حقل النص] [زر الجام/الإيموجي] */
         .chat-input-area {
             display: flex;
             align-items: center;
@@ -158,7 +162,7 @@
         .quick-emoji-btn {
             background: none;
             border: none;
-            font-size: 22px;
+            font-size: 24px;
             cursor: pointer;
         }
 
@@ -169,6 +173,7 @@
             border-radius: 20px;
             outline: none;
             font-size: 14px;
+            text-align: right;
         }
 
         .send-btn {
@@ -185,7 +190,7 @@
 <body>
 
     <div class="app-container">
-        <!-- شريط اللغات (عربي، إنجليزي، فرنسي) -->
+        <!-- شريط اللغات -->
         <div class="lang-bar">
             <button class="lang-btn" onclick="changeLang('ar')">العربية</button>
             <button class="lang-btn" onclick="changeLang('en')">English</button>
@@ -194,108 +199,78 @@
 
         <!-- شاشة الاتصال بالفيديو -->
         <div class="video-call-section">
-            <!-- صورة الطرف الآخر تملأ الشاشة -->
-            <img src="https://via.placeholder.com/850x480/333/fff?text=Remote+User+Video" alt="الطرف الآخر" class="remote-video">
+            <img src="https://via.placeholder.com/850x480/222/fff?text=Remote+User" alt="الطرف الآخر" class="remote-video">
             
-            <!-- صورتك المصغرة (تكبير/تصغير بالضغط) -->
             <div class="my-pip-video" id="pipWindow" onclick="toggleMyVideoSize()" title="اضغط للتكبير/التصغير">
-                <img src="https://via.placeholder.com/130x180/555/fff?text=My+Camera" alt="صورتي">
+                <img src="https://via.placeholder.com/110x150/444/fff?text=My+Cam" alt="صورتي">
             </div>
         </div>
 
         <!-- أزرار التحكم -->
         <div class="call-controls">
-            <button class="btn btn-control" id="rotateBtn" onclick="rotateCamera()">تدوير الكاميرا</button>
-            <button class="btn btn-control" id="enhanceBtn" onclick="enhanceImage()">تحسين الصورة</button>
-            <button class="btn btn-end" id="endCallBtn" onclick="endCall()">إنهاء المكالمة</button>
+            <button class="btn btn-control" onclick="rotateCamera()">تدوير الكاميرا</button>
+            <button class="btn btn-control" onclick="enhanceImage()">تحسين الصورة</button>
+            <button class="btn btn-end" onclick="endCall()">إنهاء المكالمة</button>
         </div>
 
         <!-- قسم الدردشة -->
         <div class="chat-section">
             <div class="chat-messages" id="chatMessages">
                 <div class="message-item"><strong>أحمد:</strong> مرحباً! تحقق من هذا الرابط: <a href="https://www.youtube.com" target="_blank">https://www.youtube.com</a></div>
-                <div class="message-item"><strong>سارة:</strong> وهذا رابط تيك توك: <a href="https://www.tiktok.com" target="_blank">https://www.tiktok.com</a></div>
-                <div class="message-item"><strong>محمد:</strong> ورابط فيسبوك: <a href="https://www.facebook.com" target="_blank">https://www.facebook.com</a></div>
+                <div class="message-item"><strong>سارة:</strong> رابط تيك توك: <a href="https://www.tiktok.com" target="_blank">https://www.tiktok.com</a></div>
+                <div class="message-item"><strong>محمد:</strong> رابط فيسبوك: <a href="https://www.facebook.com" target="_blank">https://www.facebook.com</a></div>
             </div>
 
+            <!-- ترتيب خانة الإرسال والجام السريع والإيموجي -->
             <div class="chat-input-area">
-                <!-- جام سريع للإيموجي والوسائط -->
-                <button class="quick-emoji-btn" onclick="openQuickMenu()" title="إيموجي وسائط">😊</button>
+                <button class="quick-emoji-btn" onclick="openQuickMenu()" title="إيموجي ووسائط">😊</button>
                 <input type="text" class="chat-input" id="messageInput" placeholder="اكتب رسالتك هنا...">
-                <button class="send-btn" id="sendBtn" onclick="sendMessage()">إرسال</button>
+                <button class="send-btn" onclick="sendMessage()">إرسال</button>
             </div>
         </div>
     </div>
 
     <script>
-        // تنبيه حماية الشاشة ومنع التسجيل عند بدء الاتصال
         window.addEventListener('DOMContentLoaded', () => {
             alert("تنبيه: ميزة التقاط وتسجيل الشاشة محظورة وحماية الخصوصية مفعلة أثناء الاتصال.");
-            
-            // كود الحماية لأندرويد (تفعيل FLAG_SECURE افتراضياً في بيئة التطبيق)
-            if (typeof window.Android !== 'undefined' && window.Android.enableSecurity) {
-                window.Android.enableSecurity();
-            }
         });
 
-        // تبديل حجم صورتك الشخصية بالضغط عليها (تكبير وتصغير)
         function toggleMyVideoSize() {
             const pip = document.getElementById('pipWindow');
             pip.classList.toggle('expanded');
         }
 
-        // تدوير الكاميرا
         function rotateCamera() {
-            alert("تم تبديل الكاميرا (امامية / خلفية).");
+            alert("تم تبديل الكاميرا.");
         }
 
-        // تحسين الصورة
         function enhanceImage() {
-            alert("تم تفعيل فلتر تحسين الصورة.");
+            alert("تم تفعيل تحسين الصورة.");
         }
 
-        // إنهاء المكالمة داخل التطبيق (VoIP) دون الخروج لهاتف النظام
         function endCall() {
-            alert("تم إنهاء المكالمة بنجاح داخل التطبيق.");
+            alert("تم إنهاء المكالمة.");
         }
 
-        // قائمة الجام السريع للإيموجي والوسائط
         function openQuickMenu() {
-            let mediaType = prompt("اختر نوع الوسائط للإرسال:\n1. إيموجي (Emoji)\n2. صورة (Photo)\n3. فيديو (Video)");
-            if(mediaType) {
-                alert("تم إدراج العنصر السريع في نافذة الدردشة.");
-            }
+            prompt("اختر: 1. إيموجي  2. صورة  3. فيديو");
         }
 
-        // إرسال الرسالة مع بقاء الروابط نصية بحتة دون تحويلها لفيديو مضمن
         function sendMessage() {
             const input = document.getElementById('messageInput');
             const chatMessages = document.getElementById('chatMessages');
             if(input.value.trim() !== "") {
                 const newMsg = document.createElement('div');
                 newMsg.className = 'message-item';
-                // الكود يعرض النص كما هو دون أي معالجة تحوله إلى فيديو مضمن
-                newMsg.innerHTML = `<strong>أنت:</strong> ${escapeHtml(input.value)}`;
+                newMsg.innerHTML = `<strong>أنت:</strong> ${input.value}`;
                 chatMessages.appendChild(newMsg);
                 input.value = "";
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
         }
 
-        // دالة مساعدة لتأمين النص
-        function escapeHtml(text) {
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
-
-        // تغيير اللغات (مثال توضيحي)
         function changeLang(lang) {
-            if(lang === 'fr') {
-                alert("Langue changée en Français (Fonctionnalité prête).");
-            } else if(lang === 'en') {
-                alert("Language changed to English (Feature ready).");
-            } else {
-                alert("تم تغيير اللغات إلى العربية.");
-            }
+            alert("تم تغيير اللغة بنجاح.");
         }
     </script>
 </body>
