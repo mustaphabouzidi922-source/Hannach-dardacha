@@ -16,11 +16,13 @@
             color: #1e293b;
         }
 
-        /* رأس التطبيق */
+        /* رأس التطبيق مع حرف H القاطع في المنتصف والشعار */
         .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 8px; border-bottom: 1px solid #e2e8f0; background: #fff; border-radius: 20px 20px 0 0; }
-        .header h1 { font-size: 18px; font-weight: 800; color: #7c3aed; letter-spacing: 1px; }
+        .logo-container { position: relative; display: flex; align-items: center; }
+        .header h1 { font-size: 20px; font-weight: 800; color: #7c3aed; letter-spacing: 1px; position: relative; z-index: 2; }
+        .logo-h-overlay { position: absolute; left: 50%; transform: translateX(-50%); font-size: 32px; font-weight: 900; color: rgba(124, 58, 237, 0.25); z-index: 1; pointer-events: none; }
+
         .header-icons { display: flex; align-items: center; gap: 8px; }
-        
         .notification-bell { position: relative; cursor: pointer; font-size: 18px; background: #f3e8ff; padding: 6px 8px; border-radius: 50%; }
         .notification-badge { position: absolute; top: -2px; right: -2px; background: #ef4444; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         
@@ -30,8 +32,11 @@
         .mini-name { font-size: 11px; font-weight: bold; color: #4c1d95; }
         .mini-id { font-size: 9.5px; color: #7c3aed; font-weight: 700; }
 
-        .screen-section { display: none; flex-direction: column; flex-grow: 1; overflow-y: auto; padding: 8px 0; gap: 8px; }
+        .screen-section { display: none; flex-direction: column; flex-grow: 1; overflow-y: auto; padding: 8px 0; gap: 8px; position: relative; }
         .screen-section.active { display: flex; }
+
+        /* زر الإغلاق (علامة ×) لضمان عدم الخروج من التطبيق في أي شاشة فرعية */
+        .close-screen-btn { position: absolute; top: 5px; left: 5px; background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; cursor: pointer; z-index: 10; }
 
         /* شاشة تسجيل الدخول */
         #loginScreen { align-items: center; justify-content: center; text-align: center; gap: 10px; background: #fff; border-radius: 12px; padding: 15px; }
@@ -44,7 +49,7 @@
         .form-control-custom { width: 100%; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px; font-size: 13px; color: #1e293b; }
         .google-btn { background: #1e1b4b; color: #fff; border: none; padding: 10px; border-radius: 25px; font-size: 13px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 5px; }
 
-        /* نافذة التثبيت عبر الثلاث نقاط */
+        /* نافذة التثبيت */
         #installPromptModal { display: none; position: absolute; bottom: 70px; left: 10px; right: 10px; background: #1e1b4b; color: #fff; padding: 12px; border-radius: 12px; z-index: 200; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); border: 1px solid #7c3aed; }
         .install-guide-text { font-size: 11px; line-height: 1.5; margin-bottom: 8px; color: #e2e8f0; }
 
@@ -70,7 +75,7 @@
         .media-upload-btns { display: flex; gap: 8px; }
         .media-upload-btn { background: #f3e8ff; border: 1px solid #d8b4fe; color: #7c3aed; padding: 5px 10px; border-radius: 8px; font-size: 11px; cursor: pointer; font-weight: bold; }
         
-        /* المنشورات */
+        /* المنشورات ومشغل الفيديوهات المدمج */
         .feed-post { background: #fff; padding: 10px; border-radius: 10px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 8px; }
         .post-header { display: flex; justify-content: space-between; align-items: center; }
         .post-author-info { display: flex; align-items: center; gap: 8px; cursor: pointer; }
@@ -85,10 +90,17 @@
         .post-text { font-size: 12px; word-break: break-all; color: #334155; line-height: 1.5; }
         .post-hashtag { color: #7c3aed; font-weight: bold; cursor: pointer; }
         .post-media-content { width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px; margin-top: 4px; }
+        .embedded-video-player { width: 100%; height: 180px; border-radius: 8px; border: none; margin-top: 4px; }
 
-        .post-interactions { display: flex; gap: 20px; border-top: 1px solid #f1f5f9; padding-top: 6px; font-size: 11px; color: #64748b; }
-        .interaction-btn { background: none; border: none; cursor: pointer; color: #64748b; font-size: 11px; display: flex; align-items: center; gap: 4px; font-weight: bold; }
+        /* التفاعلات وإيموجيات الضغط المطول (Long Press) */
+        .post-interactions { display: flex; gap: 20px; border-top: 1px solid #f1f5f9; padding-top: 6px; font-size: 11px; color: #64748b; position: relative; }
+        .interaction-btn { background: none; border: none; cursor: pointer; color: #64748b; font-size: 11px; display: flex; align-items: center; gap: 4px; font-weight: bold; position: relative; }
         .interaction-btn.liked { color: #ef4444; }
+
+        /* صندوق الإيموجيات الخفي عند الضغط المطول */
+        .emoji-popup-picker { display: none; position: absolute; bottom: 30px; left: 0; background: #fff; border: 1px solid #cbd5e1; border-radius: 20px; padding: 4px 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 50; gap: 6px; align-items: center; }
+        .emoji-option { font-size: 16px; cursor: pointer; transition: transform 0.1s; background: none; border: none; }
+        .emoji-option:hover { transform: scale(1.3); }
 
         .comments-section { background: #f8fafc; border-radius: 8px; padding: 6px; display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
         .comment-item { font-size: 11px; background: #fff; padding: 6px; border-radius: 6px; border: 1px solid #e2e8f0; line-height: 1.4; }
@@ -102,7 +114,7 @@
         /* المسنجر والدردشة */
         .chat-item { background: #fff; padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e2e8f0; cursor: pointer; }
         
-        #chatRoomScreen { display: none; flex-direction: column; height: 100%; background: #fff; border-radius: 12px; overflow: hidden; }
+        #chatRoomScreen { display: none; flex-direction: column; height: 100%; background: #fff; border-radius: 12px; overflow: hidden; position: relative; }
         .chat-room-header { background: #7c3aed; color: #fff; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; }
         .chat-messages-area { flex-grow: 1; background: #f8fafc; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; font-size: 12px; }
         .msg-bubble { max-width: 75%; padding: 8px 12px; border-radius: 8px; word-break: break-all; line-height: 1.4; }
@@ -112,7 +124,7 @@
         .chat-input-bar input { flex-grow: 1; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px; font-size: 12px; }
         .icon-action-btn { background: #f3e8ff; border: 1px solid #d8b4fe; color: #7c3aed; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; }
 
-        /* شريط الاتصال (اتصال داخلي بالفيديو (2 كاميرا) وعادي + واتساب وفيسبوك) */
+        /* شريط الاتصال */
         .call-external-bar { display: flex; gap: 5px; padding: 6px 10px; background: #f3e8ff; border-bottom: 1px solid #d8b4fe; justify-content: space-between; align-items: center; flex-wrap: wrap; }
         .call-options-group { display: flex; gap: 4px; }
         .btn-call-opt { padding: 5px 8px; border-radius: 8px; font-size: 10px; font-weight: bold; border: none; cursor: pointer; }
@@ -121,7 +133,7 @@
         .whatsapp-btn { background: #25d366; color: #fff; }
         .messenger-btn { background: #0084ff; color: #fff; }
 
-        /* شاشة مكالمة الفيديو المزدوجة (اثنتان فيديو) */
+        /* مكالمة الفيديو المزدوجة */
         #videoCallModal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; z-index: 250; flex-direction: column; justify-content: space-between; padding: 15px; color: #fff; text-align: center; }
         .dual-video-wrapper { display: flex; flex-direction: column; gap: 10px; height: 65%; width: 100%; }
         .video-box-main { flex: 1; background: #1e293b; border-radius: 10px; position: relative; overflow: hidden; border: 2px solid #7c3aed; display: flex; align-items: center; justify-content: center; }
@@ -132,8 +144,14 @@
         .call-end-btn { background: #ef4444; color: #fff; border: none; padding: 8px 18px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; }
         .call-mute-btn { background: #475569; color: #fff; border: none; padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; }
 
-        /* الصفحات الخاصة الجديدة: عن المنصة، السياسة، الدعم الذكي */
-        .static-page-box { background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 10px; font-size: 12px; line-height: 1.6; color: #334155; }
+        /* صفحة الدعم والذكاء الاصطناعي (سارة الفتاة الجذابة مع نقطة خضراء للحضور) */
+        .ai-support-card { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 12px; display: flex; flex-direction: column; gap: 10px; height: 100%; }
+        .sarah-profile-header { display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #f3e8ff; padding-bottom: 8px; }
+        .sarah-avatar-container { position: relative; width: 45px; height: 45px; }
+        .sarah-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #7c3aed; }
+        .online-status-dot { position: absolute; bottom: 2px; right: 2px; width: 12px; height: 12px; background: #22c55e; border: 2px solid #fff; border-radius: 50%; }
+        
+        .static-page-box { background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 10px; font-size: 12px; line-height: 1.6; color: #334155; position: relative; }
         .static-page-box h3 { color: #7c3aed; font-size: 15px; font-weight: 800; border-bottom: 2px solid #f3e8ff; padding-bottom: 5px; }
 
         /* رابط الإحالة الرسمي في الأسفل */
@@ -150,10 +168,12 @@
 
     <div class="phone-frame">
         
-        <!-- رأس التطبيق -->
-        .
+        <!-- رأس التطبيق مع حرف H القاطع في المنتصف -->
         <div class="header">
-            <h1>HANNACHA</h1>
+            <div class="logo-container">
+                <h1>HANNACHA</h1>
+                <span class="logo-h-overlay">H</span>
+            </div>
             <div class="header-icons">
                 <div class="notification-bell" onclick="toggleNotifications()">
                     🔔
@@ -175,7 +195,7 @@
             <div id="notificationsList"></div>
         </div>
 
-        <!-- نافذة التثبيت التلقائي عبر الثلاث نقاط -->
+        <!-- نافذة التثبيت التلقائي -->
         <div id="installPromptModal">
             <p style="font-size: 12px; font-weight: bold; margin-bottom: 6px; color: #a78bfa;">📲 تثبيت تطبيق حناشة على جهازك</p>
             <p class="install-guide-text">لتثبيت التطبيق بسهولة، اضغط على **(النقاط الثلاث ⁝)** الموجودة في أعلى متصفح هاتفك، ثم اختر **"الإضافة إلى الشاشة الرئيسية"** أو **"تثبيت التطبيق"**.</p>
@@ -189,7 +209,7 @@
         <div class="screen-section active" id="loginScreen">
             <div style="background: linear-gradient(135deg, #7c3aed, #4c1d95); color: #fff; padding: 12px; border-radius: 10px; text-align: center;">
                 <h2 style="font-size: 14px; font-weight: 800; margin-bottom: 4px;">مرحباً بكم في منصة حناشة الاجتماعية</h2>
-                <p style="font-size: 11px; opacity: 0.9;">مكالمات فيديو ثنائية، مسنجر متطور، وتعريف بالمنصة ودعم ذكي.</p>
+                <p style="font-size: 11px; opacity: 0.9;">مكالمات فيديو ثنائية، مسنجر متطور، وتعريف بالمنصة ودعم سارة الذكي.</p>
             </div>
 
             <label class="profile-pic-picker">
@@ -215,7 +235,7 @@
         <!-- 2. الصفحة الرئيسية -->
         <div class="screen-section" id="feedScreen">
             <div class="post-input-box">
-                <textarea id="mainPostText" placeholder="شارك أفكارك أو صورك أو فيديوهاتك مع مجتمع حناشة... (استخدم الوسوم #حناشة)"></textarea>
+                <textarea id="mainPostText" placeholder="شارك أفكارك أو صورك أو رابط فيديو (سيتم عرضه كفيديو مباشر)..."></textarea>
                 
                 <div id="mediaPreviewContainer" style="display:none; position:relative;">
                     <img id="imgPreviewTag" style="width:100%; max-height:120px; object-fit:cover; border-radius:6px;">
@@ -243,7 +263,8 @@
 
         <!-- 3. شاشة الأصدقاء والبحث -->
         <div class="screen-section" id="friendsScreen">
-            <h3 style="font-size: 14px; color: #7c3aed; margin-bottom: 6px;">إضافة أصدقاء بالمعرف (ID)</h3>
+            <div class="close-screen-btn" onclick="switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen')">×</div>
+            <h3 style="font-size: 14px; color: #7c3aed; margin-bottom: 6px; padding-left: 25px;">إضافة أصدقاء بالمعرف (ID)</h3>
             
             <div class="friend-search-box">
                 <p style="font-size: 11px; color: #64748b;">أدخل رقم المعرف (ID) للبحث عن أصدقائك والتواصل معهم فوراً:</p>
@@ -281,7 +302,8 @@
 
         <!-- 4. شاشة المسنجر -->
         <div class="screen-section" id="messagesScreen">
-            <h3 style="font-size: 14px; color: #7c3aed;">مسنجر حناشة والمكالمات</h3>
+            <div class="close-screen-btn" onclick="switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen')">×</div>
+            <h3 style="font-size: 14px; color: #7c3aed; padding-left: 25px;">مسنجر حناشة والمكالمات</h3>
             <div class="chat-item" onclick="openChatRoom('سارة (دعم حناشة)', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100')">
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="post-avatar">
@@ -300,10 +322,13 @@
                     <button onclick="closeChatRoom()" style="background:none; border:none; color:#fff; font-size:14px; cursor:pointer;">⬅️</button>
                     <span id="activeChatName" style="font-size: 12.5px; font-weight: bold;">المحادثة</span>
                 </div>
-                <button class="block-btn" onclick="blockCurrentChatUser()">حظر 🚫</button>
+                <div style="display: flex; gap: 6px; align-items: center;">
+                    <button class="block-btn" onclick="blockCurrentChatUser()">حظر 🚫</button>
+                    <div style="background:#fee2e2; color:#dc2626; border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:bold; cursor:pointer;" onclick="closeChatRoom()">×</div>
+                </div>
             </div>
 
-            <!-- شريط الاتصال (اتصال فيديو ثنائي، مكالمة عادية، واتساب، فيسبوك) -->
+            <!-- شريط الاتصال -->
             <div class="call-external-bar">
                 <div class="call-options-group">
                     <button class="btn-call-opt btn-video-dual" onclick="startDualVideoCall()">📹 فيديو (اثنتان كاميرا)</button>
@@ -326,7 +351,7 @@
             </div>
         </div>
 
-        <!-- شاشة مكالمة الفيديو المزدوجة (اثنتان كاميرا فيديو) -->
+        <!-- شاشة مكالمة الفيديو المزدوجة -->
         <div id="videoCallModal">
             <div>
                 <h3 style="font-size: 14px; color:#fff;" id="videoCallTitle">مكالمة فيديو مزدوجة (اثنتان كاميرا)</h3>
@@ -334,12 +359,10 @@
             </div>
             
             <div class="dual-video-wrapper">
-                <!-- شاشة الفيديو الأساسية للصديق -->
                 <div class="video-box-main">
                     <video id="remoteCameraVideo" class="camera-stream-tag" autoplay playsinline muted></video>
                     <span style="position: absolute; top: 5px; right: 8px; background: rgba(0,0,0,0.5); font-size: 9px; padding: 2px 6px; border-radius: 4px;">الشريك / الصديق</span>
                 </div>
-                <!-- شاشة الفيديو الثانوية للكاميرا المحلية الخاصة بك -->
                 <div class="video-box-secondary">
                     <video id="localCameraVideo" class="camera-stream-tag" autoplay playsinline muted></video>
                     <span style="position: absolute; bottom: 2px; left: 2px; background: rgba(0,0,0,0.6); font-size: 8px; padding: 1px 4px; border-radius: 3px;">كاميرتك</span>
@@ -352,44 +375,54 @@
             </div>
         </div>
 
-        <!-- 5. صفحة التعريف بالمنصة (صفحة خاصة مستقلة) -->
+        <!-- 5. صفحة التعريف بالمنصة -->
         <div class="screen-section" id="aboutScreen">
-            <div class="static-page-box">
+            <div class="close-screen-btn" onclick="switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen')">×</div>
+            <div class="static-page-box" style="margin-top: 25px;">
                 <h3>عن منصة حناشة الذكية 🌐</h3>
                 <p>تُعد **منصة حناشة (HANNACHA)** بيئة تفاعلية اجتماعية حديثة ومصممة بعناية فائقة لتوفير تجربة تواصل آمنة، سريعة، ومبتكرة للمستخدمين العرب.</p>
                 <p><b>أبرز مميزات المنصة:</b></p>
                 <ul style="padding-right: 20px; display: flex; flex-direction: column; gap: 6px;">
                     <li>مكالمات فيديو مزدوجة (كاميرتان) ومكالمات صوتية مباشرة داخل التطبيق.</li>
                     <li>مسنجر فوري آمن وميزة البحث السريع عن الأصدقاء عبر المعرف (ID).</li>
-                    <li>نشر الوسوم، الصور، ومقاطع الفيديو مع حماية صارمة ضد المحتوى المسيء.</li>
-                    <li>دعم العملاء بالذكاء الاصطناعي المدمج للرد على كافة الاستفسارات لحظياً.</li>
+                    <li>تشغيل روابط الفيديوهات مباشرة بدون مغادرة التطبيق.</li>
+                    <li>دعم "سارة" الذكي للرد على كافة الاستفسارات لحظياً.</li>
                 </ul>
             </div>
         </div>
 
-        <!-- 6. صفحة سياسة الاستخدام وخدمة العملاء بالذكاء الاصطناعي (ChatGPT) -->
+        <!-- 6. سياسة الاستخدام وخدمة العملاء الذكية بواسطة سارة الفتاة الجذابة (مع نقطة خضراء للحضور) -->
         <div class="screen-section" id="policyAiScreen">
-            <div class="static-page-box">
-                <h3>سياسة الاستخدام ودعم الذكاء الاصطناعي 🤖</h3>
-                <p>تلتزم منصة حناشة بمعايير الأمان والأخلاق الرقمية. يُمنع منعاً باتاً نشر محتوى مخل بالحياء، السب، أو التشهير، ومخالفة ذلك تعرض الحساب للحظر النهائي.</p>
-                
-                <h4 style="color: #7c3aed; font-size: 13px; margin-top: 5px;">مساعد العملاء الذكي (مدعوم بواسطة ChatGPT AI):</h4>
-                <p style="font-size: 11.5px; color: #64748b;">اسأل المساعد الذكي عن أي استفسار يخص حسابك أو كيفية استخدام المنصة:</p>
-                
-                <div style="background: #f1f5f9; border-radius: 8px; padding: 8px; max-height: 140px; overflow-y:auto; display: flex; flex-direction: column; gap: 6px;" id="aiChatLog">
-                    <div style="background: #fff; padding: 6px; border-radius: 6px; font-size: 11px;"><b>مساعد حناشة الذكي:</b> أهلاً بك! أنا جاهز للإجابة عن أي سؤال يخص سياسة المنصة أو الاستفسارات التقنية. اسألني الآن!</div>
+            <div class="close-screen-btn" onclick="switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen')">×</div>
+            <div class="ai-support-card" style="margin-top: 25px;">
+                <div class="sarah-profile-header">
+                    <div class="sarah-avatar-container">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="sarah-avatar" alt="سارة">
+                        <div class="online-status-dot" title="متصل الآن - حاضرة دائماً"></div>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 13.5px; color: #7c3aed; font-weight: 800;">سارة - خدمة العملاء الذكية</h3>
+                        <p style="font-size: 10px; color: #22c55e; font-weight: bold;">● متصلة الآن وجاهزة لمساعدتك</p>
+                    </div>
                 </div>
 
-                <div style="display: flex; gap: 6px; margin-top: 5px;">
-                    <input type="text" id="aiQuestionInput" class="form-control-custom" placeholder="اكتب سؤالك هنا...">
-                    <button class="pub-btn" style="width: 80px;" onclick="askAiSupport()">إرسال</button>
+                <p style="font-size: 11px; color: #64748b;">أهلاً بك! أنا **سارة** مساعدة خدمة العملاء. يمكنك سؤالي عن أي استفسار تقني أو سياسة الاستخدام:</p>
+                
+                <div style="background: #f1f5f9; border-radius: 8px; padding: 8px; flex-grow: 1; max-height: 160px; overflow-y:auto; display: flex; flex-direction: column; gap: 6px;" id="aiChatLog">
+                    <div style="background: #fff; padding: 6px; border-radius: 6px; font-size: 11px;"><b>سارة:</b> مرحباً بك يا صديقي! كيف يمكنني مساعدتك اليوم في منصة حناشة؟ 😊</div>
+                </div>
+
+                <div style="display: flex; gap: 6px;">
+                    <input type="text" id="aiQuestionInput" class="form-control-custom" placeholder="اكتب سؤالك لسارة...">
+                    <button class="pub-btn" style="width: 80px;" onclick="askSarahSupport()">إرسال</button>
                 </div>
             </div>
         </div>
 
         <!-- 7. الملف الشخصي -->
         <div class="screen-section" id="profileScreen">
-            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div class="close-screen-btn" onclick="switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen')">×</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 25px;">
                 <h3 style="color: #7c3aed; font-size: 14px;">ملفي الشخصي</h3>
                 <button onclick="openEditProfile()" style="background: #f3e8ff; border: 1px solid #d8b4fe; color: #7c3aed; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 12px;">✏️</button>
             </div>
@@ -441,7 +474,7 @@
             <button onclick="copyReferralLink()" style="background:#7c3aed; color:#fff; border:none; padding:3px 8px; border-radius:6px; font-size:9.5px; cursor:pointer; margin-top:3px; display:block; margin-left:auto; margin-right:auto;">نسخ الرابط</button>
         </div>
 
-        <!-- القائمة السفلى (6 أقسام شاملة ومستقرة بدون خروج) -->
+        <!-- القائمة السفلى -->
         <div class="footer-nav">
             <button class="nav-item active" onclick="switchTab(this, 'feedScreen')">
                 <span class="nav-icon">🏠</span>
@@ -461,7 +494,7 @@
             </button>
             <button class="nav-item" onclick="switchTab(this, 'policyAiScreen')">
                 <span class="nav-icon">🤖</span>
-                <span>السياسة والدعم</span>
+                <span>سارة والدعم</span>
             </button>
             <button class="nav-item" onclick="switchTab(this, 'profileScreen')">
                 <span class="nav-icon">👤</span>
@@ -479,7 +512,7 @@
         let activeCameraStream = null;
 
         window.onload = function() {
-            let savedUser = localStorage.getItem('hannacha_user_v15');
+            let savedUser = localStorage.getItem('hannacha_user_v16');
             if (savedUser) {
                 currentUser = JSON.parse(savedUser);
                 applyUserDataToUI();
@@ -531,7 +564,7 @@
                 let reader = new FileReader();
                 reader.onload = function(e) {
                     currentUser.avatar = e.target.result;
-                    localStorage.setItem('hannacha_user_v15', JSON.stringify(currentUser));
+                    localStorage.setItem('hannacha_user_v16', JSON.stringify(currentUser));
                     applyUserDataToUI();
                     addNotification("تم تحديث صورتك الشخصية بنجاح.");
                 }
@@ -553,7 +586,7 @@
                 country: "الجزائر"
             };
 
-            localStorage.setItem('hannacha_user_v15', JSON.stringify(currentUser));
+            localStorage.setItem('hannacha_user_v16', JSON.stringify(currentUser));
             applyUserDataToUI();
             addNotification("مرحباً بك في منصة حناشة الاجتماعية!");
             switchTab(document.querySelectorAll('.nav-item')[0], 'feedScreen');
@@ -598,13 +631,12 @@
             currentUser.name = document.getElementById('editNameInput').value.trim() || currentUser.name;
             currentUser.bio = document.getElementById('editBioInput').value.trim();
             currentUser.country = document.getElementById('editCountryInput').value.trim();
-            localStorage.setItem('hannacha_user_v15', JSON.stringify(currentUser));
+            localStorage.setItem('hannacha_user_v16', JSON.stringify(currentUser));
             applyUserDataToUI();
             closeEditProfile();
             alert("تم حفظ التعديلات بنجاح!");
         }
 
-        // دالة التنقل المستقرة لمنع الخروج من التطبيق
         function switchTab(btn, screenId) {
             if(btn) {
                 document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
@@ -644,20 +676,32 @@
             document.getElementById('mediaPreviewContainer').style.display = 'none';
         }
 
+        /* تحويل روابط الفيديو النصية إلى مشغل فيديو مدمج تلقائياً داخل التطبيق */
+        function parseVideoEmbeds(text) {
+            // التحقق إذا كان النص يحتوي على رابط يوتيوب أو فيديو مباشر
+            const ytRegex = /(https?:\/\/(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11}))/g;
+            if(ytRegex.test(text)) {
+                return text.replace(ytRegex, (match, p1, videoId) => {
+                    return `<iframe class="embedded-video-player" src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>`;
+                });
+            }
+            return text;
+        }
+
         function getSavedPosts() {
-            let posts = localStorage.getItem('hannacha_posts_v15');
+            let posts = localStorage.getItem('hannacha_posts_v16');
             return posts ? JSON.parse(posts) : [
                 { 
                     id: 1, 
                     author: "سارة دعم حناشة", 
                     authorId: "100200",
                     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100", 
-                    text: "أهلاً بالجميع في منصة حناشة الذكية! استمتعوا بمكالمات الفيديو الثنائية وصفحة التعريف والدعم بالذكاء الاصطناعي #حناشة", 
+                    text: "أهلاً بالجميع في منصة حناشة الذكية! جربوا إرسال فيديوهاتكم المباشرة وروابط اليوتيوب التي تشتغل تلقائياً داخل التطبيق #حناشة", 
                     mediaType: null, 
                     mediaUrl: null,
                     likes: 5,
                     likedByMe: false,
-                    comments: [{ author: "أمير", text: "منصة رائعة جداً وتدعم كاميرتين للفيديو!" }]
+                    comments: [{ author: "أمير", text: "منصة رائعة جداً وسارة مساعدة مذهلة!" }]
                 }
             ];
         }
@@ -667,7 +711,7 @@
             if(!text && !attachedMediaData.url) return alert("اكتب نصاً أو أرفق صورة/فيديو للنشر!");
             
             if(text.includes("سب") || text.includes("شتم")) {
-                return alert("⚠️ تنبيه: يحتوي منشورك على كلمات ممنوعة (سب/شتم). تم رفض النشر!");
+                return alert("⚠️ تنبيه: يحتوي منشورك على كلمات ممنوعة. تم رفض النشر!");
             }
 
             let posts = getSavedPosts();
@@ -684,7 +728,7 @@
                 comments: []
             });
 
-            localStorage.setItem('hannacha_posts_v15', JSON.stringify(posts));
+            localStorage.setItem('hannacha_posts_v16', JSON.stringify(posts));
             document.getElementById('mainPostText').value = '';
             removeAttachedMedia();
             loadPosts();
@@ -692,11 +736,12 @@
         }
 
         function formatPostText(text) {
-            return text.replace(/(#[^\s#]+)/g, '<span class="post-hashtag" onclick="filterByHashtag(\'$1\')">$1</span>');
+            let parsed = parseVideoEmbeds(text);
+            return parsed.replace(/(#[^\s#]+)/g, '<span class="post-hashtag" onclick="filterByHashtag(\'$1\')">$1</span>');
         }
 
         function filterByHashtag(tag) {
-            alert("تم النقر على الوسم: " + tag + "\nسيتم عرض المنشورات المتعلقة بهذا الوسم قريباً.");
+            alert("تم النقر على الوسم: " + tag);
         }
 
         function loadPosts() {
@@ -736,9 +781,25 @@
                         ${mediaHtml}
                         
                         <div class="post-interactions">
-                            <button class="interaction-btn ${p.likedByMe ? 'liked' : ''}" onclick="toggleLike(${p.id})">
-                                ❤️ <span>${p.likes}</span> إعجاب
+                            <!-- زر التفاعل مع دعم الضغط المطول (Long Press) لإظهار الإيموجيات وإعادة النشر -->
+                            <button class="interaction-btn ${p.likedByMe ? 'liked' : ''}" 
+                                    onmousedown="startLongPressTimer(event, ${p.id})" 
+                                    onmouseup="cancelLongPressTimer()" 
+                                    ontouchstart="startLongPressTimer(event, ${p.id})" 
+                                    ontouchend="cancelLongPressTimer()" 
+                                    onclick="toggleLike(${p.id})">
+                                ❤️ <span id="likeCount_${p.id}">${p.likes}</span> تفاعل
                             </button>
+
+                            <!-- صندوق الإيموجيات وإعادة النشر المنبثق -->
+                            <div class="emoji-popup-picker" id="emojiPicker_${p.id}">
+                                <button class="emoji-option" onclick="selectEmoji(${p.id}, '❤️')">❤️</button>
+                                <button class="emoji-option" onclick="selectEmoji(${p.id}, '🔥')">🔥</button>
+                                <button class="emoji-option" onclick="selectEmoji(${p.id}, '😍')">😍</button>
+                                <button class="emoji-option" onclick="selectEmoji(${p.id}, '👏')">👏</button>
+                                <button class="emoji-option" onclick="repostWithFlash(${p.id})" title="إعادة نشر">🔄</button>
+                            </div>
+
                             <span style="font-size: 10.5px; align-self: center;">💬 ${p.comments.length} تعليقات</span>
                         </div>
 
@@ -754,6 +815,48 @@
             });
         }
 
+        let longPressTimer = null;
+        function startLongPressTimer(e, postId) {
+            e.preventDefault();
+            longPressTimer = setTimeout(() => {
+                let picker = document.getElementById(`emojiPicker_${postId}`);
+                if(picker) picker.style.display = 'flex';
+            }, 600); // ضغط مطول لـ 0.6 ثانية
+        }
+
+        function cancelLongPressTimer() {
+            if(longPressTimer) clearTimeout(longPressTimer);
+        }
+
+        function selectEmoji(postId, emoji) {
+            document.querySelectorAll('.emoji-popup-picker').forEach(el => el.style.display = 'none');
+            toggleLike(postId);
+            addNotification(`تفاعل المستخدم بـ ${emoji} على المنشور.`);
+        }
+
+        function repostWithFlash(postId) {
+            document.querySelectorAll('.emoji-popup-picker').forEach(el => el.style.display = 'none');
+            let posts = getSavedPosts();
+            let post = posts.find(p => p.id === postId);
+            if(post) {
+                posts.unshift({
+                    id: Date.now(),
+                    author: currentUser.name + " (إعادة نشر 🔄)",
+                    authorId: currentUser.id,
+                    avatar: currentUser.avatar,
+                    text: "🔄 تمت إعادة نشر: " + post.text,
+                    mediaType: post.mediaType,
+                    mediaUrl: post.mediaUrl,
+                    likes: 0,
+                    likedByMe: false,
+                    comments: []
+                });
+                localStorage.setItem('hannacha_posts_v16', JSON.stringify(posts));
+                loadPosts();
+                alert("⚡ تمت إعادة نشر المنشور بنجاح في خلاصتك!");
+            }
+        }
+
         function toggleLike(postId) {
             let posts = getSavedPosts();
             let post = posts.find(p => p.id === postId);
@@ -765,7 +868,7 @@
                     post.likes++;
                     post.likedByMe = true;
                 }
-                localStorage.setItem('hannacha_posts_v15', JSON.stringify(posts));
+                localStorage.setItem('hannacha_posts_v16', JSON.stringify(posts));
                 loadPosts();
             }
         }
@@ -779,7 +882,7 @@
             let post = posts.find(p => p.id === postId);
             if(post) {
                 post.comments.push({ author: currentUser.name, text: text });
-                localStorage.setItem('hannacha_posts_v15', JSON.stringify(posts));
+                localStorage.setItem('hannacha_posts_v16', JSON.stringify(posts));
                 loadPosts();
             }
         }
@@ -839,7 +942,7 @@
             const txt = document.getElementById('chatInputText').value.trim();
             if(!txt) return;
             const area = document.getElementById('chatMessagesArea');
-            area.innerHTML += `<div class="msg-bubble outgoing">${txt}</div>`;
+            area.innerHTML += `<div class="msg-bubble outgoing">${parseVideoEmbeds(txt)}</div>`;
             document.getElementById('chatInputText').value = '';
             area.scrollTop = area.scrollHeight;
         }
@@ -857,7 +960,6 @@
             }
         }
 
-        /* وظيفة مكالمة الفيديو المزدوجة (اثنتان كاميرا فيديو) */
         async function startDualVideoCall() {
             const modal = document.getElementById('videoCallModal');
             const localVideo = document.getElementById('localCameraVideo');
@@ -869,7 +971,6 @@
 
             try {
                 activeCameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                // عرض الكاميرا المحلية في النافذة الصغيرة والكبيرة للاختبار المباشر الثنائي
                 localVideo.srcObject = activeCameraStream;
                 remoteVideo.srcObject = activeCameraStream;
                 statusText.innerText = "المكالمة المرئية الثنائية جارية الآن بجودة عالية 📹📹";
@@ -910,8 +1011,8 @@
             else window.open("https://m.me/", "_blank");
         }
 
-        /* ذكاء اصطناعي ChatGPT لخدمة العملاء */
-        function askAiSupport() {
+        /* المساعدة الذكية سارة لخدمة العملاء */
+        function askSarahSupport() {
             const input = document.getElementById('aiQuestionInput');
             const q = input.value.trim();
             if(!q) return;
@@ -921,26 +1022,26 @@
             input.value = '';
 
             setTimeout(() => {
-                let reply = "بصفتي مساعد حناشة الذكي (ChatGPT)، أؤكد لك أن منصتنا توفر أماناً كاملاً، ويمكنك التواصل عبر المعرف وتفعيل الكاميرات بكل سهولة. هل تحتاج إلى مساعدة أخرى؟";
+                let reply = "أهلاً بك يا غالي! بصفتي سارة مساعدة خدمة العملاء، أؤكد لك أن منصتنا توفر أماناً كاملاً وتشغيل مباشر للفيديوهات. هل تحتاج لأي مساعدة أخرى؟ 😊";
                 if(q.includes("حساب") || q.includes("معرف")) {
-                    reply = "يمكنك العثور على رقم المعرف (ID) الخاص بك حصرياً داخل صفحة 'حسابي'، ومشاركته مع الأصدقاء لإضافتك فوراً.";
-                } else if(q.includes("كاميرا") || q.includes("فيديو")) {
-                    reply = "مكالمات الفيديو في حناشة تدعم كاميرتين في الشاشة لتجربة تفاعلية مذهلة، شريطة السماح للمتصفح بالوصول للكاميرا.";
+                    reply = "رقم المعرف الخاص بك تجده في قسم 'حسابي' ويمكنك نسخه ومشاركته بسهولة مع أصدقائك!";
+                } else if(q.includes("فيديو") || q.includes("رابط")) {
+                    reply = "يمكنك وضع أي رابط يوتيوب أو فيديو في المنشورات وسيتم تشغيله تلقائياً كمشغل مدمج داخل التطبيق دون نقلك لخارج الصفحة!";
                 }
-                log.innerHTML += `<div style="background: #fff; padding: 6px; border-radius: 6px; font-size: 11px; text-align: right;"><b>مساعد حناشة الذكي:</b> ${reply}</div>`;
+                log.innerHTML += `<div style="background: #fff; padding: 6px; border-radius: 6px; font-size: 11px; text-align: right;"><b>سارة:</b> ${reply}</div>`;
                 log.scrollTop = log.scrollHeight;
             }, 800);
         }
 
         function addNotification(text) {
-            let notifs = JSON.parse(localStorage.getItem('hannacha_notifs_v15') || "[]");
+            let notifs = JSON.parse(localStorage.getItem('hannacha_notifs_v16') || "[]");
             notifs.unshift({ text: text, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) });
-            localStorage.setItem('hannacha_notifs_v15', JSON.stringify(notifs));
+            localStorage.setItem('hannacha_notifs_v16', JSON.stringify(notifs));
             loadNotifications();
         }
 
         function loadNotifications() {
-            let notifs = JSON.parse(localStorage.getItem('hannacha_notifs_v15') || "[]");
+            let notifs = JSON.parse(localStorage.getItem('hannacha_notifs_v16') || "[]");
             document.getElementById('notifBadge').innerText = notifs.length;
             document.getElementById('notificationsList').innerHTML = notifs.map(n => `<div style="font-size:11px; padding:4px; border-bottom:1px solid #f1f5f9;">📌 ${n.text}</div>`).join('');
         }
