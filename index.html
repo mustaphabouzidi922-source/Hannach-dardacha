@@ -3,197 +3,873 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الشروعة - ROUAACH</title>
+    <title>CHROUAA - منصة التواصل الاجتماعي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #6a1b9a; /* اللون البنفسجي */
-            --bg: #f5f0f6;
-            --white: #ffffff;
-            --text: #111111;
-            --green: #2ecc71;
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --primary-light: #e0f2fe;
+            --bg-main: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --danger: #ef4444;
+            --success: #22c55e;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, sans-serif; }
-        body { background-color: var(--bg); color: var(--text); font-size: 20px; } /* خطوط مكبرة وواضحة */
-        
-        .container { max-width: 480px; margin: 0 auto; background: var(--white); min-height: 100vh; padding-bottom: 80px; box-shadow: 0 0 10px rgba(0,0,0,0.1); position: relative; }
-        
-        .header { background: var(--primary); color: white; padding: 15px; text-align: center; font-size: 26px; font-weight: bold; }
-        
-        .section { padding: 20px; }
-        
-        .profile-box { text-align: center; margin-bottom: 20px; position: relative; display: inline-block; left: 50%; transform: translateX(-50%); }
-        .profile-img { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--primary); object-fit: cover; }
-        
-        /* النقطة الخضراء المتصلة */
-        .online-dot { position: absolute; bottom: 5px; right: 5px; width: 22px; height: 22px; background-color: var(--green); border: 3px solid white; border-radius: 50%; }
 
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 19px; }
-        .input-group input { width: 100%; padding: 14px; font-size: 18px; border: 2px solid #ccc; border-radius: 8px; }
-        .input-group input:focus { border-color: var(--primary); outline: none; }
+        [data-theme="dark"] {
+            --primary: #38bdf8;
+            --primary-dark: #0284c7;
+            --primary-light: #0369a1;
+            --bg-main: #0f172a;
+            --surface: #1e293b;
+            --text-main: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border: #334155;
+        }
 
-        .btn { background: var(--primary); color: white; border: none; width: 100%; padding: 15px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; }
-        .btn:active { opacity: 0.8; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        /* مشغل الفيديو الحقيقي */
-        .video-box { background: #eee; padding: 15px; border-radius: 8px; margin-top: 20px; border: 2px dashed var(--primary); }
-        .video-player-container { width: 100%; margin-top: 10px; min-height: 200px; background: #000; border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; color: white; }
+        body {
+            background-color: #090d16;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
 
-        /* خدمة العملاء الحقيقية */
-        .chat-container { height: 300px; border: 1px solid #ccc; border-radius: 8px; background: #fafafa; padding: 10px; overflow-y: auto; margin-bottom: 10px; display: flex; flex-direction: column; gap: 10px; }
-        .msg { padding: 10px 14px; border-radius: 8px; max-width: 80%; font-size: 17px; }
-        .msg.support { background: #e1bee7; color: #4a148c; align-self: flex-start; }
-        .msg.user { background: var(--primary); color: white; align-self: flex-end; }
+        /* الهاتف الإطار */
+        .phone-frame {
+            width: 100%;
+            max-width: 414px;
+            height: 100vh;
+            max-height: 896px;
+            background-color: var(--bg-main);
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-radius: 0;
+        }
 
-        /* الشريط السفلي */
-        .footer-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #ddd; }
-        .nav-tab { text-align: center; cursor: pointer; color: #555; font-size: 15px; font-weight: bold; }
-        .nav-tab.active { color: var(--primary); }
+        @media (min-width: 450px) {
+            .phone-frame {
+                border-radius: 40px;
+                border: 12px solid #1e293b;
+                height: 85vh;
+            }
+        }
 
-        .screen { display: none; }
-        .screen.active { display: block; }
+        /* شريط الحالة العلوي */
+        .status-bar {
+            background-color: var(--surface);
+            padding: 8px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+        }
+
+        /* رأس التطبيق */
+        .app-header {
+            background-color: var(--surface);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            z-index: 99;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3);
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        /* محتوى التطبيق الأساسي */
+        .app-content {
+            flex: 1;
+            overflow-y: auto;
+            position: relative;
+            background-color: var(--bg-main);
+        }
+
+        .view {
+            display: none;
+            padding: 16px;
+            animation: fadeIn 0.3s ease;
+            padding-bottom: 80px;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* شريط التبويبات السفلي */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--surface);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            flex: 1;
+        }
+
+        .nav-item i {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        /* بطاقات المنشورات */
+        .post-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .user-info-flex {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .user-details h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .user-details span {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .post-body {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            word-break: break-word;
+        }
+
+        .post-media {
+            width: 100%;
+            border-radius: 12px;
+            max-height: 250px;
+            object-fit: cover;
+            margin-bottom: 12px;
+        }
+
+        .youtube-embed {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .youtube-embed iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 12px;
+        }
+
+        .post-footer {
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .action-btn:hover, .action-btn.active {
+            color: var(--primary);
+        }
+
+        /* إنشاء منشور */
+        .create-post-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+
+        .create-input {
+            width: 100%;
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            color: var(--text-main);
+            resize: none;
+            font-size: 14px;
+            outline: none;
+            margin-bottom: 10px;
+        }
+
+        .create-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .media-upload-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .upload-icon-btn {
+            background: var(--primary-light);
+            color: var(--primary);
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .primary-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .primary-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* الإشعارات والنوافذ المنبثقة */
+        .modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: var(--surface);
+            width: 90%;
+            max-width: 340px;
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .modal-card h3 {
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .modal-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        /* شاشة مكالمات الفيديو */
+        #video-call-view {
+            background: #000;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .video-container {
+            flex: 1;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .pip-video {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 100px;
+            height: 140px;
+            border-radius: 12px;
+            border: 2px solid white;
+            object-fit: cover;
+            background: #222;
+        }
+
+        .call-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .call-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .end-call { background: var(--danger); }
+        .mute-call { background: #475569; }
+
+        /* الشات */
+        .chat-list-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--surface);
+            padding: 12px;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+        }
+
+        /* تنبيه التثبيت PWA */
+        #pwa-banner {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            background: var(--primary);
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 3000;
+            font-size: 13px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
-<body>
+<body data-theme="dark">
 
-<div class="container">
-    <!-- العنوان العلوي -->
-    <div class="header">منصة الشروعة (ROUAACH)</div>
+<div class="phone-frame">
+    <!-- بنر التثبيت PWA -->
+    <div id="pwa-banner">
+        <span>📱 ثبت تطبيق CHROUAA على هاتفك!</span>
+        <button class="primary-btn" style="background:white; color:var(--primary); padding:4px 10px;" onclick="installPWA()">تثبيت</button>
+    </div>
 
-    <!-- 1. الشاشة الرئيسية -->
-    <div id="homeScreen" class="screen active section">
-        <div style="text-align:center; background: #e1bee7; color: #4a148c; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
-            مرحباً بك في منصة الشروعة للتواصل الاجتماعي ومكالمات فيديو مجانية
+    <!-- شريط الحالة -->
+    <div class="status-bar">
+        <span id="clock">10:51</span>
+        <div style="display:flex; gap:6px;">
+            <i class="fa-solid fa-signal"></i>
+            <i class="fa-solid fa-wifi"></i>
+            <i class="fa-solid fa-battery-full"></i>
+        </div>
+    </div>
+
+    <!-- رأس التطبيق -->
+    <header class="app-header">
+        <div class="logo-area">
+            <div class="logo-icon">CH</div>
+            <div class="logo-text">CHROUAA</div>
+        </div>
+        <div class="header-actions">
+            <button class="icon-btn" onclick="toggleTheme()" title="تغيير المظهر"><i class="fa-solid fa-moon" id="theme-icon"></i></button>
+            <button class="icon-btn" onclick="openModal('profile-modal')" title="الملف الشخصي"><i class="fa-solid fa-user-gear"></i></button>
+        </div>
+    </header>
+
+    <!-- محتوى التطبيق الأساسي -->
+    <div class="app-content">
+
+        <!-- 1. خلاصة المنشورات (Feed) -->
+        <div id="view-feed" class="view active">
+            <!-- صندوق إنشاء منشور -->
+            <div class="create-post-box">
+                <textarea id="post-text-input" class="create-input" rows="3" placeholder="بماذا تفكر يا بطل؟ (يمكنك إضافة روابط يوتيوب هنا)..."></textarea>
+                <div class="create-footer">
+                    <div class="media-upload-options">
+                        <label class="upload-icon-btn"><i class="fa-solid fa-image"></i><input type="file" id="image-upload" accept="image/*" style="display:none;" onchange="previewImage(event)"></label>
+                        <button class="upload-icon-btn" onclick="triggerVideoCall()"><i class="fa-solid fa-video"></i></button>
+                    </div>
+                    <button class="primary-btn" onclick="createNewPost()">نشر</button>
+                </div>
+                <div id="image-preview-container" style="margin-top:10px; display:none; position:relative;">
+                    <img id="img-preview" style="max-height:100px; border-radius:8px;" />
+                    <button onclick="clearImagePreview()" style="position:absolute; top:0; right:0; background:red; color:white; border:none; border-radius:50%; width:20px; height:20px; font-size:10px; cursor:pointer;">×</button>
+                </div>
+            </div>
+
+            <!-- قائمة المنشورات -->
+            <div id="posts-feed-container">
+                <!-- منشور افتراضي تجريبي يضم رابط يوتيوب -->
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="user-info-flex">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="avatar" />
+                            <div class="user-details">
+                                <h4>سارة - مساعدة شروعة</h4>
+                                <span>منذ ساعتين • معرف: #AI-999</span>
+                            </div>
+                        </div>
+                        <button class="icon-btn" style="border:none; background:none;" onclick="alert('تم حفظ المنشور')"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                    </div>
+                    <div class="post-body">
+                        أهلاً بكم جميعاً في منصة **CHROUAA** المتقدمة! استمتعوا بمشاركة الأفكار ومقاطع الفيديو مباشرة عبر روابط يوتيوب:
+                    </div>
+                    <div class="youtube-embed">
+                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                    </div>
+                    <div class="post-footer">
+                        <button class="action-btn" onclick="likePost(this)"><i class="fa-regular fa-heart"></i> إعجاب (14)</button>
+                        <button class="action-btn"><i class="fa-regular fa-comment"></i> تعليق (3)</button>
+                        <button class="action-btn"><i class="fa-solid fa-share"></i> مشاركة</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="profile-box">
-            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" class="profile-img" alt="صورة الملف">
-            <div class="online-dot" title="متصل الآن"></div>
+        <!-- 2. صفحة البحث والأصدقاء -->
+        <div id="view-search" class="view">
+            <h3 style="margin-bottom: 12px;">البحث عن الأصدقاء</h3>
+            <div style="display:flex; gap:8px; margin-bottom:16px;">
+                <input type="text" id="friend-id-input" class="create-input" style="margin:0;" placeholder="أدخل معرف الصديق (مثال: #CH-777)..." />
+                <button class="primary-btn" onclick="searchFriend()">بحث</button>
+            </div>
+            <div id="search-results-area">
+                <div class="chat-list-item">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="avatar" />
+                    <div style="flex:1;">
+                        <h4 style="font-size:14px;">أحمد المنصور</h4>
+                        <span style="font-size:11px; color:var(--text-secondary);">المعرف: #CH-4521</span>
+                    </div>
+                    <button class="primary-btn" style="padding:5px 10px;" onclick="alert('تم إرسال طلب الصداقة!')">إضافة</button>
+                </div>
+            </div>
         </div>
 
-        <div class="input-group">
-            <label>الاسم الكامل:</label>
-            <input type="text" id="nameInput" placeholder="أدخل اسمك..." value="أمير الجزائر">
+        <!-- 3. المحادثات والمسنجر -->
+        <div id="view-chat" class="view">
+            <h3 style="margin-bottom: 12px;">المحادثات النشطة</h3>
+            <div class="chat-list-item" onclick="openActiveChat('سارة الذكية')">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="avatar" />
+                <div style="flex:1;">
+                    <h4 style="font-size:14px;">سارة - خدمة العملاء (AI)</h4>
+                    <span style="font-size:12px; color:var(--success);">متصل الآن • جاهزة للمساعدة</span>
+                </div>
+                <i class="fa-solid fa-chevron-left" style="color:var(--text-secondary);"></i>
+            </div>
+            <div class="chat-list-item" onclick="openActiveChat('أحمد المنصور')">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="avatar" />
+                <div style="flex:1;">
+                    <h4 style="font-size:14px;">أحمد المنصور</h4>
+                    <span style="font-size:12px; color:var(--text-secondary);">هل رأيت تحديث المنصة الجديد؟</span>
+                </div>
+                <i class="fa-solid fa-chevron-left" style="color:var(--text-secondary);"></i>
+            </div>
         </div>
 
-        <div class="input-group">
-            <label>البريد الإلكتروني:</label>
-            <input type="email" id="emailInput" placeholder="أدخل بريدك..." value="amir@gmail.com">
+        <!-- 4. قسم معلومات المنصة -->
+        <div id="view-info" class="view">
+            <div style="text-align:center; padding: 20px 0;">
+                <div class="logo-icon" style="width:60px; height:60px; font-size:26px; margin: 0 auto 12px auto;">CH</div>
+                <h2>منصة CHROUAA</h2>
+                <p style="color:var(--text-secondary); font-size:13px; margin-top:5px;">الإصدار 3.2.0 • النسخة العربية المتكاملة</p>
+            </div>
+            <div class="post-card">
+                <h4 style="margin-bottom:8px; color:var(--primary);">عن المشروع</h4>
+                <p style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+                    منصة اجتماعية تفاعلية مصممة خصيصاً لربط المستخدمين، دعم تشغيل الوسائط المرئية، ميزات الذكاء الاصطناعي الفورية، ومكالمات الفيديو المتقدمة بكفاءة عالية.
+                </p>
+            </div>
         </div>
 
-        <button class="btn" onclick="saveUserLogin()">تسجيل الدخول وبدء الاستخدام</button>
+    </div>
 
-        <!-- مشغل روابط الفيديو الحقيقي -->
-        <div class="video-box">
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">رابط الفيديو (ضع رابط يوتيوب أو فيديو مباشر):</label>
-            <input type="text" id="videoLinkInput" placeholder="مثال: https://...mp4 أو رابط يوتيوب" style="width:100%; padding:10px; font-size:16px; margin-bottom:8px;">
-            <button class="btn" style="padding: 10px; font-size: 16px;" onclick="playRealVideo()">قراءة وتشغيل الفيديو</button>
-            <div class="video-player-container" id="videoContainerBox">
-                <span>لا يوجد فيديو معروض حالياً</span>
+    <!-- نافذة مكالمات الفيديو -->
+    <div id="video-call-view">
+        <div style="display:flex; justify-content:space-between; align-items:center; color:white; z-index:10;">
+            <h3>مكالمة فيديو ثنائية</h3>
+            <span id="call-timer" style="font-size:14px; background:rgba(255,255,255,0.2); padding:4px 10px; border-radius:20px;">00:00</span>
+        </div>
+        <div class="video-container">
+            <video id="remote-video" autoplay playsinline muted></video>
+            <video id="local-video" class="pip-video" autoplay playsinline muted></video>
+        </div>
+        <div class="call-controls">
+            <button class="call-btn mute-call" onclick="toggleMute()"><i class="fa-solid fa-microphone" id="mic-icon"></i></button>
+            <button class="call-btn end-call" onclick="endVideoCall()"><i class="fa-solid fa-phone-slash"></i></button>
+            <a href="https://wa.me/" target="_blank" class="call-btn" style="background:#25D366; text-decoration:none;"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+    </div>
+
+    <!-- نافذة تعديل الملف الشخصي -->
+    <div class="modal" id="profile-modal">
+        <div class="modal-card">
+            <h3>إعدادات الملف الشخصي</h3>
+            <p>معرف المستخدم الخاص بك: <b id="user-unique-id" style="color:var(--primary);">#CH-8821</b></p>
+            <input type="text" id="edit-username" class="create-input" value="مستخدم شروعة" />
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button class="primary-btn" style="flex:1; background:var(--border); color:var(--text-main);" onclick="closeModal('profile-modal')">إلغاء</button>
+                <button class="primary-btn" style="flex:1;" onclick="saveProfile()">حفظ</button>
             </div>
         </div>
     </div>
 
-    <!-- 2. شاشة الأصدقاء والنقطة الخضراء -->
-    <div id="friendsScreen" class="screen section">
-        <h2 style="color: var(--primary); margin-bottom: 15px;">قائمة الأصدقاء المتصلين</h2>
-        <div style="display: flex; align-items: center; gap: 15px; background: white; padding: 10px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 10px;">
-            <div style="position: relative;">
-                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150" style="width: 55px; height: 55px; border-radius: 50%; object-fit: cover;" alt="صديق">
-                <div class="online-dot" style="width: 16px; height: 16px; bottom: 2px; right: 2px;"></div>
-            </div>
-            <div>
-                <h3 style="font-size: 18px;">سارة أحمد</h3>
-                <span style="color: var(--green); font-size: 14px; font-weight: bold;">● متصل الآن</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- 3. خدمة العملاء الحقيقية (سارة والدعم) -->
-    <div id="supportScreen" class="screen section">
-        <h2 style="color: var(--primary); margin-bottom: 15px;">سارة والدعم الفني</h2>
-        <div class="chat-container" id="chatBox">
-            <div class="msg support">أهلاً بك! أنا سارة مسؤولة الدعم الفني في منصة الشروعة، كيف يمكنني مساعدتك الآن؟</div>
-        </div>
-        <div style="display: flex; gap: 5px;">
-            <input type="text" id="userInputMsg" placeholder="اكتب مشكلتك هنا..." style="flex:1; padding: 12px; font-size: 16px; border: 2px solid #ccc; border-radius: 8px;">
-            <button class="btn" style="width: 80px; margin-top: 0; padding: 0;" onclick="sendSupportMsg()">إرسال</button>
-        </div>
-    </div>
-
-    <!-- الشريط السفلي -->
-    <div class="footer-nav">
-        <div class="nav-tab active" onclick="switchTab('homeScreen', this)">🏠<br>الرئيسية</div>
-        <div class="nav-tab" onclick="switchTab('friendsScreen', this)">👥<br>الأصدقاء</div>
-        <div class="nav-tab" onclick="switchTab('supportScreen', this)">🤖<br>سارة والدعم</div>
-    </div>
+    <!-- شريط التنقل السفلي -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="switchView('feed', this)"><i class="fa-solid fa-house"></i>الرئيسية</button>
+        <button class="nav-item" onclick="switchView('search', this)"><i class="fa-solid fa-magnifying-glass"></i>البحث</button>
+        <button class="nav-item" onclick="switchView('chat', this)"><i class="fa-solid fa-comments"></i>المحادثات</button>
+        <button class="nav-item" onclick="switchView('info', this)"><i class="fa-solid fa-circle-info"></i>عن المنصة</button>
+    </nav>
 </div>
 
 <script>
-    function switchTab(screenId, element) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-        document.getElementById(screenId).classList.add('active');
-        element.classList.add('active');
+    // تحديث الساعة تلقائياً
+    setInterval(() => {
+        const now = new Date();
+        document.getElementById('clock').innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }, 1000);
+
+    // تبديل الشاشات
+    function switchView(viewName, btn) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        document.getElementById('view-' + viewName).classList.add('active');
+        btn.classList.add('active');
     }
 
-    function saveUserLogin() {
-        const name = document.getElementById('nameInput').value;
-        const email = document.getElementById('emailInput').value;
-        if(!name || !email) {
-            alert('يرجى ملء الحقول المطلوبة');
-            return;
-        }
-        localStorage.setItem('user_name', name);
-        alert('تم تسجيل الدخول بنجاح في منصة الشروعة!');
-    }
-
-    // دالة حقيقية لقراءة وتشغيل روابط الفيديو
-    function playRealVideo() {
-        const link = document.getElementById('videoLinkInput').value.trim();
-        const box = document.getElementById('videoContainerBox');
-        if(!link) {
-            alert('الرجاء إدخال رابط فيديو صالح أولاً');
-            return;
-        }
-        
-        // التحقق إذا كان رابط يوتيوب لتحويله لعرض صحيح، أو فيديو عادي
-        if(link.includes('youtube.com') || link.includes('youtu.be')) {
-            let videoId = '';
-            if(link.includes('youtu.be/')) {
-                videoId = link.split('youtu.be/')[1].split('?')[0];
-            } else if(link.includes('watch?v=')) {
-                videoId = link.split('watch?v=')[1].split('&')[0];
-            }
-            box.innerHTML = `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+    // تبديل المظهر (ليلي/نهاري)
+    function toggleTheme() {
+        const body = document.body;
+        const icon = document.getElementById('theme-icon');
+        if (body.getAttribute('data-theme') === 'dark') {
+            body.setAttribute('data-theme', 'light');
+            icon.className = 'fa-solid fa-sun';
         } else {
-            box.innerHTML = `<video width="100%" height="200" controls autoplay><source src="${link}" type="video/mp4">متصفحك لا يدعم تشغيل الفيديو</video>`;
+            body.setAttribute('data-theme', 'dark');
+            icon.className = 'fa-solid fa-moon';
         }
     }
 
-    // خدمة عملاء حقيقية وتفاعلية تفهم المستخدم
-    function sendSupportMsg() {
-        const input = document.getElementById('userInputMsg');
-        const chat = document.getElementById('chatBox');
-        const text = input.value.trim();
-        if(!text) return;
+    // النوافذ المنبثقة
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-        chat.innerHTML += `<div class="msg user">${text}</div>`;
-        input.value = '';
-        chat.scrollTop = chat.scrollHeight;
+    let uploadedImageBase64 = null;
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function(){
+            uploadedImageBase64 = reader.result;
+            document.getElementById('img-preview').src = uploadedImageBase64;
+            document.getElementById('image-preview-container').style.display = 'block';
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
 
-        setTimeout(() => {
-            let reply = "تم استلام رسالتك في منصة الشروعة وسيتم الرد عليك فوراً من طرف فريق الدعم.";
-            if(text.includes('فيديو') || text.includes('رابط')) {
-                reply = "لحل مشكلة الفيديو، تأكد من وضع رابط مباشر ينتهي بـ mp4 أو رابط يوتيوب صحيح في خانة الفيديو بالأعلى.";
-            } else if(text.includes('لون') || text.includes('بنفسجي')) {
-                reply = "تم ضبط لون المنصة ليصبح باللون البنفسجي المطلوب بالكامل.";
-            }
-            chat.innerHTML += `<div class="msg support">${reply}</div>`;
-            chat.scrollTop = chat.scrollHeight;
-        }, 800);
+    function clearImagePreview() {
+        uploadedImageBase64 = null;
+        document.getElementById('image-preview-container').style.display = 'none';
+        document.getElementById('image-upload').value = '';
+    }
+
+    // استخراج وتحويل روابط يوتيوب تلقائياً
+    function parseYouTubeLinks(text) {
+        const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/g;
+        let match = ytRegex.exec(text);
+        if (match && match[1]) {
+            const videoId = match[1];
+            const cleanText = text.replace(ytRegex, '');
+            return `${cleanText}<div class="youtube-embed"><iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe></div>`;
+        }
+        return text;
+    }
+
+    // إنشاء منشور جديد
+    function createNewPost() {
+        const text = document.getElementById('post-text-input').value.trim();
+        if(!text && !uploadedImageBase64) return alert('الرجاء كتابة شيء أو اختيار صورة!');
+
+        const feedContainer = document.getElementById('posts-feed-container');
+        const postCard = document.createElement('div');
+        postCard.className = 'post-card';
+
+        let mediaHTML = '';
+        if(uploadedImageBase64) {
+            mediaHTML = `<img src="${uploadedImageBase64}" class="post-media" />`;
+        }
+
+        const formattedContent = parseYouTubeLinks(text);
+
+        postCard.innerHTML = `
+            <div class="post-header">
+                <div class="user-info-flex">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100" class="avatar" />
+                    <div class="user-details">
+                        <h4>مستخدم شروعة</h4>
+                        <span>الآن • معرف: #CH-8821</span>
+                    </div>
+                </div>
+                <button class="icon-btn" style="border:none; background:none;" onclick="this.closest('.post-card').remove()"><i class="fa-solid fa-trash" style="font-size:12px; color:var(--danger);"></i></button>
+            </div>
+            <div class="post-body">${formattedContent}</div>
+            ${mediaHTML}
+            <div class="post-footer">
+                <button class="action-btn" onclick="likePost(this)"><i class="fa-regular fa-heart"></i> إعجاب (0)</button>
+                <button class="action-btn"><i class="fa-regular fa-comment"></i> تعليق (0)</button>
+                <button class="action-btn"><i class="fa-solid fa-share"></i> مشاركة</button>
+            </div>
+        `;
+
+        feedContainer.prepend(postCard);
+        document.getElementById('post-text-input').value = '';
+        clearImagePreview();
+    }
+
+    function likePost(btn) {
+        btn.classList.toggle('active');
+        const icon = btn.querySelector('i');
+        if(btn.classList.contains('active')) {
+            icon.className = 'fa-solid fa-heart';
+            icon.style.color = 'var(--danger)';
+            btn.innerHTML = `<i class="fa-solid fa-heart" style="color:var(--danger)"></i> إعجاب (15)`;
+        } else {
+            icon.className = 'fa-regular fa-heart';
+            icon.style.color = '';
+            btn.innerHTML = `<i class="fa-regular fa-heart"></i> إعجاب (14)`;
+        }
+    }
+
+    // مكالمات الفيديو (بكاميرتين)
+    let localStream = null;
+    async function triggerVideoCall() {
+        const callView = document.getElementById('video-call-view');
+        callView.style.display = 'flex';
+        try {
+            localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            document.getElementById('local-video').srcObject = localStream;
+            document.getElementById('remote-video').srcObject = localStream; // محاكاة الطرف الآخر بكاميرا ثانية
+        } catch (e) {
+            alert('تعذر تشغيل الكاميرا، يجدر التحقق من الأذونات.');
+        }
+    }
+
+    function endVideoCall() {
+        if(localStream) {
+            localStream.getTracks().forEach(track => track.stop());
+        }
+        document.getElementById('video-call-view').style.display = 'none';
+    }
+
+    function toggleMute() {
+        if(localStream) {
+            const audioTrack = localStream.getAudioTracks()[0];
+            audioTrack.enabled = !audioTrack.enabled;
+            document.getElementById('mic-icon').className = audioTrack.enabled ? 'fa-solid fa-microphone' : 'fa-solid fa-microphone-slash';
+        }
+    }
+
+    function saveProfile() {
+        const newName = document.getElementById('edit-username').value;
+        alert('تم حفظ الملف الشخصي بنجاح باسم: ' + newName);
+        closeModal('profile-modal');
+    }
+
+    function searchFriend() {
+        const query = document.getElementById('friend-id-input').value;
+        if(!query) return alert('الرجاء إدخال معرف للبحث!');
+        alert('جارِ البحث عن المعرف: ' + query);
+    }
+
+    function openActiveChat(name) {
+        alert('فتح نافذة المحادثة الفورية مع: ' + name);
+    }
+
+    // تفعيل PWA افتراضياً
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        window.deferredPrompt = e;
+        document.getElementById('pwa-banner').style.display = 'flex';
+    });
+
+    function installPWA() {
+        const promptEvent = window.deferredPrompt;
+        if (promptEvent) {
+            promptEvent.prompt();
+            promptEvent.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    document.getElementById('pwa-banner').style.display = 'none';
+                }
+                window.deferredPrompt = null;
+            });
+        }
     }
 </script>
-
 </body>
 </html>
