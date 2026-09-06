@@ -46,7 +46,6 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
         }
 
         .phone-frame {
@@ -70,7 +69,6 @@
             }
         }
 
-        /* شاشة تسجيل الدخول */
         #auth-screen {
             position: absolute;
             top: 0;
@@ -185,7 +183,6 @@
             font-weight: 700;
         }
 
-        /* نافذة الإشعارات المنسدلة مع زر إغلاق X */
         .notifications-dropdown {
             position: absolute;
             top: 55px;
@@ -236,28 +233,26 @@
             align-items: center;
         }
 
-        /* تثبيت الصفحة الرئيسية فكسي (لا تتحرك للأعلى أو الأسفل بالكامل بل المحتوى الداخلي يتمرر) */
         .app-content {
             flex: 1;
-            overflow: hidden; /* تم التثبيت لمنع الخروج عن الإطار */
+            overflow-y: auto; /* السماح بالتمرير الحر للأعلى والأسفل بحرية تامة */
             position: relative;
             background-color: var(--bg-main);
             display: flex;
             flex-direction: column;
+            padding-bottom: 70px;
         }
 
         .view {
             display: none;
             flex: 1;
             padding: 16px;
-            overflow-y: auto; /* المحتوى الداخلي فقط يتمرر بأمان */
+            flex-direction: column;
             animation: fadeIn 0.3s ease;
-            padding-bottom: 80px;
         }
 
         .view.active {
             display: flex;
-            flex-direction: column;
         }
 
         @keyframes fadeIn {
@@ -376,7 +371,6 @@
             background: #000;
         }
 
-        /* تشغيل فيديو حقيقي ومدمج */
         .real-video-container {
             position: relative;
             width: 100%;
@@ -513,7 +507,6 @@
             background: var(--primary-dark);
         }
 
-        /* واجهة الدردشة */
         #chat-room-view {
             position: absolute;
             top: 0;
@@ -666,12 +659,37 @@
             outline: none;
             margin-bottom: 10px;
         }
+
+        /* نافذة كاميرا التطبيق الحقيقية للمكالمات */
+        #video-call-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        #app-video-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
     </style>
 </head>
 <body data-theme="dark">
 
 <div class="phone-frame">
-    <!-- شاشة تسجيل الدخول برقم الهاتف و 6 أرقام سرية واختيار البلد والجنس -->
+    <!-- شاشة تسجيل الدخول برقم الهاتف والرمز السري والبلد والجنس -->
     <div id="auth-screen">
         <div class="auth-card">
             <div class="logo-icon" style="width:64px; height:64px; font-size:28px; margin:0 auto 16px auto;">CH</div>
@@ -681,7 +699,6 @@
             <input type="text" id="login-phone-input" class="create-input" placeholder="رقم الهاتف (مثال: 0612345678)..." style="text-align:center;" />
             <input type="password" id="login-pin-input" class="create-input" maxlength="6" placeholder="الرمز السري (6 أرقام)..." style="text-align:center; letter-spacing:4px;" />
             
-            <!-- اختيار البلد -->
             <select id="login-country" class="select-custom">
                 <option value="الجزائر">الجزائر 🇩🇿</option>
                 <option value="المغرب">المغرب 🇲🇦</option>
@@ -694,7 +711,6 @@
                 <option value="أخرى">دولة أخرى</option>
             </select>
 
-            <!-- اختيار الجنس -->
             <select id="login-gender" class="select-custom">
                 <option value="ذكر">ذكر</option>
                 <option value="أنثى">أنثى</option>
@@ -704,7 +720,17 @@
         </div>
     </div>
 
-    <!-- شريط الحالة العلوي -->
+    <!-- شاشة كاميرا التطبيق الحقيقية لمكالمات الفيديو -->
+    <div id="video-call-screen">
+        <video id="app-video-preview" autoplay playsinline></video>
+        <div style="z-index:2; background:rgba(0,0,0,0.5); padding:10px 20px; border-radius:20px; color:white; font-weight:700; margin-top:20px;">
+            <i class="fa-solid fa-video" style="color:var(--success);"></i> مكالمة فيديو حية من كاميرا التطبيق
+        </div>
+        <div style="z-index:2; margin-bottom:30px;">
+            <button class="primary-btn" style="background:var(--danger); padding:12px 30px; border-radius:30px; font-size:16px;" onclick="closeAppVideoCall()"><i class="fa-solid fa-phone-slash"></i> إنهاء المكالمة</button>
+        </div>
+    </div>
+
     <div class="status-bar">
         <span id="clock">11:25</span>
         <div style="display:flex; gap:6px;">
@@ -714,14 +740,12 @@
         </div>
     </div>
 
-    <!-- رأس التطبيق (مع جرس الإشعارات وزر الإغلاق X للإشعارات) -->
     <header class="app-header">
         <div class="logo-area">
             <div class="logo-icon">CH</div>
             <div class="logo-text">CHROUAA</div>
         </div>
         <div class="header-actions">
-            <!-- جرس الإشعارات -->
             <button class="icon-btn" onclick="toggleNotifications(event)" title="الإشعارات">
                 <i class="fa-solid fa-bell"></i>
                 <span class="notification-badge" id="notif-badge">2</span>
@@ -731,7 +755,6 @@
         </div>
     </header>
 
-    <!-- نافذة الإشعارات المنسدلة -->
     <div id="notifications-menu" class="notifications-dropdown">
         <div class="notif-header">
             <span>التنبيهات والإشعارات</span>
@@ -747,18 +770,15 @@
         </div>
     </div>
 
-    <!-- محتوى التطبيق (الصفحة الرئيسية مثبتة فكسي ومحتواها الداخلي يتمرر بسلاسة) -->
     <div class="app-content">
 
-        <!-- 1. خلاصة المنشورات (الرئيسية مع شريط البحث وإضافة الأصدقاء في الأعلى) -->
+        <!-- 1. الرئيسية (تتحرك صعوداً وهبوطاً بحرية تامة للتنقل ومشاهدة كل جديد) -->
         <div id="view-feed" class="view active">
-            <!-- شريط البحث وإضافة الأصدقاء في الأعلى -->
             <div style="display:flex; gap:8px; margin-bottom:16px;">
                 <input type="text" id="top-search-input" class="create-input" style="margin:0;" placeholder="بحث عن أصدقاء أو منشورات..." oninput="filterFeed(this.value)" />
                 <button class="primary-btn" style="width:auto; white-space:nowrap;" onclick="quickAddFriendPrompt()"><i class="fa-solid fa-user-plus"></i> إضافة صديق</button>
             </div>
 
-            <!-- صندوق إنشاء المنشور (مع قراءة روابط الفيديو الحقيقي وعرضها تشغيل مباشر) -->
             <div class="create-post-box">
                 <textarea id="post-text-input" class="create-input" rows="3" placeholder="بماذا تفكر؟ (ألصق رابط فيديو أو يوتيوب ليتم قراءته وتشغيله بحقيقي)..."></textarea>
                 <div class="create-footer">
@@ -775,7 +795,6 @@
             </div>
 
             <div id="posts-feed-container">
-                <!-- منشور افتراضي تجريبي بفيديو حقيقي متكامل -->
                 <div class="post-card">
                     <div class="post-header">
                         <div class="user-info-flex">
@@ -834,7 +853,7 @@
             </div>
         </div>
 
-        <!-- 3. المحادثات (بما في ذلك خدمة العملاء الحقيقية) -->
+        <!-- 3. المحادثات -->
         <div id="view-chat" class="view">
             <h3 style="margin-bottom: 12px;">المحادثات النشطة</h3>
             <div class="chat-list-item" onclick="openChatRoom('خدمة العملاء الحقيقية', 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100')">
@@ -862,7 +881,7 @@
             </div>
         </div>
 
-        <!-- 4. الملف الشخصي (مع إمكانية تعديل المعلومات، الصورة، النبذة، البلد، والجنس) -->
+        <!-- 4. الملف الشخصي (مع تعديل الصورة، الاسم، النبذة، البلد، والجنس عبر زر القلم) -->
         <div id="view-profile" class="view">
             <div style="text-align:center; padding: 10px 0;">
                 <div class="online-status-container" style="display:inline-block; margin-bottom:8px;">
@@ -875,15 +894,35 @@
             </div>
 
             <div class="post-card">
-                <h4 style="margin-bottom:8px; font-size:14px;">تعديل معلومات الملف الشخصي</h4>
+                <h4 style="margin-bottom:8px; font-size:14px;"><i class="fa-solid fa-pen" style="color:var(--primary);"></i> تعديل معلومات الملف الشخصي والصورة</h4>
+                
+                <label style="font-size:11px; color:var(--text-secondary);">تغيير الصورة الشخصية (رفع صورة):</label>
+                <input type="file" id="profile-image-file" accept="image/*" class="create-input" onchange="uploadProfileAvatar(event)" />
+
                 <label style="font-size:11px; color:var(--text-secondary);">الاسم أو اللقب:</label>
                 <input type="text" id="edit-name-input" class="create-input" placeholder="اسمك الكامل..." />
                 
                 <label style="font-size:11px; color:var(--text-secondary);">نبذة تعريفية:</label>
                 <textarea id="edit-bio-input" class="create-input" rows="2" placeholder="اكتب نبذة عنك..."></textarea>
 
-                <label style="font-size:11px; color:var(--text-secondary);">رابط صورة الملف الشخصي (URL):</label>
-                <input type="text" id="edit-avatar-input" class="create-input" placeholder="رابط صورة جديدة..." />
+                <label style="font-size:11px; color:var(--text-secondary);">البلد:</label>
+                <select id="edit-country-input" class="select-custom">
+                    <option value="الجزائر">الجزائر 🇩🇿</option>
+                    <option value="المغرب">المغرب 🇲🇦</option>
+                    <option value="تونس">تونس 🇹🇳</option>
+                    <option value="مصر">مصر 🇪🇬</option>
+                    <option value="السعودية">السعودية 🇸🇦</option>
+                    <option value="الإمارات">الإمارات 🇦🇪</option>
+                    <option value="فلسطين">فلسطين 🇵🇸</option>
+                    <option value="فرنسا">فرنسا 🇫🇷</option>
+                    <option value="أخرى">دولة أخرى</option>
+                </select>
+
+                <label style="font-size:11px; color:var(--text-secondary);">الجنس:</label>
+                <select id="edit-gender-input" class="select-custom">
+                    <option value="ذكر">ذكر</option>
+                    <option value="أنثى">أنثى</option>
+                </select>
 
                 <button class="primary-btn" onclick="saveProfileChanges()">حفظ التعديلات</button>
             </div>
@@ -915,7 +954,8 @@
                 </div>
             </div>
             <div class="chat-room-actions">
-                <a id="action-video-call" href="tel:" class="call-action-icon bg-video" title="مكالمة فيديو"><i class="fa-solid fa-video"></i></a>
+                <!-- زر مكالمة الفيديو يشغل كاميرا التطبيق مباشرة -->
+                <button onclick="startAppVideoCall()" class="call-action-icon bg-video" title="مكالمة فيديو بالـ كاميرا"><i class="fa-solid fa-video"></i></button>
                 <a id="action-audio-call" href="tel:" class="call-action-icon bg-audio" title="مكالمة عادية"><i class="fa-solid fa-phone"></i></a>
                 <a id="action-wa-call" href="#" target="_blank" class="call-action-icon bg-wa" title="مكالمة واتساب"><i class="fa-brands fa-whatsapp"></i></a>
                 <a id="action-fb-call" href="#" target="_blank" class="call-action-icon bg-fb" title="مكالمة فيسبوك"><i class="fa-brands fa-facebook-f"></i></a>
@@ -942,7 +982,6 @@
         </div>
     </div>
 
-    <!-- شريط التنقل السفلي -->
     <nav class="bottom-nav">
         <button class="nav-item active" onclick="switchView('feed', this)"><i class="fa-solid fa-house"></i><span id="nav-feed">الرئيسية</span></button>
         <button class="nav-item" onclick="switchView('search', this)"><i class="fa-solid fa-magnifying-glass"></i><span id="nav-search">البحث</span></button>
@@ -957,7 +996,6 @@
         document.getElementById('clock').innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }, 1000);
 
-    // التحقق التلقائي من تسجيل الدخول (يحفظ لمرة واحدة)
     window.addEventListener('DOMContentLoaded', () => {
         const savedPhone = localStorage.getItem('ch_phone');
         if (savedPhone) {
@@ -977,7 +1015,6 @@
         if(!phone || phone.length < 8) return alert('الرجاء إدخال رقم هاتف صحيح!');
         if(!pin || pin.length !== 6) return alert('الرجاء إدخال الرمز السري المكون من 6 أرقام!');
 
-        // حفظ البيانات لمرة واحدة
         localStorage.setItem('ch_phone', phone);
         localStorage.setItem('ch_pin', pin);
         localStorage.setItem('ch_country', country);
@@ -993,24 +1030,42 @@
     function loadProfileData() {
         const name = localStorage.getItem('ch_name') || 'مستخدم شروعة';
         const bio = localStorage.getItem('ch_bio') || 'نبذة تعريفية قصيرة';
+        const country = localStorage.getItem('ch_country') || 'الجزائر';
+        const gender = localStorage.getItem('ch_gender') || 'ذكر';
         const avatar = localStorage.getItem('ch_avatar') || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150';
         
         document.getElementById('profile-name-display').innerText = name;
-        document.getElementById('profile-bio-display').innerText = bio;
+        document.getElementById('profile-bio-display').innerText = bio + ' (' + country + ')';
         document.getElementById('profile-img-preview').src = avatar;
+        
         document.getElementById('edit-name-input').value = name;
         document.getElementById('edit-bio-input').value = bio;
-        document.getElementById('edit-avatar-input').value = avatar;
+        document.getElementById('edit-country-input').value = country;
+        document.getElementById('edit-gender-input').value = gender;
+    }
+
+    function uploadProfileAvatar(event) {
+        const file = event.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = function() {
+            localStorage.setItem('ch_avatar', reader.result);
+            document.getElementById('profile-img-preview').src = reader.result;
+            alert('تم تحديث الصورة الشخصية بنجاح!');
+        }
+        reader.readAsDataURL(file);
     }
 
     function saveProfileChanges() {
         const name = document.getElementById('edit-name-input').value.trim();
         const bio = document.getElementById('edit-bio-input').value.trim();
-        const avatar = document.getElementById('edit-avatar-input').value.trim();
+        const country = document.getElementById('edit-country-input').value;
+        const gender = document.getElementById('edit-gender-input').value;
 
         if(name) localStorage.setItem('ch_name', name);
         if(bio) localStorage.setItem('ch_bio', bio);
-        if(avatar) localStorage.setItem('ch_avatar', avatar);
+        localStorage.setItem('ch_country', country);
+        localStorage.setItem('ch_gender', gender);
 
         loadProfileData();
         alert('تم حفظ تعديلات الملف الشخصي بنجاح!');
@@ -1057,7 +1112,6 @@
         }
     }
 
-    // إدارات جرس الإشعارات
     function toggleNotifications(e) {
         e.stopPropagation();
         const menu = document.getElementById('notifications-menu');
@@ -1095,7 +1149,6 @@
         document.getElementById('media-preview-container').style.display = 'none';
     }
 
-    // قراءة روابط الفيديو ويوتيوب وتحويلها لفيديو حقيقي وقابل للتشغيل
     function parseMediaLinks(text) {
         const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/g;
         let match = ytRegex.exec(text);
@@ -1105,7 +1158,6 @@
             return `${cleanText}<div class="youtube-embed"><iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe></div>`;
         }
         
-        // التحقق من روابط الفيديو المباشرة (.mp4 إلخ)
         if (text.includes('http://') || text.includes('https://')) {
             if (text.endsWith('.mp4') || text.includes('video')) {
                 return `<div class="real-video-container"><video class="post-video" controls src="${text.trim()}"></video></div>`;
@@ -1230,7 +1282,6 @@
         document.getElementById('chat-room-name').innerText = name;
         document.getElementById('chat-room-avatar').src = avatar;
         
-        document.getElementById('action-video-call').href = "tel:+213600000000";
         document.getElementById('action-audio-call').href = "tel:+213600000000";
         document.getElementById('action-wa-call').href = "https://wa.me/213600000000";
         document.getElementById('action-fb-call').href = "https://m.facebook.com";
@@ -1240,6 +1291,31 @@
 
     function closeChatRoom() {
         document.getElementById('chat-room-view').style.display = 'none';
+    }
+
+    // تشغيل كاميرا التطبيق الحقيقية لمكالمات الفيديو داخل المنصة
+    let localStream = null;
+    function startAppVideoCall() {
+        const videoScreen = document.getElementById('video-call-screen');
+        const videoElement = document.getElementById('app-video-preview');
+        videoScreen.style.display = 'flex';
+
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then(stream => {
+                localStream = stream;
+                videoElement.srcObject = stream;
+            })
+            .catch(err => {
+                alert('عذراً، لم نتمكن من الوصول إلى الكاميرا: ' + err.message);
+                videoScreen.style.display = 'none';
+            });
+    }
+
+    function closeAppVideoCall() {
+        if(localStream) {
+            localStream.getTracks().forEach(track => track.stop());
+        }
+        document.getElementById('video-call-screen').style.display = 'none';
     }
 
     function toggleChatDropdown(e) {
