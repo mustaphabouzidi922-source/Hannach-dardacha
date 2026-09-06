@@ -100,11 +100,11 @@
 
         .status-bar {
             background-color: var(--surface);
-            padding: 8px 20px;
+            padding: 6px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             border-bottom: 1px solid var(--border);
             z-index: 100;
@@ -112,7 +112,7 @@
 
         .app-header {
             background-color: var(--surface);
-            padding: 10px 16px;
+            padding: 8px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -123,20 +123,20 @@
         .logo-area {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .logo-badge-img {
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
             object-fit: cover;
             border: 2px solid var(--primary);
             box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
         }
 
         .logo-text {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 900;
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             -webkit-background-clip: text;
@@ -146,7 +146,7 @@
 
         .header-actions {
             display: flex;
-            gap: 5px;
+            gap: 4px;
             align-items: center;
         }
 
@@ -154,24 +154,37 @@
             background: var(--bg-main);
             border: 1px solid var(--border);
             color: var(--text-main);
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: 0.2s;
-            font-size: 12px;
+            font-size: 11px;
+            position: relative;
+        }
+
+        .badge-counter {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            background: var(--danger);
+            color: white;
+            font-size: 9px;
+            padding: 1px 4px;
+            border-radius: 50%;
+            font-weight: 700;
         }
 
         .lang-select {
             background: var(--bg-main);
             border: 1px solid var(--border);
             color: var(--text-main);
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-size: 11px;
+            padding: 3px 6px;
+            border-radius: 6px;
+            font-size: 10px;
             outline: none;
             cursor: pointer;
         }
@@ -183,13 +196,13 @@
             background-color: var(--bg-main);
             display: flex;
             flex-direction: column;
-            padding-bottom: 70px;
+            padding-bottom: 65px;
         }
 
         .view {
             display: none;
             flex: 1;
-            padding: 16px;
+            padding: 14px;
             flex-direction: column;
             animation: fadeIn 0.3s ease;
         }
@@ -212,7 +225,7 @@
             border-top: 1px solid var(--border);
             display: flex;
             justify-content: space-around;
-            padding: 8px 0;
+            padding: 6px 0;
             z-index: 100;
         }
 
@@ -230,8 +243,8 @@
         }
 
         .nav-item i {
-            font-size: 16px;
-            margin-bottom: 3px;
+            font-size: 15px;
+            margin-bottom: 2px;
         }
 
         .nav-item.active {
@@ -247,8 +260,8 @@
             position: absolute;
             bottom: 2px;
             right: 2px;
-            width: 10px;
-            height: 10px;
+            width: 9px;
+            height: 9px;
             background-color: var(--success);
             border: 2px solid var(--surface);
             border-radius: 50%;
@@ -257,15 +270,15 @@
         .post-card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 14px;
             padding: 0;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.03);
             overflow: hidden;
         }
 
         .post-header-padding {
-            padding: 14px 16px 10px 16px;
+            padding: 12px 14px 8px 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -278,15 +291,15 @@
         }
 
         .avatar {
-            width: 42px;
-            height: 42px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid var(--primary);
         }
 
         .user-details h4 {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
         }
 
@@ -296,8 +309,8 @@
         }
 
         .post-body-padding {
-            padding: 0 16px 12px 16px;
-            font-size: 13px;
+            padding: 0 14px 10px 14px;
+            font-size: 12px;
             line-height: 1.5;
             word-break: break-word;
         }
@@ -323,22 +336,22 @@
         .link-preview-box {
             background: var(--bg-main);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 10px;
-            margin-top: 8px;
+            border-radius: 10px;
+            padding: 8px;
+            margin-top: 6px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             text-decoration: none;
             color: var(--text-main);
         }
         .link-preview-box i {
-            font-size: 24px;
+            font-size: 20px;
             color: var(--primary);
         }
 
         .post-footer-padding {
-            padding: 10px 16px;
+            padding: 8px 14px;
             display: flex;
             justify-content: space-around;
             border-top: 1px solid var(--border);
@@ -349,11 +362,11 @@
             background: none;
             border: none;
             color: var(--text-secondary);
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             cursor: pointer;
         }
 
@@ -363,19 +376,19 @@
 
         .reaction-popup {
             position: absolute;
-            bottom: 45px;
+            bottom: 40px;
             left: 10px;
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 35px;
-            padding: 8px 14px;
+            border-radius: 30px;
+            padding: 6px 12px;
             display: none;
-            gap: 8px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            gap: 6px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             z-index: 50;
         }
         .reaction-popup span {
-            font-size: 22px;
+            font-size: 20px;
             cursor: pointer;
             transition: transform 0.2s;
         }
@@ -386,36 +399,37 @@
         .create-post-box {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 16px;
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 14px;
         }
 
         .create-input {
             width: 100%;
             background: var(--bg-main);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 10px 12px;
+            border-radius: 10px;
+            padding: 8px 10px;
             color: var(--text-main);
             resize: none;
-            font-size: 13px;
+            font-size: 12px;
             outline: none;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .primary-btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 10px 16px;
-            border-radius: 10px;
+            padding: 8px 14px;
+            border-radius: 8px;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
             width: 100%;
         }
 
+        /* نافذة الدردشة المصغرة والمضبوطة بالكامل */
         #chat-room-view {
             position: absolute;
             top: 0;
@@ -430,28 +444,29 @@
 
         .chat-room-header {
             background: var(--surface);
-            padding: 10px 16px;
+            padding: 8px 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
         }
 
         .chat-room-actions {
             display: flex;
-            gap: 5px;
+            gap: 4px;
             align-items: center;
         }
 
         .call-action-icon {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 12px;
+            font-size: 11px;
             border: none;
             cursor: pointer;
         }
@@ -462,25 +477,26 @@
 
         .chat-messages-body {
             flex: 1;
-            padding: 14px;
+            padding: 10px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
+            max-height: calc(100% - 110px);
         }
 
         .message-row {
             display: flex;
             flex-direction: column;
-            max-width: 80%;
+            max-width: 75%;
         }
         .message-row.incoming { align-self: flex-start; }
         .message-row.outgoing { align-self: flex-end; align-items: flex-end; }
 
         .message-bubble {
-            padding: 10px 14px;
-            border-radius: 14px;
-            font-size: 13px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 12px;
             line-height: 1.4;
             word-break: break-word;
         }
@@ -498,34 +514,35 @@
         .msg-actions-bar {
             display: flex;
             gap: 6px;
-            margin-top: 3px;
-            font-size: 11px;
+            margin-top: 2px;
+            font-size: 10px;
             color: var(--text-secondary);
         }
         .quick-react-btn {
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-secondary);
         }
         .quick-react-btn:hover { color: var(--danger); }
 
         .quick-phrases-bar {
             display: flex;
-            gap: 6px;
-            padding: 8px 12px;
+            gap: 5px;
+            padding: 6px 10px;
             background: var(--surface);
             border-top: 1px solid var(--border);
             overflow-x: auto;
             white-space: nowrap;
+            flex-shrink: 0;
         }
         .phrase-chip {
             background: var(--bg-main);
             border: 1px solid var(--border);
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 16px;
+            font-size: 10px;
             color: var(--text-main);
             cursor: pointer;
             transition: 0.2s;
@@ -538,11 +555,12 @@
 
         .chat-input-footer {
             background: var(--surface);
-            padding: 10px 16px;
+            padding: 8px 12px;
             display: flex;
             align-items: center;
             gap: 6px;
             border-top: 1px solid var(--border);
+            flex-shrink: 0;
         }
 
         #video-call-screen {
@@ -571,7 +589,7 @@
             align-items: center;
             color: #ef4444;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 15px;
             text-align: center;
             padding: 20px;
         }
@@ -588,11 +606,11 @@
 
         #local-pip-container {
             position: absolute;
-            top: 60px;
-            right: 20px;
-            width: 110px;
-            height: 160px;
-            border-radius: 12px;
+            top: 50px;
+            right: 15px;
+            width: 100px;
+            height: 140px;
+            border-radius: 10px;
             overflow: hidden;
             border: 2px solid white;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
@@ -611,7 +629,7 @@
             z-index: 10;
             display: flex;
             justify-content: space-between;
-            padding: 16px;
+            padding: 12px;
             background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
         }
 
@@ -619,28 +637,28 @@
             z-index: 10;
             display: flex;
             justify-content: center;
-            gap: 15px;
-            padding: 25px;
+            gap: 12px;
+            padding: 20px;
             background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
         }
 
         .filter-buttons {
             display: flex;
-            gap: 6px;
+            gap: 5px;
             overflow-x: auto;
-            padding: 4px 10px;
+            padding: 4px 8px;
             background: rgba(0,0,0,0.5);
             z-index: 10;
-            border-radius: 20px;
+            border-radius: 16px;
             margin: 0 auto;
         }
         .filter-btn {
             background: rgba(255,255,255,0.2);
             color: white;
             border: none;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 9px;
             cursor: pointer;
         }
         .filter-btn.active { background: var(--primary); }
@@ -654,12 +672,12 @@
             width: 100%;
             background: var(--bg-main);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 10px;
+            border-radius: 10px;
+            padding: 8px;
             color: var(--text-main);
-            font-size: 13px;
+            font-size: 12px;
             outline: none;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
     </style>
 </head>
@@ -669,9 +687,9 @@
     <!-- شاشة تسجيل الدخول -->
     <div id="auth-screen">
         <div class="auth-card">
-            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=150" style="width:70px; height:70px; border-radius:20px; object-fit:cover; margin:0 auto 14px auto; border:3px solid var(--primary); box-shadow:0 4px 15px rgba(2,132,199,0.3);" />
-            <h2 id="txt-welcome" style="margin-bottom:4px; font-size:20px;">مرحباً بك في CHROUAA</h2>
-            <p id="txt-login-sub" style="color:var(--text-secondary); font-size:12px; margin-bottom:16px;">منصة التواصل المتطورة</p>
+            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=150" style="width:65px; height:65px; border-radius:18px; object-fit:cover; margin:0 auto 12px auto; border:3px solid var(--primary); box-shadow:0 4px 15px rgba(2,132,199,0.3);" />
+            <h2 id="txt-welcome" style="margin-bottom:4px; font-size:18px;">مرحباً بك في CHROUAA</h2>
+            <p id="txt-login-sub" style="color:var(--text-secondary); font-size:11px; margin-bottom:14px;">منصة التواصل المتطورة</p>
             
             <input type="text" id="login-phone-input" class="create-input" placeholder="رقم الهاتف (مثال: 0612345678)..." style="text-align:center;" />
             <input type="password" id="login-pin-input" class="create-input" maxlength="6" placeholder="الرمز السري (6 أرقام)..." style="text-align:center; letter-spacing:4px;" />
@@ -700,7 +718,7 @@
     <!-- شاشة مكالمة الفيديو مع الحماية -->
     <div id="video-call-screen">
         <div id="privacy-protection-overlay">
-            <i class="fa-solid fa-shield-halved" style="font-size:36px; margin-bottom:10px;"></i><br/>
+            <i class="fa-solid fa-shield-halved" style="font-size:32px; margin-bottom:8px;"></i><br/>
             عذراً، لقطات وتسجيلات الشاشة محظورة تماماً حفاظاً على الخصوصية والسرية.
         </div>
 
@@ -711,7 +729,7 @@
         </div>
 
         <div class="call-top-controls">
-            <div style="background:rgba(0,0,0,0.5); padding:6px 14px; border-radius:20px; color:white; font-size:12px; font-weight:700;">
+            <div style="background:rgba(0,0,0,0.5); padding:5px 12px; border-radius:18px; color:white; font-size:11px; font-weight:700;">
                 <i class="fa-solid fa-lock" style="color:var(--success);"></i> <span id="call-status-txt">مكالمة محمية وآمنة</span>
             </div>
             <button class="icon-btn" onclick="flipCamera()" title="قلب الكاميرا" style="background:rgba(255,255,255,0.2); border:none; color:white;"><i class="fa-solid fa-camera-rotate"></i></button>
@@ -725,7 +743,7 @@
         </div>
 
         <div class="call-bottom-controls">
-            <button class="primary-btn" style="background:var(--danger); width:auto; padding:10px 24px; border-radius:30px;" onclick="closeAdvancedVideoCall()"><i class="fa-solid fa-phone-slash"></i> إنهاء المكالمة</button>
+            <button class="primary-btn" style="background:var(--danger); width:auto; padding:8px 20px; border-radius:25px;" onclick="closeAdvancedVideoCall()"><i class="fa-solid fa-phone-slash"></i> إنهاء المكالمة</button>
         </div>
     </div>
 
@@ -744,6 +762,11 @@
             <div class="logo-text">CHROUAA</div>
         </div>
         <div class="header-actions">
+            <!-- جرس التنبيهات مع العداد -->
+            <button class="icon-btn" onclick="showAlertsModal()" title="الإشعارات والتنبيهات">
+                <i class="fa-solid fa-bell"></i>
+                <span class="badge-counter" id="notifications-badge">2</span>
+            </button>
             <select class="lang-select" id="app-lang-select" onchange="changeLanguage(this.value)">
                 <option value="ar">العربية</option>
                 <option value="fr">Français</option>
@@ -759,56 +782,23 @@
         <!-- 1. الرئيسية -->
         <div id="view-feed" class="view active">
             <div class="create-post-box">
-                <textarea id="post-text-input" class="create-input" rows="2" placeholder="بماذا تفكر؟ شارك نصاً، صورة، أو رابط يوتيوب ومواقع أخرى..."></textarea>
+                <textarea id="post-text-input" class="create-input" rows="2" placeholder="بماذا تفكر؟ شارك نصاً، صورة، أو فيديو، أو رابط يوتيوب ومواقع أخرى..."></textarea>
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div style="display:flex; gap:6px;">
+                    <div style="display:flex; gap:5px;">
                         <label class="icon-btn" style="background:var(--primary-light); color:var(--primary); border:none;" title="رفع صورة"><i class="fa-solid fa-image"></i><input type="file" accept="image/*" style="display:none;" onchange="previewMedia(event, 'image')"></label>
                         <label class="icon-btn" style="background:var(--primary-light); color:var(--primary); border:none;" title="رفع فيديو"><i class="fa-solid fa-video"></i><input type="file" accept="video/*" style="display:none;" onchange="previewMedia(event, 'video')"></label>
                     </div>
-                    <button class="primary-btn" style="width:auto; padding:6px 14px;" onclick="createNewPost()">نشر</button>
+                    <button class="primary-btn" style="width:auto; padding:5px 12px;" onclick="createNewPost()">نشر</button>
                 </div>
             </div>
 
-            <div id="posts-feed-container">
-                <div class="post-card">
-                    <div class="post-header-padding">
-                        <div class="user-info-flex">
-                            <div class="online-status-container">
-                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="avatar" />
-                                <div class="online-dot"></div>
-                            </div>
-                            <div class="user-details">
-                                <h4>سارة - مساعدة شروعة</h4>
-                                <span>متصل الآن</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="post-body-padding">
-                        مرحباً بكم في منصة CHROUAA! الآن يتم تخزين جميع المستخدمين الذين يسجلون دخولهم لتتمكن من البحث عنهم ومراسلتهم برقم الهاتف.
-                    </div>
-                    <div class="fb-video-wrapper">
-                        <iframe class="embedded-iframe" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
-                    </div>
-                    <div class="post-footer-padding">
-                        <button class="action-btn" onclick="toggleLike(this)" oncontextmenu="showReactions(event, this); return false;"><i class="fa-regular fa-heart"></i> <span class="like-text">إعجاب (14)</span></button>
-                        <div class="reaction-popup">
-                            <span onclick="reactEmoji(this, '❤️')">❤️</span>
-                            <span onclick="reactEmoji(this, '👍')">👍</span>
-                            <span onclick="reactEmoji(this, '😂')">😂</span>
-                            <span onclick="reactEmoji(this, '🔥')">🔥</span>
-                            <span onclick="reactEmoji(this, '👏')">👏</span>
-                        </div>
-                        <button class="action-btn" onclick="alert('فتح التعليقات')"><i class="fa-regular fa-comment"></i> <span>تعليق (3)</span></button>
-                        <button class="action-btn" onclick="alert('تم نسخ الرابط بنجاح')"><i class="fa-solid fa-share"></i> <span>مشاركة</span></button>
-                    </div>
-                </div>
-            </div>
+            <div id="posts-feed-container"></div>
         </div>
 
-        <!-- 2. البحث برقم الهاتف -->
+        <!-- 2. البحث برقم الهاتف وإضافة الأصدقاء -->
         <div id="view-search" class="view">
-            <h3 style="margin-bottom: 12px; font-size:15px;" id="lbl-search-title">البحث عن مستخدم برقم الهاتف</h3>
-            <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <h3 style="margin-bottom: 10px; font-size:14px;" id="lbl-search-title">البحث عن مستخدم برقم الهاتف</h3>
+            <div style="display:flex; gap:6px; margin-bottom:10px;">
                 <input type="text" id="friend-id-input" class="create-input" style="margin:0;" placeholder="أدخل رقم الهاتف للبحث..." />
                 <button class="primary-btn" style="width:auto;" onclick="searchUserByPhone()">بحث</button>
             </div>
@@ -818,30 +808,32 @@
 
         <!-- 3. المحادثات -->
         <div id="view-chat" class="view">
-            <h3 style="margin-bottom: 12px; font-size:15px;" id="lbl-chats-title">المحادثات النشطة</h3>
-            <div style="display:flex; align-items:center; gap:12px; background:var(--surface); padding:10px; border-radius:12px; margin-bottom:8px; cursor:pointer; border:1px solid var(--border);" onclick="openChatRoom('سارة - مساعدة شروعة', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100')">
-                <div class="online-status-container">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="avatar" />
-                    <div class="online-dot"></div>
+            <h3 style="margin-bottom: 10px; font-size:14px;" id="lbl-chats-title">المحادثات النشطة</h3>
+            <div id="chats-list-container">
+                <div style="display:flex; align-items:center; gap:10px; background:var(--surface); padding:8px 10px; border-radius:10px; margin-bottom:6px; cursor:pointer; border:1px solid var(--border);" onclick="openChatRoom('سارة - مساعدة شروعة', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100')">
+                    <div class="online-status-container">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="avatar" />
+                        <div class="online-dot"></div>
+                    </div>
+                    <div style="flex:1;">
+                        <h4 style="font-size:12px;">سارة - مساعدة شروعة</h4>
+                        <span style="font-size:10px; color:var(--success);">انقر للدردشة والمكالمات الآمنة</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-left" style="color:var(--text-secondary); font-size:11px;"></i>
                 </div>
-                <div style="flex:1;">
-                    <h4 style="font-size:13px;">سارة - مساعدة شروعة</h4>
-                    <span style="font-size:11px; color:var(--success);">انقر للدردشة والمكالمات الآمنة</span>
-                </div>
-                <i class="fa-solid fa-chevron-left" style="color:var(--text-secondary); font-size:12px;"></i>
             </div>
         </div>
 
         <!-- 4. الملف الشخصي -->
         <div id="view-profile" class="view">
-            <div style="text-align:center; padding: 6px 0;">
-                <img id="profile-img-preview" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" class="avatar" style="width:75px; height:75px; margin-bottom:6px;" />
-                <h3 id="profile-name-display" style="font-size:15px;">مستخدم شروعة</h3>
-                <p id="profile-phone-display" style="color:var(--primary); font-size:12px; font-weight:700;">0612345678</p>
+            <div style="text-align:center; padding: 4px 0;">
+                <img id="profile-img-preview" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" class="avatar" style="width:70px; height:70px; margin-bottom:5px;" />
+                <h3 id="profile-name-display" style="font-size:14px;">مستخدم شروعة</h3>
+                <p id="profile-phone-display" style="color:var(--primary); font-size:11px; font-weight:700;">0612345678</p>
             </div>
 
-            <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:12px; margin-top:10px;">
-                <h4 style="margin-bottom:6px; font-size:13px;"><i class="fa-solid fa-pen"></i> تعديل الملف الشخصي</h4>
+            <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:10px; margin-top:8px;">
+                <h4 style="margin-bottom:5px; font-size:12px;"><i class="fa-solid fa-pen"></i> تعديل الملف الشخصي</h4>
                 <label style="font-size:10px; color:var(--text-secondary);">الصورة الشخصية:</label>
                 <input type="file" accept="image/*" class="create-input" onchange="uploadProfileAvatar(event)" />
                 <label style="font-size:10px; color:var(--text-secondary);">الاسم:</label>
@@ -854,17 +846,17 @@
 
     </div>
 
-    <!-- نافذة غرفة الدردشة -->
+    <!-- نافذة غرفة الدردشة المصغرة والمضبوطة بالكامل -->
     <div id="chat-room-view">
         <div class="chat-room-header">
-            <div style="display:flex; align-items:center; gap:8px;">
-                <button class="icon-btn" onclick="closeChatRoom()" style="border:none; background:none;"><i class="fa-solid fa-xmark" style="font-size:16px; color:var(--danger);"></i></button>
+            <div style="display:flex; align-items:center; gap:6px;">
+                <button class="icon-btn" onclick="closeChatRoom()" style="border:none; background:none;"><i class="fa-solid fa-xmark" style="font-size:15px; color:var(--danger);"></i></button>
                 <div class="online-status-container">
-                    <img id="chat-room-avatar" src="" class="avatar" style="width:34px; height:34px;" />
+                    <img id="chat-room-avatar" src="" class="avatar" style="width:30px; height:30px;" />
                     <div class="online-dot"></div>
                 </div>
                 <div>
-                    <h4 id="chat-room-name" style="font-size:13px;">اسم الصديق</h4>
+                    <h4 id="chat-room-name" style="font-size:12px;">اسم الصديق</h4>
                     <span style="font-size:9px; color:var(--success);">متصل الآن</span>
                 </div>
             </div>
@@ -896,8 +888,10 @@
         </div>
 
         <div class="chat-input-footer">
+            <!-- زر إرسال الصور والفيديوهات داخل الدردشة -->
+            <label class="icon-btn" style="background:var(--primary-light); color:var(--primary); border:none; flex-shrink:0;" title="إرسال صورة أو فيديو"><i class="fa-solid fa-paperclip"></i><input type="file" accept="image/*,video/*" style="display:none;" onchange="sendChatMedia(event)"></label>
             <input type="text" id="chat-msg-input" class="create-input" style="margin:0;" placeholder="اكتب رسالة..." />
-            <button class="primary-btn" style="width:auto; padding:8px 12px;" onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+            <button class="primary-btn" style="width:auto; padding:6px 10px; flex-shrink:0;" onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
     </div>
 
@@ -949,6 +943,9 @@
             loadProfileData();
         }
 
+        loadStoredPosts();
+        loadActiveChats();
+
         document.addEventListener('keyup', (e) => {
             if (e.key === 'PrintScreen') {
                 navigator.clipboard.writeText('');
@@ -965,7 +962,6 @@
         }
     }
 
-    // دالة تسجيل الدخول مع حفظ المستخدم في قاعدة بيانات المتصفح العامة
     function handlePhoneLogin() {
         const phone = document.getElementById('login-phone-input').value.trim();
         const pin = document.getElementById('login-pin-input').value.trim();
@@ -998,10 +994,10 @@
 
         document.getElementById('auth-screen').style.display = 'none';
         loadProfileData();
-        alert('تم تسجيل الدخول بنجاح! تم حفظ حسابك في المنصة ويمكن للأصدقاء البحث عنك.');
+        alert('تم تسجيل الدخول بنجاح وتخزين حسابك في المنصة!');
     }
 
-    // دالة البحث عن مستخدم برقم الهاتف في قاعدة بيانات المنصة
+    // دالة البحث مع إضافة زر "إضافة صديق" فوري
     function searchUserByPhone() {
         const query = document.getElementById('friend-id-input').value.trim();
         const container = document.getElementById('search-results-container');
@@ -1013,23 +1009,78 @@
         }
 
         const usersList = JSON.parse(localStorage.getItem('ch_all_users') || '[]');
-        const foundUser = usersList.find(u => u.phone.includes(query));
+        const foundUsers = usersList.filter(u => u.phone.includes(query) || query.includes(u.phone));
 
-        if (foundUser) {
-            container.innerHTML = `
-                <div style="background:var(--surface); padding:12px; border-radius:12px; border:1px solid var(--border); display:flex; align-items:center; gap:10px; margin-top:10px;">
-                    <img src="${foundUser.avatar}" class="avatar" />
-                    <div style="flex:1;">
-                        <h4 style="font-size:13px;">${foundUser.name} (${foundUser.country})</h4>
-                        <span style="font-size:11px; color:var(--primary);">${foundUser.phone}</span><br>
-                        <span style="font-size:10px; color:var(--success);">● متصل في المنصة</span>
+        if (foundUsers.length > 0) {
+            foundUsers.forEach(foundUser => {
+                container.innerHTML += `
+                    <div style="background:var(--surface); padding:10px; border-radius:10px; border:1px solid var(--border); display:flex; align-items:center; gap:8px; margin-top:8px;">
+                        <img src="${foundUser.avatar}" class="avatar" />
+                        <div style="flex:1;">
+                            <h4 style="font-size:12px;">${foundUser.name} (${foundUser.country})</h4>
+                            <span style="font-size:10px; color:var(--primary);">${foundUser.phone}</span><br>
+                            <span style="font-size:9px; color:var(--success);">● متصل في المنصة</span>
+                        </div>
+                        <button class="primary-btn" style="width:auto; padding:5px 10px;" onclick="addFriendAndChat('${foundUser.name}', '${foundUser.avatar}', '${foundUser.phone}')"><i class="fa-solid fa-user-plus"></i> إضافة صديق</button>
                     </div>
-                    <button class="primary-btn" style="width:auto; padding:6px 12px;" onclick="openChatRoom('${foundUser.name}', '${foundUser.avatar}')">مراسلة</button>
+                `;
+            });
+        } else {
+            container.innerHTML = `<p style="font-size:11px; color:var(--text-secondary); text-align:center; padding:10px;">لم يتم العثور على أي مستخدم بهذا الرقم في المنصة.</p>`;
+        }
+    }
+
+    // إضافة الصديق وحفظه في قائمة المحادثات والأصدقاء
+    function addFriendAndChat(name, avatar, phone) {
+        let contacts = JSON.parse(localStorage.getItem('ch_my_contacts') || '[]');
+        if(!contacts.some(c => c.phone === phone)) {
+            contacts.push({ name, avatar, phone });
+            localStorage.setItem('ch_my_contacts', JSON.stringify(contacts));
+            loadActiveChats();
+            alert('تمت إضافة الصديق بنجاح إلى المحادثات والأصدقاء!');
+        }
+        openChatRoom(name, avatar);
+    }
+
+    function loadActiveChats() {
+        const container = document.getElementById('chats-list-container');
+        let contacts = JSON.parse(localStorage.getItem('ch_my_contacts') || '[]');
+        
+        let html = `
+            <div style="display:flex; align-items:center; gap:10px; background:var(--surface); padding:8px 10px; border-radius:10px; margin-bottom:6px; cursor:pointer; border:1px solid var(--border);" onclick="openChatRoom('سارة - مساعدة شروعة', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100')">
+                <div class="online-status-container">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="avatar" />
+                    <div class="online-dot"></div>
+                </div>
+                <div style="flex:1;">
+                    <h4 style="font-size:12px;">سارة - مساعدة شروعة</h4>
+                    <span style="font-size:10px; color:var(--success);">انقر للدردشة والمكالمات الآمنة</span>
+                </div>
+                <i class="fa-solid fa-chevron-left" style="color:var(--text-secondary); font-size:11px;"></i>
+            </div>
+        `;
+
+        contacts.forEach(c => {
+            html += `
+                <div style="display:flex; align-items:center; gap:10px; background:var(--surface); padding:8px 10px; border-radius:10px; margin-bottom:6px; cursor:pointer; border:1px solid var(--border);" onclick="openChatRoom('${c.name}', '${c.avatar}')">
+                    <div class="online-status-container">
+                        <img src="${c.avatar}" class="avatar" />
+                        <div class="online-dot"></div>
+                    </div>
+                    <div style="flex:1;">
+                        <h4 style="font-size:12px;">${c.name}</h4>
+                        <span style="font-size:10px; color:var(--primary);">${c.phone}</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-left" style="color:var(--text-secondary); font-size:11px;"></i>
                 </div>
             `;
-        } else {
-            container.innerHTML = `<p style="font-size:12px; color:var(--text-secondary); text-align:center; padding:10px;">لم يتم العثور على أي مستخدم بهذا الرقم في المنصة.</p>`;
-        }
+        });
+        container.innerHTML = html;
+    }
+
+    function showAlertsModal() {
+        alert('🔔 الإشعارات والتنبيهات:\n- لديك طلب تواصل جديد من سارة.\n- تم نشر فيديو جديد على الرئيسية بنجاح.');
+        document.getElementById('notifications-badge').style.display = 'none';
     }
 
     function loadProfileData() {
@@ -1096,7 +1147,7 @@
             } else {
                 uploadedMediaHTML = `<div class="fb-video-wrapper"><video class="post-video" controls src="${reader.result}"></video></div>`;
             }
-            alert('تم إرفاق الوسائط بنجاح! اضغط على نشر.');
+            alert('تم إرفاق الوسائط بنجاح! اضغط على زر نشر.');
         }
         reader.readAsDataURL(file);
     }
@@ -1119,10 +1170,10 @@
                 <a href="${cleanUrl}" target="_blank" class="link-preview-box">
                     <i class="fa-solid fa-globe"></i>
                     <div style="flex:1; overflow:hidden;">
-                        <h4 style="font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">رابط خارجي معتمد</h4>
-                        <span style="font-size:10px; color:var(--text-secondary);">${cleanUrl}</span>
+                        <h4 style="font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">رابط خارجي معتمد</h4>
+                        <span style="font-size:9px; color:var(--text-secondary);">${cleanUrl}</span>
                     </div>
-                    <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:12px; color:var(--text-secondary);"></i>
+                    <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:11px; color:var(--text-secondary);"></i>
                 </a>
             `;
         }
@@ -1130,44 +1181,76 @@
         const name = localStorage.getItem('ch_name') || 'مستخدم شروعة';
         const avatar = localStorage.getItem('ch_avatar') || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150';
 
-        const feedContainer = document.getElementById('posts-feed-container');
-        const postCard = document.createElement('div');
-        postCard.className = 'post-card';
-        postCard.innerHTML = `
-            <div class="post-header-padding">
-                <div class="user-info-flex">
-                    <div class="online-status-container">
-                        <img src="${avatar}" class="avatar" />
-                        <div class="online-dot"></div>
-                    </div>
-                    <div class="user-details">
-                        <h4>${name}</h4>
-                        <span>الآن</span>
-                    </div>
-                </div>
-            </div>
-            <div class="post-body-padding">
-                ${text.replace(/\n/g, '<br>')}
-            </div>
-            ${mediaContent}
-            <div class="post-footer-padding">
-                <button class="action-btn" onclick="toggleLike(this)" oncontextmenu="showReactions(event, this); return false;"><i class="fa-regular fa-heart"></i> <span class="like-text">إعجاب (0)</span></button>
-                <div class="reaction-popup">
-                    <span onclick="reactEmoji(this, '❤️')">❤️</span>
-                    <span onclick="reactEmoji(this, '👍')">👍</span>
-                    <span onclick="reactEmoji(this, '😂')">😂</span>
-                    <span onclick="reactEmoji(this, '🔥')">🔥</span>
-                    <span onclick="reactEmoji(this, '👏')">👏</span>
-                </div>
-                <button class="action-btn" onclick="alert('فتح التعليقات')"><i class="fa-regular fa-comment"></i> <span>تعليق (0)</span></button>
-                <button class="action-btn" onclick="alert('تم نسخ الرابط بنجاح')"><i class="fa-solid fa-share"></i> <span>مشاركة</span></button>
-            </div>
-        `;
+        const newPostObj = {
+            name: name,
+            avatar: avatar,
+            text: text,
+            media: mediaContent,
+            time: 'الآن'
+        };
 
-        feedContainer.prepend(postCard);
+        let postsList = JSON.parse(localStorage.getItem('ch_all_posts') || '[]');
+        postsList.unshift(newPostObj);
+        localStorage.setItem('ch_all_posts', JSON.stringify(postsList));
+
         textInput.value = '';
         uploadedMediaHTML = "";
-        alert('تم نشر المنشور وقراءة الرابط بنجاح!');
+        
+        loadStoredPosts();
+        alert('تم نشر المنشور وحفظه بنجاح ولن يختفي بعد الآن!');
+    }
+
+    function loadStoredPosts() {
+        const feedContainer = document.getElementById('posts-feed-container');
+        feedContainer.innerHTML = '';
+
+        let postsList = JSON.parse(localStorage.getItem('ch_all_posts') || '[]');
+
+        if(postsList.length === 0) {
+            postsList = [{
+                name: "سارة - مساعدة شروعة",
+                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100",
+                text: "مرحباً بكم في منصة CHROUAA! تم تحديث النظام ليحفظ كل شيء (الفيديوهات والمنشورات والمستخدمين) بشكل دائم.",
+                media: `<div class="fb-video-wrapper"><iframe class="embedded-iframe" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe></div>`,
+                time: "منذ قليل"
+            }];
+        }
+
+        postsList.forEach(post => {
+            const postCard = document.createElement('div');
+            postCard.className = 'post-card';
+            postCard.innerHTML = `
+                <div class="post-header-padding">
+                    <div class="user-info-flex">
+                        <div class="online-status-container">
+                            <img src="${post.avatar}" class="avatar" />
+                            <div class="online-dot"></div>
+                        </div>
+                        <div class="user-details">
+                            <h4>${post.name}</h4>
+                            <span>${post.time}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-body-padding">
+                    ${post.text.replace(/\n/g, '<br>')}
+                </div>
+                ${post.media || ''}
+                <div class="post-footer-padding">
+                    <button class="action-btn" onclick="toggleLike(this)" oncontextmenu="showReactions(event, this); return false;"><i class="fa-regular fa-heart"></i> <span class="like-text">إعجاب (0)</span></button>
+                    <div class="reaction-popup">
+                        <span onclick="reactEmoji(this, '❤️')">❤️</span>
+                        <span onclick="reactEmoji(this, '👍')">👍</span>
+                        <span onclick="reactEmoji(this, '😂')">😂</span>
+                        <span onclick="reactEmoji(this, '🔥')">🔥</span>
+                        <span onclick="reactEmoji(this, '👏')">👏</span>
+                    </div>
+                    <button class="action-btn" onclick="alert('فتح التعليقات')"><i class="fa-regular fa-comment"></i> <span>تعليق (0)</span></button>
+                    <button class="action-btn" onclick="alert('تم نسخ الرابط بنجاح')"><i class="fa-solid fa-share"></i> <span>مشاركة</span></button>
+                </div>
+            `;
+            feedContainer.appendChild(postCard);
+        });
     }
 
     function sendPhrase(phraseText) {
@@ -1190,6 +1273,36 @@
         if(!text) return;
         sendPhrase(text);
         input.value = '';
+    }
+
+    // إرسال صورة أو فيديو داخل نافذة الدردشة
+    function sendChatMedia(event) {
+        const file = event.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = function() {
+            const container = document.getElementById('chat-messages-container');
+            const row = document.createElement('div');
+            row.className = 'message-row outgoing';
+            
+            let mediaHTML = "";
+            if(file.type.startsWith('image/')) {
+                mediaHTML = `<img src="${reader.result}" style="max-width:100%; border-radius:8px; margin-bottom:4px;" />`;
+            } else {
+                mediaHTML = `<video controls src="${reader.result}" style="max-width:100%; border-radius:8px; margin-bottom:4px;"></video>`;
+            }
+
+            row.innerHTML = `
+                <div class="message-bubble">${mediaHTML}</div>
+                <div class="msg-actions-bar">
+                    <button class="quick-react-btn" onclick="quickReactMsg(this, '❤️')">❤️ جام (0)</button>
+                </div>
+            `;
+            container.appendChild(row);
+            container.scrollTop = container.scrollHeight;
+            alert('تم إرسال الملف بنجاح في الدردشة!');
+        }
+        reader.readAsDataURL(file);
     }
 
     function quickReactMsg(btn, emoji) {
